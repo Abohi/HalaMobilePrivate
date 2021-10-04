@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="58" height="36.646" viewBox="0 0 58 36.646">
+  <g id="noun_Business_1682790" transform="translate(-7.5 -23.144)">
+    <g id="Group_730" data-name="Group 730" transform="translate(7.5 23.144)">
+      <g id="Group_729" data-name="Group 729">
+        <circle id="Ellipse_215" data-name="Ellipse 215" cx="8.454" cy="8.454" r="8.454" transform="translate(20.546)" fill="blue"/>
+        <path id="Path_1007" data-name="Path 1007" d="M52.334,60.483l-4.367,2.709L43.6,60.483l2.095-6.428h4.544Z" transform="translate(-18.967 -32.963)" fill="blue"/>
+        <path id="Path_1008" data-name="Path 1008" d="M52.334,60.483l-4.367,2.709L43.6,60.483l2.095-6.428h4.544Z" transform="translate(-18.967 -32.963)" fill="#ffd00d"/>
+        <circle id="Ellipse_216" data-name="Ellipse 216" cx="6.98" cy="6.98" r="6.98" transform="translate(2.701 6.391)" fill="blue"/>
+        <path id="Path_1009" data-name="Path 1009" d="M56.266,63.56v6.257H32.82V63.56a9.2,9.2,0,0,1,.641-3.384,9.356,9.356,0,0,1,5.793-5.466l-2.34,7.172,7.629,4.729,7.629-4.729-2.34-7.172a9.353,9.353,0,0,1,5.793,5.466A9.192,9.192,0,0,1,56.266,63.56Z" transform="translate(-15.543 -33.171)" fill="blue"/>
+        <path id="Path_1010" data-name="Path 1010" d="M23.317,59.248c-.156.314-.306.648-.437.983a11.879,11.879,0,0,0-.832,4.388v6.257H7.5V65.716a7.679,7.679,0,0,1,7.676-7.676h4.005A7.647,7.647,0,0,1,23.317,59.248Z" transform="translate(-7.5 -34.229)" fill="blue"/>
+        <g id="Group_728" data-name="Group 728" transform="translate(41.34 6.391)">
+          <circle id="Ellipse_217" data-name="Ellipse 217" cx="6.98" cy="6.98" r="6.98" fill="blue"/>
+          <path id="Path_1011" data-name="Path 1011" d="M85.137,65.716v5.159H70.589V64.618a11.889,11.889,0,0,0-.826-4.374c-.136-.341-.28-.675-.443-1a7.653,7.653,0,0,1,4.135-1.208h4.005A7.679,7.679,0,0,1,85.137,65.716Z" transform="translate(-68.477 -40.62)" fill="blue"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

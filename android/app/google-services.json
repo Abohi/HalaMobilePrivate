@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "25433255361",
+    "project_id": "halawork-78f5c",
+    "storage_bucket": "halawork-78f5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25433255361:android:186cafc85fe928703a9340",
+        "android_client_info": {
+          "package_name": "com.halawork.com.halawork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25433255361-ml9u5pat0de93cvp3voc52gsgkg6o27t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halawork.com.halawork",
+            "certificate_hash": "3bddf8a6ab9a67f31ace8eec0c7c1da107e44b45"
+          }
+        },
+        {
+          "client_id": "25433255361-4jl596f8ti99cs26o2gf6nkkl0j0k92c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA9z9ONcM_erPg7aHtKug9esjYqY-chhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25433255361-4jl596f8ti99cs26o2gf6nkkl0j0k92c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

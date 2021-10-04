@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="206.251" height="39" viewBox="0 0 206.251 39">
+  <g id="Logo" transform="translate(-269.999 -236.817)">
+    <g id="Group_1" data-name="Group 1" transform="translate(269.999 237.57)">
+      <circle id="Ellipse_1" data-name="Ellipse 1" cx="4.546" cy="4.546" r="4.546" transform="translate(0 0)" fill="blue"/>
+      <circle id="Ellipse_2" data-name="Ellipse 2" cx="4.546" cy="4.546" r="4.546" transform="translate(27.329 0)" fill="blue"/>
+      <path id="Path_1" data-name="Path 1" d="M327.225,272.414h-6.77a9.157,9.157,0,0,0,6.77,8.835V295.17h9.161V272.414h-9.161Z" transform="translate(-299.965 -258.712)" fill="blue"/>
+      <path id="Path_2" data-name="Path 2" d="M279.161,272.734a9.007,9.007,0,0,0-2.406-.323H270v22.758h9.162v-13.6h6.756A9.162,9.162,0,0,0,279.161,272.734Z" transform="translate(-269.999 -258.71)" fill="blue"/>
+    </g>
+    <text id="Halawork" transform="translate(400.25 267.817)" fill="#29283c" font-size="32" font-family="SimplySans-Bold, Simply Sans" font-weight="700" letter-spacing="0.05em"><tspan x="-75.186" y="0">Halawork</tspan></text>
+  </g>
+</svg>
