@@ -6,6 +6,7 @@ import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/notification_model/notification_model.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
+import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/seller_setup_model/seller_setup_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
@@ -87,7 +88,13 @@ class UserController extends StateNotifier<UserModelExtension?> {
   Future<void> uploadMessage(String message,{String? sellerId,String? buyerId,String? receiverId})async{
     await _read(userRepositoryProvider).uploadMessage(message,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
   }
-
+  Future<void>sendOrderModel(Map<String,dynamic> orderModel)async{
+    try{
+      await _read(userRepositoryProvider).sendOrderModel(orderModel);
+    }on CustomException catch (e){
+      _read(exceptionMessageProvider).state = e;
+    }
+  }
   @override
   void dispose() {
     userModelChangesSubscription?.cancel();

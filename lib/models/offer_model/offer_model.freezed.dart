@@ -25,13 +25,17 @@ class _$OfferModelTearOff {
       required String amount,
       required String selectedDuration,
       required String selectedDurationInWords,
-      String? sellerId}) {
+      String? sellerId,
+      String? requestId,
+      required DateTime dateOfDelivery}) {
     return _OfferModel(
       description: description,
       amount: amount,
       selectedDuration: selectedDuration,
       selectedDurationInWords: selectedDurationInWords,
       sellerId: sellerId,
+      requestId: requestId,
+      dateOfDelivery: dateOfDelivery,
     );
   }
 
@@ -50,6 +54,8 @@ mixin _$OfferModel {
   String get selectedDuration => throw _privateConstructorUsedError;
   String get selectedDurationInWords => throw _privateConstructorUsedError;
   String? get sellerId => throw _privateConstructorUsedError;
+  String? get requestId => throw _privateConstructorUsedError;
+  DateTime get dateOfDelivery => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -67,7 +73,9 @@ abstract class $OfferModelCopyWith<$Res> {
       String amount,
       String selectedDuration,
       String selectedDurationInWords,
-      String? sellerId});
+      String? sellerId,
+      String? requestId,
+      DateTime dateOfDelivery});
 }
 
 /// @nodoc
@@ -85,6 +93,8 @@ class _$OfferModelCopyWithImpl<$Res> implements $OfferModelCopyWith<$Res> {
     Object? selectedDuration = freezed,
     Object? selectedDurationInWords = freezed,
     Object? sellerId = freezed,
+    Object? requestId = freezed,
+    Object? dateOfDelivery = freezed,
   }) {
     return _then(_value.copyWith(
       description: description == freezed
@@ -107,6 +117,14 @@ class _$OfferModelCopyWithImpl<$Res> implements $OfferModelCopyWith<$Res> {
           ? _value.sellerId
           : sellerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      requestId: requestId == freezed
+          ? _value.requestId
+          : requestId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfDelivery: dateOfDelivery == freezed
+          ? _value.dateOfDelivery
+          : dateOfDelivery // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -122,7 +140,9 @@ abstract class _$OfferModelCopyWith<$Res> implements $OfferModelCopyWith<$Res> {
       String amount,
       String selectedDuration,
       String selectedDurationInWords,
-      String? sellerId});
+      String? sellerId,
+      String? requestId,
+      DateTime dateOfDelivery});
 }
 
 /// @nodoc
@@ -142,6 +162,8 @@ class __$OfferModelCopyWithImpl<$Res> extends _$OfferModelCopyWithImpl<$Res>
     Object? selectedDuration = freezed,
     Object? selectedDurationInWords = freezed,
     Object? sellerId = freezed,
+    Object? requestId = freezed,
+    Object? dateOfDelivery = freezed,
   }) {
     return _then(_OfferModel(
       description: description == freezed
@@ -164,6 +186,14 @@ class __$OfferModelCopyWithImpl<$Res> extends _$OfferModelCopyWithImpl<$Res>
           ? _value.sellerId
           : sellerId // ignore: cast_nullable_to_non_nullable
               as String?,
+      requestId: requestId == freezed
+          ? _value.requestId
+          : requestId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfDelivery: dateOfDelivery == freezed
+          ? _value.dateOfDelivery
+          : dateOfDelivery // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -176,7 +206,9 @@ class _$_OfferModel implements _OfferModel {
       required this.amount,
       required this.selectedDuration,
       required this.selectedDurationInWords,
-      this.sellerId});
+      this.sellerId,
+      this.requestId,
+      required this.dateOfDelivery});
 
   factory _$_OfferModel.fromJson(Map<String, dynamic> json) =>
       _$_$_OfferModelFromJson(json);
@@ -191,10 +223,14 @@ class _$_OfferModel implements _OfferModel {
   final String selectedDurationInWords;
   @override
   final String? sellerId;
+  @override
+  final String? requestId;
+  @override
+  final DateTime dateOfDelivery;
 
   @override
   String toString() {
-    return 'OfferModel(description: $description, amount: $amount, selectedDuration: $selectedDuration, selectedDurationInWords: $selectedDurationInWords, sellerId: $sellerId)';
+    return 'OfferModel(description: $description, amount: $amount, selectedDuration: $selectedDuration, selectedDurationInWords: $selectedDurationInWords, sellerId: $sellerId, requestId: $requestId, dateOfDelivery: $dateOfDelivery)';
   }
 
   @override
@@ -215,7 +251,13 @@ class _$_OfferModel implements _OfferModel {
                     other.selectedDurationInWords, selectedDurationInWords)) &&
             (identical(other.sellerId, sellerId) ||
                 const DeepCollectionEquality()
-                    .equals(other.sellerId, sellerId)));
+                    .equals(other.sellerId, sellerId)) &&
+            (identical(other.requestId, requestId) ||
+                const DeepCollectionEquality()
+                    .equals(other.requestId, requestId)) &&
+            (identical(other.dateOfDelivery, dateOfDelivery) ||
+                const DeepCollectionEquality()
+                    .equals(other.dateOfDelivery, dateOfDelivery)));
   }
 
   @override
@@ -225,7 +267,9 @@ class _$_OfferModel implements _OfferModel {
       const DeepCollectionEquality().hash(amount) ^
       const DeepCollectionEquality().hash(selectedDuration) ^
       const DeepCollectionEquality().hash(selectedDurationInWords) ^
-      const DeepCollectionEquality().hash(sellerId);
+      const DeepCollectionEquality().hash(sellerId) ^
+      const DeepCollectionEquality().hash(requestId) ^
+      const DeepCollectionEquality().hash(dateOfDelivery);
 
   @JsonKey(ignore: true)
   @override
@@ -244,7 +288,9 @@ abstract class _OfferModel implements OfferModel {
       required String amount,
       required String selectedDuration,
       required String selectedDurationInWords,
-      String? sellerId}) = _$_OfferModel;
+      String? sellerId,
+      String? requestId,
+      required DateTime dateOfDelivery}) = _$_OfferModel;
 
   factory _OfferModel.fromJson(Map<String, dynamic> json) =
       _$_OfferModel.fromJson;
@@ -259,6 +305,10 @@ abstract class _OfferModel implements OfferModel {
   String get selectedDurationInWords => throw _privateConstructorUsedError;
   @override
   String? get sellerId => throw _privateConstructorUsedError;
+  @override
+  String? get requestId => throw _privateConstructorUsedError;
+  @override
+  DateTime get dateOfDelivery => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$OfferModelCopyWith<_OfferModel> get copyWith =>

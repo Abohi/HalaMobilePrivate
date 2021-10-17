@@ -1,4 +1,5 @@
 final String usersCollection="users";
+final String orderPaymentCollection="order_payment";
 final String serviceCollection="services";
 final String requestCollection="requests";
 final String activeServiceCollection="active_services";
@@ -14,6 +15,7 @@ final String notificationCollection="notifications";
 final String conversationCollection="conversation";
 final String inboxCollection="inbox";
 final String messageCollection="message";
+final String orderCollection="order";
 final List<Map<String,dynamic>> halaworkServices=[{"name":"Writing & Translation","value":["Articles & Blog Writing","Copywritting","Web Content Writing",
   "Resumes & Cover Letters","Creative Writing","Proofreading & Editing",
   "Translation"],"isDafault":false,"icon":"assets/images/writing.svg"},{"name":"Design & Creative","value":["Graphics Design","Animation","Logo Design & Branding",

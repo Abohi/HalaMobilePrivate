@@ -45,14 +45,27 @@ class InboxDetailPage extends HookWidget{
                 stream: context.read(userRepositoryProvider).getUserModel(receiverId.value),
                 builder:(context,snapshot){
                   if(snapshot.hasData){
-                    return Text(
-                      "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
-                      style: GoogleFonts.roboto(
-                          textStyle: TextStyle(
-                              color: const Color(0xff3E3E3E),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700)),
-                    );
+                    bool exists = snapshot.data!.email!.contains("@");
+                    if(snapshot.data!.profilePictureUrl!=null){
+                      return Text(
+                        "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: const Color(0xff3E3E3E),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)),
+                      );
+                    }
+                    return !exists?Text("${snapshot.data!.email!.toUpperCase()}",style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            color: const Color(0xff3E3E3E),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700)),):
+                    Text("${snapshot.data!.email!.toUpperCase().substring(0,snapshot.data!.email!.indexOf("@"))}",style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            color: const Color(0xff3E3E3E),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700)),);
                   }
                   return Text(
                     "",

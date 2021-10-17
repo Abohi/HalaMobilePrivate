@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/pages/basic_verification_pages/email_verification_success_page.dart';
@@ -28,6 +30,8 @@ Future<void> backgroundHandler(RemoteMessage message) async{
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await dotenv.load(fileName: ".env");
+  await PaystackClient.initialize("pk_test_e1b309e4165f444cebce332c49bc7bab45b00f16");
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   runApp(ProviderScope(child: MyApp()));
 }

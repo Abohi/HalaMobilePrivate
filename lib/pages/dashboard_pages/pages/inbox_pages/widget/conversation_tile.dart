@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/inbox_controller.dart';
+import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
@@ -20,7 +21,7 @@ class ConversationTile extends HookWidget {
   Widget build(BuildContext context) {
     var size= MediaQuery.of(context).size;
     messageCount = conversationModel.messageCount!-conversationModel.userMessageCount!;
-    bool shouldShowTimeAgo = useProvider(authControllerProvider)!.uid==conversationModel.conversationId;
+    bool shouldShowTimeAgo = useProvider(userControllerProvider)!.userModel.email==conversationModel.recieverEmail;
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
     // WidgetsBinding.instance!
     //     .addPostFrameCallback((_){
@@ -37,6 +38,7 @@ class ConversationTile extends HookWidget {
         stream: context.read(userRepositoryProvider).getUserModel(conversationModel.conversationId!),
         builder: (context,snapshot){
           if(snapshot.hasData){
+            bool exists = snapshot.data!.email!.contains("@");
             return Container(
               width:size.width,
               height: 66,
@@ -74,7 +76,8 @@ class ConversationTile extends HookWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("${snapshot.data!.email!.toUpperCase().substring(0,context.read(authControllerProvider)!.email!.indexOf("@"))}",style: GoogleFonts.roboto(textStyle: TextStyle(color: const Color(0xff29283C),fontSize: 14,fontWeight: FontWeight.w700)),),
+                      !exists?Text("${snapshot.data!.email!.toUpperCase()}",style: GoogleFonts.roboto(textStyle: TextStyle(color: const Color(0xff29283C),fontSize: 14,fontWeight: FontWeight.w700)),):
+                      Text("${snapshot.data!.email!.toUpperCase().substring(0,snapshot.data!.email!.indexOf("@"))}",style: GoogleFonts.roboto(textStyle: TextStyle(color: const Color(0xff29283C),fontSize: 14,fontWeight: FontWeight.w700)),),
                       SizedBox(height: 3,),
                       Text("",style: GoogleFonts.roboto(textStyle: TextStyle(color: const Color(0xff29283C),fontSize: 12,fontWeight: FontWeight.w700)),),
                       SizedBox(height: 3,),

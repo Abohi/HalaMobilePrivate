@@ -217,21 +217,22 @@ class SendOfferPage extends HookWidget {
                                     );
                                   });
                               if (date != null) {
-                                final time = await showTimePicker(
-                                    context: context,
-                                    initialTime:
-                                    TimeOfDay.fromDateTime(currentValue ?? DateTime.now(),),
-                                    builder: (BuildContext context, Widget? child) {
-                                      return Theme(
-                                        data: ThemeData.light().copyWith(
-                                            colorScheme: ColorScheme.light().copyWith(
-                                              primary: const Color(0xff0000FF),
-                                            )//selection color
-                                        ),
-                                        child: child!,
-                                      );
-                                    }
-                                );
+
+                              final time=await showTimePicker(
+                                  context: context,
+                                  initialTime:
+                                  TimeOfDay.fromDateTime(currentValue ?? DateTime.now(),),
+                                  builder: (BuildContext context, Widget? child) {
+                                    return Theme(
+                                      data: ThemeData.light().copyWith(
+                                          colorScheme: ColorScheme.light().copyWith(
+                                            primary: const Color(0xff0000FF),
+                                          )//selection color
+                                      ),
+                                      child: child!,
+                                    );
+                                  }
+                              );;
                                 return DateTimeField.combine(date, time);
                               } else {
                                 return currentValue;
@@ -249,12 +250,18 @@ class SendOfferPage extends HookWidget {
                               if(descriptionController.text.isNotEmpty && amtController.text.isNotEmpty && durationDate.value!=null){
                                 final progress = ProgressHUD.of(context);
                                 progress!.showWithText('Sending Offer...');
-
+                                int mintues=0;
+                                if(durationDate.value!.minute==30){
+                                  mintues = 30;
+                                }else{
+                                  mintues = 30;
+                                }
+                                DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day, durationDate.value!.hour,mintues);
                                 String requestId= createRequestModel2.requestId!;
                                 String buyerId = createRequestModel2.userId!;
                                 String sellerId = context.read(authControllerProvider)!.uid;
-                                final differenceSeconds = durationDate.value!.difference(DateTime.now());
-                                OfferModel offerModel = OfferModel(description: descriptionController.text, amount: amtController.text, selectedDuration: differenceSeconds.inSeconds.toString(), selectedDurationInWords: durationDate.value!.month.toString());
+                                final differenceSeconds = dateOfDelivery.difference(DateTime.now());
+                                OfferModel offerModel = OfferModel(description: descriptionController.text, amount: amtController.text, selectedDuration: differenceSeconds.inSeconds.toString(), selectedDurationInWords: dateOfDelivery.month.toString(),dateOfDelivery: dateOfDelivery);
                                 await context.read(userControllerProvider.notifier).sendOffer(sellerId, requestId, buyerId, offerModel);
                                 progress.dismiss();
                                 await Fluttertoast.showToast(msg: "Offer sent successfully",toastLength: Toast.LENGTH_LONG);

@@ -1,4 +1,6 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ConversationModel{
   String? buyerId,sellerId,conversationId,messageRecepientEmail,recieverEmail;
   int? userMessageCount,messageCount;
@@ -12,6 +14,6 @@ userMessageCount: userMessageCount,
     conversationId:conversationId,
   messageRecepientEmail: json["messageRecepientEmail"],
   recieverEmail: json["recieverEmail"],
-  createdAt: json["createdAt"]
+  createdAt: (json['createdAt']as Timestamp).toDate(),
 );
 }

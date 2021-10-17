@@ -13,6 +13,8 @@ _$_OfferModel _$_$_OfferModelFromJson(Map<String, dynamic> json) {
     selectedDuration: json['selectedDuration'] as String,
     selectedDurationInWords: json['selectedDurationInWords'] as String,
     sellerId: json['sellerId'] as String?,
+    requestId: json['requestId'] as String?,
+    dateOfDelivery: DateTime.parse(json['dateOfDelivery'] as String),
   );
 }
 
@@ -23,4 +25,6 @@ Map<String, dynamic> _$_$_OfferModelToJson(_$_OfferModel instance) =>
       'selectedDuration': instance.selectedDuration,
       'selectedDurationInWords': instance.selectedDurationInWords,
       'sellerId': instance.sellerId,
+      'requestId': instance.requestId,
+      'dateOfDelivery': instance.dateOfDelivery.toIso8601String(),
     };

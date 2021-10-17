@@ -6,6 +6,8 @@ import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/location_model/location_model.dart';
 import 'package:halawork/models/notification_model/notification_model.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
+import 'package:halawork/models/order_model/order_model.dart';
+import 'package:halawork/models/orderpayment/order_payment.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/seller_setup_models/achievement_entry_model/achievement_entry_model.dart';
@@ -21,6 +23,9 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
   //User Profile Document Ref
   DocumentReference<UserModel> userDocumentRef(String userId)=>
       collection(usersCollection).doc(userId).withConverter<UserModel>(fromFirestore: (snapshots,_)=>UserModel.fromJson(snapshots.data()!), toFirestore: (usermodel,_)=>usermodel.toJson());
+
+  DocumentReference<Map<String,dynamic>> userMapDocumentRef(String userId)=>
+      collection(usersCollection).doc(userId).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (usermodel,_)=>usermodel);
 //End Of User Profile Document Ref
   DocumentReference<SkillModel> skillsDocumentRef()=>
       collection(skillsCollection).doc(skillsCollection).withConverter<SkillModel>(fromFirestore: (snapshots,_)=>SkillModel.fromJson(snapshots.data()!), toFirestore: (usermodel,_)=>usermodel.toJson());
@@ -43,6 +48,12 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
   DocumentReference<Map<String,dynamic>> conversationForBuyerDocumentRef(String sellerId,String buyerId)=>
       collection(usersCollection).doc(buyerId).collection(conversationCollection).doc(sellerId).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (conversationModel,_)=>conversationModel);
   //End of conversation document ref
+
+  DocumentReference<Map<String,dynamic>> orderDocumentMapRef(String requestId)=>
+      collection(orderCollection).doc(requestId).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (orderModel,_)=>orderModel);
+
+  DocumentReference<OrderPaymentModel> orderPaymentDocumentRef(String requestId)=>
+      collection(orderPaymentCollection).doc(requestId).withConverter<OrderPaymentModel>(fromFirestore: (snapshots,_)=>OrderPaymentModel.fromJson(snapshots.data()!), toFirestore: (orderPaymentModel,_)=>orderPaymentModel.toJson());
   //Services Type Collection Ref
   CollectionReference<ServiceModel> serviceCollectionRef()=>
       collection(serviceCollection).withConverter<ServiceModel>(fromFirestore: (snapshots,_)=>ServiceModel.fromJson(snapshots.data()!), toFirestore: (serviceModel,_)=>serviceModel.toJson());
@@ -90,4 +101,6 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
   CollectionReference<Map<String,dynamic>> conversationCollectionRef(String userId)=>
       collection(usersCollection).doc(userId).collection(conversationCollection).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (conversationModel,_)=>conversationModel);
 
+  CollectionReference<OrderModel> orderCollectionRef()=>
+      collection(orderCollection).withConverter<OrderModel>(fromFirestore: (snapshots,_)=>OrderModel.fromJson(snapshots.data()!), toFirestore: (orderModel,_)=>orderModel.toJson());
 }

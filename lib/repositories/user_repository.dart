@@ -1,17 +1,23 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
+import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/location_model/location_model.dart';
 import 'package:halawork/models/notification_model/notification_model.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
+import 'package:halawork/models/order_model/order_model.dart';
+import 'package:halawork/models/orderpayment/order_payment.dart';
+import 'package:halawork/models/paystack_verify_model/verify_model.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/seller_setup_model/seller_setup_model.dart';
@@ -27,6 +33,7 @@ import 'package:halawork/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:halawork/firebase_reference_extension/firebase_firestore_extension.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
 abstract class BaseUserRepository {
   Stream<UserModel> getUserModel(String userId);
   Stream<List<AchievementEntryModel>> getAchievementModels(String userId);
@@ -41,6 +48,7 @@ abstract class BaseUserRepository {
   Stream<List<OfferModel>>getOffers(String buyerId,String requestId);
   Stream<List<NotificationModel>>getNotifications(String userId);
   Stream<List<InboxModel>> getMessages(String buyerId,String sellerId);
+  Stream<CreateRequestModel?>getRequestStream(String requestId);
 
   Future<void>saveBasicSellerInfo(UserModel userModel);
   Future<void>completeSellerProfileSetup(SellerSetupModel sellerSetupModel);
@@ -52,6 +60,10 @@ abstract class BaseUserRepository {
   Future<void> updateNotification(String userId,NotificationModel notificationModel);
   Future<void> updateUserModel(String userId,UserModel userModel);
   Future<void> uploadMessage(String message,{String? sellerId,String? buyerId,String? receiverId});
+  Future<void> sendOrderModel(Map<String,dynamic> orderModel);
+  Future<Either<NetworkFailure,VerifyModel>> verifyTransactionReference(String transactionReference);
+  Future<void> addOrderPayment(OrderPaymentModel orderPaymentModel,String requestId);
+  Future<void> addUserMap(Map<String,dynamic>userMap);
 }
 final userRepositoryProvider =
 Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -69,6 +81,13 @@ class UserRepository implements BaseUserRepository {
     }
   }
 
+  Future<UserModel>getUserModelFuture(String userId)async{
+    try {
+      return  (await _read(firebaseFirestoreProvider).userDocumentRef(userId).get()).data()!;
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
   @override
   Future<void> updateUserModel(String userId,UserModel userModel) async{
     try {
@@ -301,7 +320,7 @@ class UserRepository implements BaseUserRepository {
   @override
   Stream<List<OfferModel>> getOffers(String buyerId,String requestId) {
    try{
-     return _read(firebaseFirestoreProvider).offerCollectionRef(buyerId, requestId).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(sellerId: e.id)).toList());
+     return _read(firebaseFirestoreProvider).offerCollectionRef(buyerId, requestId).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(sellerId: e.id,requestId: requestId)).toList());
    }on FirebaseAuthException catch (e) {
      throw CustomException(message: e.message);
    }
@@ -310,7 +329,7 @@ class UserRepository implements BaseUserRepository {
   @override
   Stream<List<NotificationModel>> getNotifications(String userId) {
     try{
-      return _read(firebaseFirestoreProvider).notificationCollectionRef(userId).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(notificationId: e.id)).toList());
+      return _read(firebaseFirestoreProvider).notificationCollectionRef(userId).orderBy("createdAt", descending: true).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(notificationId: e.id)).toList());
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -325,7 +344,13 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
-
+ Stream<CreateRequestModel?>getRequestStream(String requestId){
+    try{
+      return _read(firebaseFirestoreProvider).requestDocumentRef(requestId).snapshots().map((event) => event.data());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+ }
   @override
   Future<void> updateNotification(String userId, NotificationModel notificationModel) async{
     try{
@@ -362,7 +387,8 @@ class UserRepository implements BaseUserRepository {
       "sellerId":sellerId,
       "createdAt":time,
     });
-    UserModel usermodel= await getUserModel(receiverId!).single;
+    UserModel usermodel= await getUserModelFuture(receiverId!);
+    print(usermodel.email);
     await _read(firebaseFirestoreProvider).conversationForBuyerDocumentRef(sellerId, buyerId).set({"buyerId":buyerId,
     "sellerId":sellerId,
       "messageCount":FieldValue.increment(1),
@@ -395,5 +421,57 @@ class UserRepository implements BaseUserRepository {
       "sellerId":sellerId,
       "${_read(authControllerProvider)!.uid}messageCount":documentLength,
     },SetOptions(merge: true));
+  }
+
+  @override
+  Future<void> sendOrderModel(Map<String,dynamic> orderModel) async{
+    try{
+      await _read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel["requestId"]).set(orderModel,SetOptions(merge: true));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<Either<NetworkFailure,VerifyModel>> verifyTransactionReference(String transactionReference)async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer sk_test_f9d2bb6e41f970725dc8347d325e39234974d217'
+      };
+
+      var url ="https://api.paystack.co/transaction/verify/${transactionReference}";
+
+      return http.get(Uri.parse(url), headers: headers).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(VerifyModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
+
+  @override
+  Future<void> addOrderPayment(OrderPaymentModel orderPaymentModel,String requestId) async{
+    try{
+      await _read(firebaseFirestoreProvider).orderPaymentDocumentRef(requestId).set(orderPaymentModel,SetOptions(merge: true));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<void> addUserMap(Map<String, dynamic> userMap) async{
+    try{
+      await _read(firebaseFirestoreProvider).userMapDocumentRef(_read(authControllerProvider)!.uid).set(userMap,
+      SetOptions(merge: true));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
   }
 }

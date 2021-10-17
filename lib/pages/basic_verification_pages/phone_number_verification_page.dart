@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
@@ -21,7 +22,7 @@ import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:auto_route/auto_route.dart';
 class PhoneVerificationPage extends HookWidget{
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *1;
   late CountdownTimerController controller;
@@ -200,9 +201,8 @@ class PhoneVerificationPage extends HookWidget{
                               //verify buyer
                               await context.read(authControllerProvider.notifier).verifyAsBuyer(UserModel(phoneNumber: "",isPhoneNumberVerified: true,
                                   isBuyer: true));
-
-                              await Fluttertoast.showToast(msg: "Send to dashboard",toastLength: Toast.LENGTH_LONG);
                               progress.dismiss();
+                              context.router.replaceAll([DashBoardRoute()]);
 
                             }else if(sentCode==0 || sentCode==null){
                               await Fluttertoast.showToast(msg: "Verification Code Has Expired",toastLength: Toast.LENGTH_LONG);

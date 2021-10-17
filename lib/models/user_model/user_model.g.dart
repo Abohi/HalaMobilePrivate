@@ -45,6 +45,9 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
     orgDetailModel: json['orgDetailModel'] as Map<String, dynamic>?,
     fcmtoken: json['fcmtoken'] as String?,
     email: json['email'] as String?,
+    wallet: json['wallet'] == null
+        ? null
+        : WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
   );
 }
 
@@ -78,4 +81,5 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'orgDetailModel': instance.orgDetailModel,
       'fcmtoken': instance.fcmtoken,
       'email': instance.email,
+      'wallet': instance.wallet,
     };
