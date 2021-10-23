@@ -29,7 +29,8 @@ class _RequestPageState extends State<RequestPage>{
       height: size.height,
       color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 17),
-      child: userModelState!.userModel.isSeller?FutureBuilder<HttpsCallableResult<List<dynamic>>>(
+      child: userModelState!.userModel.isSeller?
+      FutureBuilder<HttpsCallableResult<List<dynamic>>>(
         builder: (context,snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Column(

@@ -454,22 +454,23 @@ class CreateRequestPage extends HookWidget{
                                 return "";
                               }
                               progress.dismiss();
-                              await showGeneralDialog(
-                                  context: context,
-                                  barrierDismissible: true,
-                                  barrierLabel: MaterialLocalizations.of(context)
-                                      .modalBarrierDismissLabel,
-                                  barrierColor: Colors.black45,
-                                  transitionDuration: const Duration(milliseconds: 200),
-                                  pageBuilder: (BuildContext buildContext,
-                                      Animation animation,
-                                      Animation secondaryAnimation) {
-                                    return GenericResponseDialog(onBottonPressed: (){
-                                      context.read(navigationStateProvider).state = 3;
-                                      context.router.replaceAll([DashBoardRoute()]);
-                                      Navigator.of(context).pop();
-                                    },text1: "Request posted",text2: "Successfully",btnText: "MANAGE REQUEST",);
-                                  });
+                              await Fluttertoast.showToast(msg: "Request Sent Successfully",toastLength: Toast.LENGTH_LONG);
+                              // await showGeneralDialog(
+                              //     context: context,
+                              //     barrierDismissible: true,
+                              //     barrierLabel: MaterialLocalizations.of(context)
+                              //         .modalBarrierDismissLabel,
+                              //     barrierColor: Colors.black45,
+                              //     transitionDuration: const Duration(milliseconds: 200),
+                              //     pageBuilder: (BuildContext buildContext,
+                              //         Animation animation,
+                              //         Animation secondaryAnimation) {
+                              //       return GenericResponseDialog(onBottonPressed: (){
+                              //         context.read(navigationStateProvider).state = 3;
+                              //         context.router.replaceAll([DashBoardRoute()]);
+                              //         Navigator.of(context).pop();
+                              //       },text1: "Request posted",text2: "Successfully",btnText: "MANAGE REQUEST",);
+                              //     });
                             }
                           }, imageIcon: null,),
                       )

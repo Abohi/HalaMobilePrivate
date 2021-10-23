@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/firebase_reference_extension/firebase_firestore_extension.dart';
 import 'package:halawork/models/order_model/order_model.dart';
@@ -23,9 +24,9 @@ import 'package:halawork/repositories/order_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-class OrderDetailPage extends StatelessWidget {
+class OngoingOrderDetailPage extends StatelessWidget {
   final OrderModel orderModel;
-  const OrderDetailPage({required this.orderModel});
+  const OngoingOrderDetailPage({required this.orderModel});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class OrderDetailPage extends StatelessWidget {
         appBar:  AppBar(
           elevation: 5,
           title: Text(
-            "Order Detail",
+            "Ongoing Orders",
             style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                     color: const Color(0xff3E3E3E),
@@ -72,16 +73,28 @@ class OrderDetailPage extends StatelessWidget {
                           if(snapshot.hasData){
                             return Column(
                               children: [
-                                orderModel.requireExtension?ActionToPerformOnExtendOrder(buyerId: orderModel.buyerId, sellerId:orderModel.sellerId, extendTimeOfDelivery: (dateOfDelivery) async{
-                                  final progress = ProgressHUD.of(context);
-                                  progress!.showWithText('Extending Delivery Date');
-                                  await context.read(userControllerProvider.notifier).sendOrderModel({
-                                    "requireExtension":false,
-                                    "orderDeliveryTimeExpires":false,
-                                    "orderDeliveryTime":dateOfDelivery
-                                  });
-                                  progress.dismiss();
-                                  await Fluttertoast.showToast(msg: "Delivery date extended successfully",toastLength: Toast.LENGTH_LONG);
+                                orderModel.requireExtension?ActionToPerformOnExtendOrder(buyerId: orderModel.buyerId, sellerId:orderModel.sellerId, extendTimeOfDelivery: (dateOfDelivery,isAccepted) async{
+                                 if(isAccepted){
+                                   final progress = ProgressHUD.of(context);
+                                   progress!.showWithText('Extending Delivery Date');
+                                   await context.read(userControllerProvider.notifier).sendOrderModel({
+                                     "requireExtension":false,
+                                     "isExtended":true,
+                                     "orderDeliveryTimeExpires":false,
+                                     "orderDeliveryTime":dateOfDelivery
+                                   });
+                                   progress.dismiss();
+                                   await Fluttertoast.showToast(msg: "Delivery date extended successfully",toastLength: Toast.LENGTH_LONG);
+                                 }else{
+                                   final progress = ProgressHUD.of(context);
+                                   progress!.showWithText('Declining Extension Offer');
+                                   await context.read(userControllerProvider.notifier).sendOrderModel({
+                                     "requireExtension":false,
+                                     "isExtended":false,
+                                   });
+                                   progress.dismiss();
+                                   await Fluttertoast.showToast(msg: "SuccessFully Decline extension Offer",toastLength: Toast.LENGTH_LONG);
+                                 }
                                 },):Text(""),
                                 Container(
                                   width: size.width,
@@ -240,16 +253,12 @@ class OrderDetailPage extends StatelessWidget {
                           final progress = ProgressHUD.of(context);
                           progress!.showWithText('Marking Order As Completed...');
                           await context.read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel.requestId).set({
-                            "actionType":"completed"
+                            "actionType":"completed",
+                            "orderStatus":"completed",
                           },SetOptions(merge: true));
                           progress.dismiss();
                         }else if(actionType=="modification"){
-                          final progress = ProgressHUD.of(context);
-                          progress!.showWithText('Marking Order As Needing Modification...');
-                          await context.read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel.requestId).set({
-                            "actionType":"modification"
-                          },SetOptions(merge: true));
-                          progress.dismiss();
+                        context.router.navigate(ModificationBuyerRoute(orderModel: orderModel));
                         }else if(actionType=="dispute"){
                           //Send to dispute page
                         }

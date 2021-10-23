@@ -16,6 +16,9 @@ final String conversationCollection="conversation";
 final String inboxCollection="inbox";
 final String messageCollection="message";
 final String orderCollection="order";
+final String disputeCollection = "dispute";
+final String userDisputeCollection = "user_dispute";
+final String modificationCollection="modification";
 final List<Map<String,dynamic>> halaworkServices=[{"name":"Writing & Translation","value":["Articles & Blog Writing","Copywritting","Web Content Writing",
   "Resumes & Cover Letters","Creative Writing","Proofreading & Editing",
   "Translation"],"isDafault":false,"icon":"assets/images/writing.svg"},{"name":"Design & Creative","value":["Graphics Design","Animation","Logo Design & Branding",

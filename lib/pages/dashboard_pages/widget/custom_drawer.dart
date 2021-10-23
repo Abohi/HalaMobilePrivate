@@ -95,7 +95,7 @@ class CustomDrawer extends HookWidget {
                     drawerIcon: Icons.gavel,
                     drawerItemTitle: "Dispute",
                     onTap: () {
-
+                      context.router.navigate(DisputeRoute());
                     },
                   ),
                   DrawerItems(
@@ -109,7 +109,14 @@ class CustomDrawer extends HookWidget {
                     drawerIcon: Icons.archive,
                     drawerItemTitle: "Orders",
                     onTap: () {
-
+                      context.router.navigate(const OrderRoute());
+                    },
+                  ),
+                  DrawerItems(
+                    drawerIcon: Icons.archive,
+                    drawerItemTitle: "Modifications",
+                    onTap: () {
+                      context.router.navigate(const ModificationRoute());
                     },
                   ),
                   Padding(

@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
+import 'package:halawork/models/dispute_model/dispute_model.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/location_model/location_model.dart';
+import 'package:halawork/models/modification_model/modification_model.dart';
 import 'package:halawork/models/notification_model/notification_model.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
@@ -51,6 +53,9 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
 
   DocumentReference<Map<String,dynamic>> orderDocumentMapRef(String requestId)=>
       collection(orderCollection).doc(requestId).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (orderModel,_)=>orderModel);
+
+  DocumentReference<Map<String,dynamic>> modificationMapDocumentRef(String requestId)=>
+      collection(modificationCollection).doc(requestId).withConverter<Map<String,dynamic>>(fromFirestore: (snapshots,_)=>snapshots.data()!, toFirestore: (modificationModel,_)=>modificationModel);
 
   DocumentReference<OrderPaymentModel> orderPaymentDocumentRef(String requestId)=>
       collection(orderPaymentCollection).doc(requestId).withConverter<OrderPaymentModel>(fromFirestore: (snapshots,_)=>OrderPaymentModel.fromJson(snapshots.data()!), toFirestore: (orderPaymentModel,_)=>orderPaymentModel.toJson());
@@ -103,4 +108,9 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
 
   CollectionReference<OrderModel> orderCollectionRef()=>
       collection(orderCollection).withConverter<OrderModel>(fromFirestore: (snapshots,_)=>OrderModel.fromJson(snapshots.data()!), toFirestore: (orderModel,_)=>orderModel.toJson());
+  CollectionReference<ModificationModel> modificationCollectionRef()=>
+      collection(modificationCollection).withConverter<ModificationModel>(fromFirestore: (snapshots,_)=>ModificationModel.fromJson(snapshots.data()!), toFirestore: (modificationModel,_)=>modificationModel.toJson());
+
+  CollectionReference<DisputeModel> disputeCollectionRef(String userId)=>
+      collection(disputeCollection).doc(userId).collection(userDisputeCollection).withConverter<DisputeModel>(fromFirestore: (snapshots,_)=>DisputeModel.fromJson(snapshots.data()!), toFirestore: (disputeModel,_)=>disputeModel.toJson());
 }

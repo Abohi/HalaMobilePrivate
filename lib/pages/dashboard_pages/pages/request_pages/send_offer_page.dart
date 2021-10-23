@@ -180,9 +180,6 @@ class SendOfferPage extends HookWidget {
                           child: DateTimeField(
                             format: DateFormat("yyyy-MM-dd"),
                             style: GoogleFonts.roboto(textStyle: TextStyle(color: const Color(0xff29283C),fontSize: 14)),
-                            onChanged: (val){
-                              durationDate.value = val;
-                            },
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
@@ -232,7 +229,8 @@ class SendOfferPage extends HookWidget {
                                       child: child!,
                                     );
                                   }
-                              );;
+                              );
+                              durationDate.value = DateTimeField.combine(date, time);
                                 return DateTimeField.combine(date, time);
                               } else {
                                 return currentValue;

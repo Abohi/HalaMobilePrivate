@@ -15,6 +15,7 @@ import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/orderpayment/order_payment.dart';
 import 'package:halawork/models/paystack_verify_model/verify_model.dart';
+import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/offers_sent_detailpage_component/offer_bottom_section.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/offers_sent_detailpage_component/offer_top_section.dart';
@@ -117,6 +118,11 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                "debitBalance":FieldValue.increment(amount)
                              }
                            });
+
+                           //Removing Request from sellers to stop bidding
+                           CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
+                           await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
+
                            OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: widget.offerModel.requestId!, sellerId:widget.offerModel.sellerId!, orderId: orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment: paidAt, amountPaid:amount.toString(), paymentReference: reference);
                            await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, widget.offerModel.requestId!);
                            await context.read(userControllerProvider.notifier).sendOrderModel({
@@ -139,6 +145,11 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                            paymentProgress.dismiss();
                            await Fluttertoast.showToast(msg: "Order created successfully");
                          }else{
+
+                           //Removing Request from sellers to stop bidding
+                           CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
+                           await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
+
                            final verifyingPaymentProgress = ProgressHUD.of(context);
                            final charge = Charge()
                              ..email = context.read(authControllerProvider)!.email
@@ -195,6 +206,10 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                            }
                          }
                        }else{
+                         //Removing Request from sellers to stop bidding
+                         CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
+                         await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
+
                          final verifyingPaymentProgress = ProgressHUD.of(context);
                          final charge = Charge()
                            ..email = context.read(authControllerProvider)!.email

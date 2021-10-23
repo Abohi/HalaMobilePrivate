@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MessageBtn extends StatelessWidget {
   final Function onButtonPressed;
-  const MessageBtn({required this.onButtonPressed});
+  final String? label;
+  const MessageBtn({required this.onButtonPressed,this.label});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery
@@ -22,7 +23,7 @@ class MessageBtn extends StatelessWidget {
             border: Border.all(color: const Color(0xff0000FF))),
         child: Center(
           child: Text(
-            "MESSAGE",
+            label??"MESSAGE",
             style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                     color: const Color(0xff0000FF),

@@ -6,7 +6,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
+import 'package:halawork/models/dispute_model/dispute_model.dart';
+import 'package:halawork/models/modification_model/modification_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/service_type_model/service_type_model.dart';
 import 'package:halawork/models/services_model/service_model.dart';
@@ -20,6 +23,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 abstract class BaseOrderRepository {
  Stream<List<OrderModel>>orderStream();
+ Stream<List<DisputeModel>>streamDispute();
 }
 final orderRepositoryProvider =
 Provider<OrderRepository>((ref) => OrderRepository(ref.read));
@@ -120,6 +124,44 @@ class OrderRepository implements BaseOrderRepository {
         "fileType":_extension
       }
     },SetOptions(merge: true));
-
+  }
+  Stream<List<DisputeModel>>streamDispute(){
+    try{
+      return _read(firebaseFirestoreProvider).disputeCollectionRef(_read(authControllerProvider)!.uid).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(disputeId: e.id)).toList());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+  Future<void>deleteOfferAndOrder(String sellerId,String requestId,String buyerId)async{
+    await _read(firebaseFirestoreProvider).orderCollectionRef().doc(requestId).get().then((value)async{
+      if(value.exists){
+        if(value.data()!.orderState=="deactivated" && value.data()!.orderPaymentExpired!){
+          await _read(firebaseFirestoreProvider).offerCollectionRef(buyerId, requestId).doc(sellerId).delete();
+          await _read(firebaseFirestoreProvider).orderCollectionRef().doc(requestId).delete();
+        }
+      }
+    });
+  }
+  Future<void>addActionToOrder(String actionType,String requestId)async{
+    await _read(firebaseFirestoreProvider).orderDocumentMapRef(requestId).set({
+      "actionType":actionType,
+      "orderState":"deactivated",
+    },SetOptions(merge: true));
+  }
+  Future<void>createAModificationRequest(String requestId,Map<String,dynamic>modificationPayload)async{
+    await _read(firebaseFirestoreProvider).modificationMapDocumentRef(requestId).set({
+    "time":modificationPayload["time"],
+    "reason":modificationPayload["reason"],
+    "amount":modificationPayload["amount"]??"",
+      "buyerId":modificationPayload["buyerId"],
+      "sellerId":modificationPayload["sellerId"],
+      "requestTitle":modificationPayload["requestTitle"],
+      "decisionTime":modificationPayload["decisionTime"],
+      "amountString":modificationPayload["amountString"],
+      "createdDate":modificationPayload["createdDate"]
+    },SetOptions(merge: true));
+  }
+  Stream<List<ModificationModel>>getModifications(){
+    return _read(firebaseFirestoreProvider).modificationCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data()).toList());
   }
 }

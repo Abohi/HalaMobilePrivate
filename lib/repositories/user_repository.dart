@@ -298,6 +298,13 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+  Future<void> updateRequestStatus(CreateRequestModel createRequestModel,String requestId) async{
+    try{
+      await _read(firebaseFirestoreProvider).createRequestCollectionRef().doc(requestId).set(createRequestModel.copyWith(requestStatus: false));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
 
   @override
   Stream<List<CreateRequestModel>> getRequests() {
@@ -324,6 +331,14 @@ class UserRepository implements BaseUserRepository {
    }on FirebaseAuthException catch (e) {
      throw CustomException(message: e.message);
    }
+  }
+
+  Future<OfferModel?> getOffer(String buyerId,String sellerId,String requestId)async{
+    try{
+      return (await _read(firebaseFirestoreProvider).offerDocumentRef(sellerId, buyerId, requestId).get()).data();
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
   }
 
   @override

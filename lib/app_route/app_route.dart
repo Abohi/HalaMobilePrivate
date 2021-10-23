@@ -10,6 +10,13 @@ import 'package:halawork/pages/basic_verification_pages/resend_email_verificatio
 import 'package:halawork/pages/dashboard_pages/dashboard_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/create_request_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/create_request_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/dispute_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_buyer_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_detail_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/ongoin_order_detailpage.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/pending_order_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/achievement_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/addlocation_organization_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/education_entry_page.dart';
@@ -76,6 +83,9 @@ import '../main.dart';
 
     //Start of drawer pages
     const AutoRoute(page: ProfilePage),
+    const AutoRoute(page: OrderPage),
+    const AutoRoute(page: DisputePage),
+    const AutoRoute(page: ModificationPage),
     //End of drawer pages
 
     //Request pages
@@ -84,12 +94,19 @@ import '../main.dart';
     const AutoRoute(page: OfferSentDetailPage),
     //End Of Request Pages
 
+    //Start of order pages
+    const AutoRoute(page: PendingOrderDetailPage),
+    const AutoRoute(page: OngoingOrderDetailPage),
+    //End of order pages
     //Notification pages
     const AutoRoute(page: NotificationDetailPage),
     //End Of Notification Pages
 
     //Start of Inbox pages
     const AutoRoute(page: InboxDetailPage),
+    const AutoRoute(page: ModificationBuyerPage),
+    const AutoRoute(page: ModificationDetailPage),
+
     //End of Inbox pages
     const AutoRoute(
         path: '/dashboard',
