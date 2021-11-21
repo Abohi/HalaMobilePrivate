@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
@@ -10,6 +11,7 @@ import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/custom_chipinput.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:auto_route/auto_route.dart';
 final userModelStreamProvider = StreamProvider.autoDispose.family<UserModel,String>((ref,id) {
   return ref.read(userRepositoryProvider).getUserModel(id);
 });
@@ -26,7 +28,7 @@ class UserTile extends ConsumerWidget {
     return userModelStream.when(data: (data){
       return GestureDetector(
         onTap: (){
-
+          context.router.navigate(ProfileViewRoute(userId: subServiceModel.userid));
         },
         child: Container(
           width: size.width,
@@ -73,6 +75,8 @@ class UserTile extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
+                                data.sellerType=="Organization"?
+                                "${data.orgDetailModel!["firstName"]} ${data.orgDetailModel!["lastName"]}":
                                 "${data.firstName} ${data.lastName}",
                                 style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.w700,

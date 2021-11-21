@@ -16,7 +16,7 @@ class NotificationItems extends StatelessWidget {
       child: Container(
         width: size.width,
         height: size.height*0.2,
-        decoration: BoxDecoration(color:notificationModel.isOpen?Colors.white:const Color(0xff0000FF),border: Border(bottom: BorderSide(color: const Color(0xffACACAC),width: 0.5))),
+        decoration: BoxDecoration(color:notificationModel.isOpen?Colors.white:const Color(0xffEBEBFF),border: Border(bottom: BorderSide(color: const Color(0xffACACAC),width: 0.5))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,13 +28,13 @@ class NotificationItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(notificationModel.createdAt==null?"":DateFormat.yMMMd().format(notificationModel.createdAt!),style: GoogleFonts.roboto(textStyle: TextStyle(color:notificationModel.isOpen?const Color(0xffACACAC):Colors.white,fontSize: 16,fontWeight: FontWeight.normal)),),
-                IconButton(icon: Icon(Icons.clear,color: notificationModel.isOpen?const Color(0xff5A5AFC):Colors.white,size: 18,),onPressed: ()async{
+                IconButton(icon: Icon(Icons.clear,color: notificationModel.isOpen?Colors.black:const Color(0xff5a5afc),size: 18,),onPressed: ()async{
 
                 },)
               ],
             ),
             SizedBox(height: 8,),
-            Text(notificationModel.title,style: GoogleFonts.roboto(textStyle: TextStyle(color:notificationModel.isOpen?const  Color(0xff555555):Colors.white,fontSize: 14,fontWeight: FontWeight.normal)),),
+            Text(notificationModel.title,style: GoogleFonts.roboto(textStyle: TextStyle(color:notificationModel.isOpen?Colors.black:const Color(0xff5a5afc),fontSize: 14,fontWeight: FontWeight.normal)),),
           ],
         ),
       ),

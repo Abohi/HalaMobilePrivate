@@ -13,10 +13,11 @@ _$_ModificationModel _$_$_ModificationModelFromJson(Map<String, dynamic> json) {
     amountString: json['amountString'] as String?,
     buyerId: json['buyerId'] as String,
     sellerId: json['sellerId'] as String,
-    createdDate: DateTime.parse(json['createdDate'] as String),
+    createdDate: dateTimeFromJson(json['createdDate'] as Timestamp?),
     requestTitle: json['requestTitle'] as String,
-    time: dateTimeFromJson(json['time'] as Timestamp),
-    decisionTime: DateTime.parse(json['decisionTime'] as String),
+    time: dateTimeFromJson(json['time'] as Timestamp?),
+    decisionTime: dateTimeFromJson(json['decisionTime'] as Timestamp?),
+    modificationId: json['modificationId'] as String?,
   );
 }
 
@@ -28,8 +29,9 @@ Map<String, dynamic> _$_$_ModificationModelToJson(
       'amountString': instance.amountString,
       'buyerId': instance.buyerId,
       'sellerId': instance.sellerId,
-      'createdDate': instance.createdDate.toIso8601String(),
+      'createdDate': dateTimeToJson(instance.createdDate),
       'requestTitle': instance.requestTitle,
       'time': dateTimeToJson(instance.time),
-      'decisionTime': instance.decisionTime.toIso8601String(),
+      'decisionTime': dateTimeToJson(instance.decisionTime),
+      'modificationId': instance.modificationId,
     };

@@ -19,7 +19,8 @@ class OrderController extends StateNotifier<List<OrderModel>?> {
     orderModelSubscription?.cancel();
     orderModelSubscription = _read(orderRepositoryProvider)
         .orderStream()
-        .listen((orderList) => state = orderList);
+        .listen((orderList) =>
+    state = orderList);
   }
 
   List<OrderModel>?fetchByOrderType(String orderType){

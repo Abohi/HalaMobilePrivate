@@ -67,6 +67,8 @@ class OfferItemCard extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
+                          snapshot.data!.sellerType=="Organization"?
+                          "${snapshot.data!.orgDetailModel!["firstName"]} ${snapshot.data!.orgDetailModel!["lastName"]}":
                           "${snapshot.data!.firstName} ${snapshot.data!.lastName}",
                           style: GoogleFonts.roboto(
                               textStyle: TextStyle(

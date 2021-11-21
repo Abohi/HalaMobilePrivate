@@ -7,16 +7,26 @@ part 'modification_model.g.dart';
 @freezed
 class ModificationModel with _$ModificationModel{
   const factory ModificationModel({required String reason,num? amount,String? amountString,required String buyerId,required String sellerId,
-    required DateTime createdDate,
+    @JsonKey(
+  name: "createdDate",
+  fromJson: dateTimeFromJson,
+  toJson: dateTimeToJson,
+  )DateTime? createdDate,
   required String requestTitle,@JsonKey(
       name: "time",
       fromJson: dateTimeFromJson,
       toJson: dateTimeToJson,
-    )  DateTime? time,required DateTime decisionTime})=_ModificationModel;
+    )  DateTime? time,@JsonKey(
+  name: "decisionTime",
+  fromJson: dateTimeFromJson,
+  toJson: dateTimeToJson,
+  )DateTime? decisionTime,String? modificationId})=_ModificationModel;
   factory ModificationModel.fromJson(Map<String, dynamic> json) => _$ModificationModelFromJson(json);
 }
 
-DateTime dateTimeFromJson(Timestamp timestamp) {
+DateTime? dateTimeFromJson(Timestamp? timestamp) {
+  if(timestamp==null)
+    return null;
   return timestamp.toDate();
 }
 

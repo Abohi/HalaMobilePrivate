@@ -103,28 +103,32 @@ class AppEntryPage extends HookWidget{
 
       return AppEntryMainPage();
     }else{
-      if(!authControllerState.emailVerified){
+      if(authControllerState.emailVerified){
+
+        return CheckPhoneVerificationStateWidgetPage();
+      } {
         // Resend Email Verification Link
         return ResendEmailVerificationLinkPage();
-      } {
-        return CheckPhoneVerificationStateWidgetPage();
+
       }
     }
   }
 
 }
-class CheckPhoneVerificationStateWidgetPage extends ConsumerWidget {
+class CheckPhoneVerificationStateWidgetPage extends HookWidget {
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final userModelState = watch(userControllerProvider);
-    if(userModelState==null){
+  Widget build(BuildContext context) {
+    final userModelState = useProvider(userControllerProvider);
+    if(userModelState!=null){
+      if(userModelState.userModel.isPhoneNumberVerified){
+        context.router.replaceAll([DashBoardRoute()]);
+        return SizedBox.shrink();
+      }else{
+        return EmailVerificationSuccessPage();
+      }
+    }else{
       return SplashScreenPage();
     }
-    else if(userModelState.userModel.isPhoneNumberVerified){
-      context.router.replaceAll([DashBoardRoute()]);
-      return SizedBox.shrink();
-    }else{
-      return EmailVerificationSuccessPage();
-    }
+
   }
 }

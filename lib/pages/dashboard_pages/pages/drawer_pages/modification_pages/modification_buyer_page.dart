@@ -16,7 +16,7 @@ import 'package:halawork/utils/decimal_formatter.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:auto_route/auto_route.dart';
 class ModificationBuyerPage extends HookWidget {
   final OrderModel orderModel;
   const ModificationBuyerPage({required this.orderModel});
@@ -28,7 +28,31 @@ class ModificationBuyerPage extends HookWidget {
     var budgetController = useTextEditingController();
     var durationDate = useState<DateTime?>(null);
     return Scaffold(
+      appBar: AppBar(
+        elevation: 5,
+        title: Text(
+          "Submit Modification",
+          style: GoogleFonts.roboto(
+              textStyle: TextStyle(
+                  color: const Color(0xff3E3E3E),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700)),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: const Color(0xff0000FF),
+            size: 24,
+          ),
+          onPressed: () {
+            context.popRoute();
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
+
       body: ProgressHUD(
         backgroundColor:const Color(0xff0000FF),
         indicatorColor: Colors.white,
@@ -40,6 +64,7 @@ class ModificationBuyerPage extends HookWidget {
               padding: EdgeInsets.symmetric(horizontal: 17),
               child: ListView(
                 children: [
+                  SizedBox(height: 15,),
                   Text("For all modification raised, a one day interval is given for the Seller, to either raise a dispute regarding modification, or accept the modification",style:
                   GoogleFonts.roboto(
                       textStyle: TextStyle(
@@ -247,15 +272,19 @@ class ModificationBuyerPage extends HookWidget {
                         amount = double.tryParse(budgetController.text.toString().replaceAll(RegExp(r'[^0-9\.]'), ''));
                       }
                       int mintues=0;
-                      if(durationDate.value!.minute==30){
-                        mintues = 30;
+                      if(durationDate.value!.minute.isEven){
+                        mintues = durationDate.value!.minute;
                       }else{
-                        mintues = 30;
+                        mintues = durationDate.value!.minute+1;
                       }
                       DateTime nowTime = DateTime.now();
-                      DateTime decisionTime = DateTime(nowTime.year, nowTime.month, nowTime.day, nowTime.hour+48,30);
-                      DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day, durationDate.value!.hour+48,mintues);
-                      await context.read(orderRepositoryProvider).addActionToOrder("modification", orderModel.requestId);
+                      DateTime decisionTime = DateTime(nowTime.year, nowTime.month, nowTime.day+2, nowTime.hour,mintues);
+                      DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day+2, durationDate.value!.hour,mintues);
+                      await context.read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel.requestId).set({
+                        "actionType":"modification",
+                        "orderState":"deactivated",
+                        "orderStatus":"None",
+                      },SetOptions(merge: true));
                      CreateRequestModel? createRequestModel =  await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
                       Map<String,dynamic> modificationPayload = {
                         "time":dateOfDelivery,
@@ -270,6 +299,7 @@ class ModificationBuyerPage extends HookWidget {
                       };
                       await context.read(orderRepositoryProvider).createAModificationRequest(orderModel.requestId, modificationPayload);
                       progress.dismiss();
+                      await Fluttertoast.showToast(msg: "Modification Request sent successfully",toastLength: Toast.LENGTH_LONG);
                     }, imageIcon: null,)
 
                 ],

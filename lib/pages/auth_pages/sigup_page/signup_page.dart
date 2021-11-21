@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
@@ -85,12 +86,49 @@ class SignupPage extends HookWidget {
                           CustomDivider(),
                           SizedBox(height: height*0.03,),
                           CustomButtonSignup(buttonBg: const Color(0xff3D5D9A), buttonTitle: "SIGNUP WITH FACEBOOK", buttonFontColor: Colors.white, onButtonPressed: ()async{
+                            final progress = ProgressHUD.of(context);
+                            progress!.showWithText('Creating Account...');
+                           bool? result =  await context.read(authRepositoryProvider).logInWithFacebook();
+                           if(result!){
+                             if(context.read(authControllerProvider)!=null){
+                               FirebaseMessaging _fcm = FirebaseMessaging.instance;
+                               if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
+                                 String? fcmToken = await _fcm.getToken();
+                                 if(fcmToken!=null){
+                                   await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
+                                   await context.read(authControllerProvider)!.sendEmailVerification();
+                                   await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
+                                   context.read(authControllerProvider.notifier).signOut();
+                                   progress.dismiss();
+                                   context.router.navigate(AppEntryRoute());
+                                 }else{
+                                   String? fcmToken = await _fcm.getToken();
+                                   await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
+                                   await context.read(authControllerProvider)!.sendEmailVerification();
+                                   await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
+                                   context.read(authControllerProvider.notifier).signOut();
+                                   progress.dismiss();
+                                   context.router.navigate(AppEntryRoute());
+                                 }
 
+                               }else{
+                                 await context.read(authControllerProvider)!.sendEmailVerification();
+                                 await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
+                                 context.read(authControllerProvider.notifier).signOut();
+                                 progress.dismiss();
+                                 context.router.navigate(AppEntryRoute());
+                               }
+                             }else{
+                               progress.dismiss();
+                             }
+                           }else{
+                             progress.dismiss();
+                           }
                           },isIconLeft: true,imageIcon: SvgPicture.asset("assets/images/fb_icon.svg"),),
                           SizedBox(height: 16,),
                           CustomButtonSignup(buttonBg:Colors.white, buttonTitle: "SIGNUP WITH GOOGLE", buttonFontColor: const Color(0xff29283C), onButtonPressed: ()async{
                             final progress = ProgressHUD.of(context);
-                            progress!.showWithText('Login User...');
+                            progress!.showWithText('Creating Account...');
                             UserCredential? userCredential = await context.read(authRepositoryProvider).loginGoogle();
                             if(userCredential!=null){
                               if(userCredential.user!=null){

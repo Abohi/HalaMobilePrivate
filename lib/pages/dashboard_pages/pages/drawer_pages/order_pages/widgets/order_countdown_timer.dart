@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CountDownTimerPayment extends StatelessWidget {
+class CountDownTimerPayment extends HookWidget {
 
   final int endTime;
   const CountDownTimerPayment({required this.endTime});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    final countDownController = useMemoized(() => CountdownTimerController(endTime:endTime, onEnd: ()async{
+      await Fluttertoast.showToast(msg: "Order delivery time has expired",toastLength: Toast.LENGTH_LONG);
+    }));
+    print("Time ${endTime}");
     return CountdownTimer(
-      controller: CountdownTimerController(
-          endTime: endTime,onEnd: (){
-
-      }
-      ),
+      controller: countDownController,
       widgetBuilder: (BuildContext context,CurrentRemainingTime? time){
         if(time!=null){
           return Container(

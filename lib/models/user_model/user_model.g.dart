@@ -48,6 +48,7 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
     wallet: json['wallet'] == null
         ? null
         : WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
+    documentId: json['documentId'] as String?,
   );
 }
 
@@ -82,4 +83,5 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'fcmtoken': instance.fcmtoken,
       'email': instance.email,
       'wallet': instance.wallet,
+      'documentId': instance.documentId,
     };

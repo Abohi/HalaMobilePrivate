@@ -14,11 +14,9 @@ class ByserviceComponent extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var userModelState = useProvider(userControllerProvider);
-    return  ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: size.height * 0.32,
-        maxWidth: size.width,
-      ),
+    return  SizedBox(
+      width: size.width,
+      height: size.height*0.24,
       child: ListView(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,

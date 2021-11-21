@@ -30,12 +30,17 @@ class _$OrderModelTearOff {
       required bool isPaid,
       required bool isDispute,
       required bool isSubmitted,
+      bool? isReviewed,
       required bool requireExtension,
-      required DateTime? orderPaymentTime,
+      @JsonKey(name: "orderPaymentTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderPaymentTime,
       required bool? orderPaymentExpired,
-      required DateTime orderDeliveryTime,
-      required num amount,
-      required bool orderDeliveryTimeExpires,
+      @JsonKey(name: "orderDeliveryTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderDeliveryTime,
+      @JsonKey(name: "releaseFundTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? releaseFundTime,
+      required num? amount,
+      required bool? orderDeliveryTimeExpires,
       FileTypeModel? fileTypeModel,
       String? orderNote,
       String? actionType}) {
@@ -49,10 +54,12 @@ class _$OrderModelTearOff {
       isPaid: isPaid,
       isDispute: isDispute,
       isSubmitted: isSubmitted,
+      isReviewed: isReviewed,
       requireExtension: requireExtension,
       orderPaymentTime: orderPaymentTime,
       orderPaymentExpired: orderPaymentExpired,
       orderDeliveryTime: orderDeliveryTime,
+      releaseFundTime: releaseFundTime,
       amount: amount,
       orderDeliveryTimeExpires: orderDeliveryTimeExpires,
       fileTypeModel: fileTypeModel,
@@ -80,12 +87,26 @@ mixin _$OrderModel {
   bool get isPaid => throw _privateConstructorUsedError;
   bool get isDispute => throw _privateConstructorUsedError;
   bool get isSubmitted => throw _privateConstructorUsedError;
+  bool? get isReviewed => throw _privateConstructorUsedError;
   bool get requireExtension => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "orderPaymentTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
   DateTime? get orderPaymentTime => throw _privateConstructorUsedError;
   bool? get orderPaymentExpired => throw _privateConstructorUsedError;
-  DateTime get orderDeliveryTime => throw _privateConstructorUsedError;
-  num get amount => throw _privateConstructorUsedError;
-  bool get orderDeliveryTimeExpires => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "orderDeliveryTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  DateTime? get orderDeliveryTime => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "releaseFundTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  DateTime? get releaseFundTime => throw _privateConstructorUsedError;
+  num? get amount => throw _privateConstructorUsedError;
+  bool? get orderDeliveryTimeExpires => throw _privateConstructorUsedError;
   FileTypeModel? get fileTypeModel => throw _privateConstructorUsedError;
   String? get orderNote => throw _privateConstructorUsedError;
   String? get actionType => throw _privateConstructorUsedError;
@@ -111,12 +132,17 @@ abstract class $OrderModelCopyWith<$Res> {
       bool isPaid,
       bool isDispute,
       bool isSubmitted,
+      bool? isReviewed,
       bool requireExtension,
-      DateTime? orderPaymentTime,
+      @JsonKey(name: "orderPaymentTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderPaymentTime,
       bool? orderPaymentExpired,
-      DateTime orderDeliveryTime,
-      num amount,
-      bool orderDeliveryTimeExpires,
+      @JsonKey(name: "orderDeliveryTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderDeliveryTime,
+      @JsonKey(name: "releaseFundTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? releaseFundTime,
+      num? amount,
+      bool? orderDeliveryTimeExpires,
       FileTypeModel? fileTypeModel,
       String? orderNote,
       String? actionType});
@@ -143,10 +169,12 @@ class _$OrderModelCopyWithImpl<$Res> implements $OrderModelCopyWith<$Res> {
     Object? isPaid = freezed,
     Object? isDispute = freezed,
     Object? isSubmitted = freezed,
+    Object? isReviewed = freezed,
     Object? requireExtension = freezed,
     Object? orderPaymentTime = freezed,
     Object? orderPaymentExpired = freezed,
     Object? orderDeliveryTime = freezed,
+    Object? releaseFundTime = freezed,
     Object? amount = freezed,
     Object? orderDeliveryTimeExpires = freezed,
     Object? fileTypeModel = freezed,
@@ -190,6 +218,10 @@ class _$OrderModelCopyWithImpl<$Res> implements $OrderModelCopyWith<$Res> {
           ? _value.isSubmitted
           : isSubmitted // ignore: cast_nullable_to_non_nullable
               as bool,
+      isReviewed: isReviewed == freezed
+          ? _value.isReviewed
+          : isReviewed // ignore: cast_nullable_to_non_nullable
+              as bool?,
       requireExtension: requireExtension == freezed
           ? _value.requireExtension
           : requireExtension // ignore: cast_nullable_to_non_nullable
@@ -205,15 +237,19 @@ class _$OrderModelCopyWithImpl<$Res> implements $OrderModelCopyWith<$Res> {
       orderDeliveryTime: orderDeliveryTime == freezed
           ? _value.orderDeliveryTime
           : orderDeliveryTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      releaseFundTime: releaseFundTime == freezed
+          ? _value.releaseFundTime
+          : releaseFundTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       orderDeliveryTimeExpires: orderDeliveryTimeExpires == freezed
           ? _value.orderDeliveryTimeExpires
           : orderDeliveryTimeExpires // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       fileTypeModel: fileTypeModel == freezed
           ? _value.fileTypeModel
           : fileTypeModel // ignore: cast_nullable_to_non_nullable
@@ -257,12 +293,17 @@ abstract class _$OrderModelCopyWith<$Res> implements $OrderModelCopyWith<$Res> {
       bool isPaid,
       bool isDispute,
       bool isSubmitted,
+      bool? isReviewed,
       bool requireExtension,
-      DateTime? orderPaymentTime,
+      @JsonKey(name: "orderPaymentTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderPaymentTime,
       bool? orderPaymentExpired,
-      DateTime orderDeliveryTime,
-      num amount,
-      bool orderDeliveryTimeExpires,
+      @JsonKey(name: "orderDeliveryTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderDeliveryTime,
+      @JsonKey(name: "releaseFundTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? releaseFundTime,
+      num? amount,
+      bool? orderDeliveryTimeExpires,
       FileTypeModel? fileTypeModel,
       String? orderNote,
       String? actionType});
@@ -292,10 +333,12 @@ class __$OrderModelCopyWithImpl<$Res> extends _$OrderModelCopyWithImpl<$Res>
     Object? isPaid = freezed,
     Object? isDispute = freezed,
     Object? isSubmitted = freezed,
+    Object? isReviewed = freezed,
     Object? requireExtension = freezed,
     Object? orderPaymentTime = freezed,
     Object? orderPaymentExpired = freezed,
     Object? orderDeliveryTime = freezed,
+    Object? releaseFundTime = freezed,
     Object? amount = freezed,
     Object? orderDeliveryTimeExpires = freezed,
     Object? fileTypeModel = freezed,
@@ -339,6 +382,10 @@ class __$OrderModelCopyWithImpl<$Res> extends _$OrderModelCopyWithImpl<$Res>
           ? _value.isSubmitted
           : isSubmitted // ignore: cast_nullable_to_non_nullable
               as bool,
+      isReviewed: isReviewed == freezed
+          ? _value.isReviewed
+          : isReviewed // ignore: cast_nullable_to_non_nullable
+              as bool?,
       requireExtension: requireExtension == freezed
           ? _value.requireExtension
           : requireExtension // ignore: cast_nullable_to_non_nullable
@@ -354,15 +401,19 @@ class __$OrderModelCopyWithImpl<$Res> extends _$OrderModelCopyWithImpl<$Res>
       orderDeliveryTime: orderDeliveryTime == freezed
           ? _value.orderDeliveryTime
           : orderDeliveryTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      releaseFundTime: releaseFundTime == freezed
+          ? _value.releaseFundTime
+          : releaseFundTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       amount: amount == freezed
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       orderDeliveryTimeExpires: orderDeliveryTimeExpires == freezed
           ? _value.orderDeliveryTimeExpires
           : orderDeliveryTimeExpires // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       fileTypeModel: fileTypeModel == freezed
           ? _value.fileTypeModel
           : fileTypeModel // ignore: cast_nullable_to_non_nullable
@@ -392,10 +443,15 @@ class _$_OrderModel implements _OrderModel {
       required this.isPaid,
       required this.isDispute,
       required this.isSubmitted,
+      this.isReviewed,
       required this.requireExtension,
-      required this.orderPaymentTime,
+      @JsonKey(name: "orderPaymentTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          this.orderPaymentTime,
       required this.orderPaymentExpired,
-      required this.orderDeliveryTime,
+      @JsonKey(name: "orderDeliveryTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          this.orderDeliveryTime,
+      @JsonKey(name: "releaseFundTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          this.releaseFundTime,
       required this.amount,
       required this.orderDeliveryTimeExpires,
       this.fileTypeModel,
@@ -424,17 +480,33 @@ class _$_OrderModel implements _OrderModel {
   @override
   final bool isSubmitted;
   @override
+  final bool? isReviewed;
+  @override
   final bool requireExtension;
   @override
+  @JsonKey(
+      name: "orderPaymentTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
   final DateTime? orderPaymentTime;
   @override
   final bool? orderPaymentExpired;
   @override
-  final DateTime orderDeliveryTime;
+  @JsonKey(
+      name: "orderDeliveryTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  final DateTime? orderDeliveryTime;
   @override
-  final num amount;
+  @JsonKey(
+      name: "releaseFundTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  final DateTime? releaseFundTime;
   @override
-  final bool orderDeliveryTimeExpires;
+  final num? amount;
+  @override
+  final bool? orderDeliveryTimeExpires;
   @override
   final FileTypeModel? fileTypeModel;
   @override
@@ -444,7 +516,7 @@ class _$_OrderModel implements _OrderModel {
 
   @override
   String toString() {
-    return 'OrderModel(requestId: $requestId, buyerId: $buyerId, orderStatus: $orderStatus, orderId: $orderId, orderState: $orderState, sellerId: $sellerId, isPaid: $isPaid, isDispute: $isDispute, isSubmitted: $isSubmitted, requireExtension: $requireExtension, orderPaymentTime: $orderPaymentTime, orderPaymentExpired: $orderPaymentExpired, orderDeliveryTime: $orderDeliveryTime, amount: $amount, orderDeliveryTimeExpires: $orderDeliveryTimeExpires, fileTypeModel: $fileTypeModel, orderNote: $orderNote, actionType: $actionType)';
+    return 'OrderModel(requestId: $requestId, buyerId: $buyerId, orderStatus: $orderStatus, orderId: $orderId, orderState: $orderState, sellerId: $sellerId, isPaid: $isPaid, isDispute: $isDispute, isSubmitted: $isSubmitted, isReviewed: $isReviewed, requireExtension: $requireExtension, orderPaymentTime: $orderPaymentTime, orderPaymentExpired: $orderPaymentExpired, orderDeliveryTime: $orderDeliveryTime, releaseFundTime: $releaseFundTime, amount: $amount, orderDeliveryTimeExpires: $orderDeliveryTimeExpires, fileTypeModel: $fileTypeModel, orderNote: $orderNote, actionType: $actionType)';
   }
 
   @override
@@ -477,6 +549,9 @@ class _$_OrderModel implements _OrderModel {
             (identical(other.isSubmitted, isSubmitted) ||
                 const DeepCollectionEquality()
                     .equals(other.isSubmitted, isSubmitted)) &&
+            (identical(other.isReviewed, isReviewed) ||
+                const DeepCollectionEquality()
+                    .equals(other.isReviewed, isReviewed)) &&
             (identical(other.requireExtension, requireExtension) ||
                 const DeepCollectionEquality()
                     .equals(other.requireExtension, requireExtension)) &&
@@ -489,6 +564,9 @@ class _$_OrderModel implements _OrderModel {
             (identical(other.orderDeliveryTime, orderDeliveryTime) ||
                 const DeepCollectionEquality()
                     .equals(other.orderDeliveryTime, orderDeliveryTime)) &&
+            (identical(other.releaseFundTime, releaseFundTime) ||
+                const DeepCollectionEquality()
+                    .equals(other.releaseFundTime, releaseFundTime)) &&
             (identical(other.amount, amount) ||
                 const DeepCollectionEquality().equals(other.amount, amount)) &&
             (identical(
@@ -519,10 +597,12 @@ class _$_OrderModel implements _OrderModel {
       const DeepCollectionEquality().hash(isPaid) ^
       const DeepCollectionEquality().hash(isDispute) ^
       const DeepCollectionEquality().hash(isSubmitted) ^
+      const DeepCollectionEquality().hash(isReviewed) ^
       const DeepCollectionEquality().hash(requireExtension) ^
       const DeepCollectionEquality().hash(orderPaymentTime) ^
       const DeepCollectionEquality().hash(orderPaymentExpired) ^
       const DeepCollectionEquality().hash(orderDeliveryTime) ^
+      const DeepCollectionEquality().hash(releaseFundTime) ^
       const DeepCollectionEquality().hash(amount) ^
       const DeepCollectionEquality().hash(orderDeliveryTimeExpires) ^
       const DeepCollectionEquality().hash(fileTypeModel) ^
@@ -551,12 +631,17 @@ abstract class _OrderModel implements OrderModel {
       required bool isPaid,
       required bool isDispute,
       required bool isSubmitted,
+      bool? isReviewed,
       required bool requireExtension,
-      required DateTime? orderPaymentTime,
+      @JsonKey(name: "orderPaymentTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderPaymentTime,
       required bool? orderPaymentExpired,
-      required DateTime orderDeliveryTime,
-      required num amount,
-      required bool orderDeliveryTimeExpires,
+      @JsonKey(name: "orderDeliveryTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? orderDeliveryTime,
+      @JsonKey(name: "releaseFundTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? releaseFundTime,
+      required num? amount,
+      required bool? orderDeliveryTimeExpires,
       FileTypeModel? fileTypeModel,
       String? orderNote,
       String? actionType}) = _$_OrderModel;
@@ -583,17 +668,33 @@ abstract class _OrderModel implements OrderModel {
   @override
   bool get isSubmitted => throw _privateConstructorUsedError;
   @override
+  bool? get isReviewed => throw _privateConstructorUsedError;
+  @override
   bool get requireExtension => throw _privateConstructorUsedError;
   @override
+  @JsonKey(
+      name: "orderPaymentTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
   DateTime? get orderPaymentTime => throw _privateConstructorUsedError;
   @override
   bool? get orderPaymentExpired => throw _privateConstructorUsedError;
   @override
-  DateTime get orderDeliveryTime => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "orderDeliveryTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  DateTime? get orderDeliveryTime => throw _privateConstructorUsedError;
   @override
-  num get amount => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "releaseFundTime",
+      fromJson: dateTimeFromJson,
+      toJson: dateTimeToJson)
+  DateTime? get releaseFundTime => throw _privateConstructorUsedError;
   @override
-  bool get orderDeliveryTimeExpires => throw _privateConstructorUsedError;
+  num? get amount => throw _privateConstructorUsedError;
+  @override
+  bool? get orderDeliveryTimeExpires => throw _privateConstructorUsedError;
   @override
   FileTypeModel? get fileTypeModel => throw _privateConstructorUsedError;
   @override

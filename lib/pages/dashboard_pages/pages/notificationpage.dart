@@ -23,7 +23,8 @@ class NotificationPage extends HookWidget {
           return Container(
             width: size.width,
             height: size.height,
-            padding: EdgeInsets.symmetric(horizontal: 17),
+            padding: EdgeInsets.only(top: 20),
+            color:Colors.white ,
             child:StreamBuilder<List<NotificationModel>>(
               stream: context.read(userControllerProvider.notifier).getNotifications(context.read(authControllerProvider)!.uid),
               builder: (context,snapshot){

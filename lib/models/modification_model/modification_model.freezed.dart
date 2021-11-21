@@ -26,11 +26,14 @@ class _$ModificationModelTearOff {
       String? amountString,
       required String buyerId,
       required String sellerId,
-      required DateTime createdDate,
+      @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? createdDate,
       required String requestTitle,
       @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
           DateTime? time,
-      required DateTime decisionTime}) {
+      @JsonKey(name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? decisionTime,
+      String? modificationId}) {
     return _ModificationModel(
       reason: reason,
       amount: amount,
@@ -41,6 +44,7 @@ class _$ModificationModelTearOff {
       requestTitle: requestTitle,
       time: time,
       decisionTime: decisionTime,
+      modificationId: modificationId,
     );
   }
 
@@ -59,11 +63,16 @@ mixin _$ModificationModel {
   String? get amountString => throw _privateConstructorUsedError;
   String get buyerId => throw _privateConstructorUsedError;
   String get sellerId => throw _privateConstructorUsedError;
-  DateTime get createdDate => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  DateTime? get createdDate => throw _privateConstructorUsedError;
   String get requestTitle => throw _privateConstructorUsedError;
   @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   DateTime? get time => throw _privateConstructorUsedError;
-  DateTime get decisionTime => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  DateTime? get decisionTime => throw _privateConstructorUsedError;
+  String? get modificationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -82,11 +91,14 @@ abstract class $ModificationModelCopyWith<$Res> {
       String? amountString,
       String buyerId,
       String sellerId,
-      DateTime createdDate,
+      @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? createdDate,
       String requestTitle,
       @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
           DateTime? time,
-      DateTime decisionTime});
+      @JsonKey(name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? decisionTime,
+      String? modificationId});
 }
 
 /// @nodoc
@@ -109,6 +121,7 @@ class _$ModificationModelCopyWithImpl<$Res>
     Object? requestTitle = freezed,
     Object? time = freezed,
     Object? decisionTime = freezed,
+    Object? modificationId = freezed,
   }) {
     return _then(_value.copyWith(
       reason: reason == freezed
@@ -134,7 +147,7 @@ class _$ModificationModelCopyWithImpl<$Res>
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       requestTitle: requestTitle == freezed
           ? _value.requestTitle
           : requestTitle // ignore: cast_nullable_to_non_nullable
@@ -146,7 +159,11 @@ class _$ModificationModelCopyWithImpl<$Res>
       decisionTime: decisionTime == freezed
           ? _value.decisionTime
           : decisionTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      modificationId: modificationId == freezed
+          ? _value.modificationId
+          : modificationId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -164,11 +181,14 @@ abstract class _$ModificationModelCopyWith<$Res>
       String? amountString,
       String buyerId,
       String sellerId,
-      DateTime createdDate,
+      @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? createdDate,
       String requestTitle,
       @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
           DateTime? time,
-      DateTime decisionTime});
+      @JsonKey(name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? decisionTime,
+      String? modificationId});
 }
 
 /// @nodoc
@@ -193,6 +213,7 @@ class __$ModificationModelCopyWithImpl<$Res>
     Object? requestTitle = freezed,
     Object? time = freezed,
     Object? decisionTime = freezed,
+    Object? modificationId = freezed,
   }) {
     return _then(_ModificationModel(
       reason: reason == freezed
@@ -218,7 +239,7 @@ class __$ModificationModelCopyWithImpl<$Res>
       createdDate: createdDate == freezed
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       requestTitle: requestTitle == freezed
           ? _value.requestTitle
           : requestTitle // ignore: cast_nullable_to_non_nullable
@@ -230,7 +251,11 @@ class __$ModificationModelCopyWithImpl<$Res>
       decisionTime: decisionTime == freezed
           ? _value.decisionTime
           : decisionTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
+      modificationId: modificationId == freezed
+          ? _value.modificationId
+          : modificationId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -244,11 +269,14 @@ class _$_ModificationModel implements _ModificationModel {
       this.amountString,
       required this.buyerId,
       required this.sellerId,
-      required this.createdDate,
+      @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          this.createdDate,
       required this.requestTitle,
       @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
           this.time,
-      required this.decisionTime});
+      @JsonKey(name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          this.decisionTime,
+      this.modificationId});
 
   factory _$_ModificationModel.fromJson(Map<String, dynamic> json) =>
       _$_$_ModificationModelFromJson(json);
@@ -264,18 +292,24 @@ class _$_ModificationModel implements _ModificationModel {
   @override
   final String sellerId;
   @override
-  final DateTime createdDate;
+  @JsonKey(
+      name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  final DateTime? createdDate;
   @override
   final String requestTitle;
   @override
   @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   final DateTime? time;
   @override
-  final DateTime decisionTime;
+  @JsonKey(
+      name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  final DateTime? decisionTime;
+  @override
+  final String? modificationId;
 
   @override
   String toString() {
-    return 'ModificationModel(reason: $reason, amount: $amount, amountString: $amountString, buyerId: $buyerId, sellerId: $sellerId, createdDate: $createdDate, requestTitle: $requestTitle, time: $time, decisionTime: $decisionTime)';
+    return 'ModificationModel(reason: $reason, amount: $amount, amountString: $amountString, buyerId: $buyerId, sellerId: $sellerId, createdDate: $createdDate, requestTitle: $requestTitle, time: $time, decisionTime: $decisionTime, modificationId: $modificationId)';
   }
 
   @override
@@ -305,7 +339,10 @@ class _$_ModificationModel implements _ModificationModel {
                 const DeepCollectionEquality().equals(other.time, time)) &&
             (identical(other.decisionTime, decisionTime) ||
                 const DeepCollectionEquality()
-                    .equals(other.decisionTime, decisionTime)));
+                    .equals(other.decisionTime, decisionTime)) &&
+            (identical(other.modificationId, modificationId) ||
+                const DeepCollectionEquality()
+                    .equals(other.modificationId, modificationId)));
   }
 
   @override
@@ -319,7 +356,8 @@ class _$_ModificationModel implements _ModificationModel {
       const DeepCollectionEquality().hash(createdDate) ^
       const DeepCollectionEquality().hash(requestTitle) ^
       const DeepCollectionEquality().hash(time) ^
-      const DeepCollectionEquality().hash(decisionTime);
+      const DeepCollectionEquality().hash(decisionTime) ^
+      const DeepCollectionEquality().hash(modificationId);
 
   @JsonKey(ignore: true)
   @override
@@ -339,11 +377,14 @@ abstract class _ModificationModel implements ModificationModel {
       String? amountString,
       required String buyerId,
       required String sellerId,
-      required DateTime createdDate,
+      @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? createdDate,
       required String requestTitle,
       @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
           DateTime? time,
-      required DateTime decisionTime}) = _$_ModificationModel;
+      @JsonKey(name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+          DateTime? decisionTime,
+      String? modificationId}) = _$_ModificationModel;
 
   factory _ModificationModel.fromJson(Map<String, dynamic> json) =
       _$_ModificationModel.fromJson;
@@ -359,14 +400,20 @@ abstract class _ModificationModel implements ModificationModel {
   @override
   String get sellerId => throw _privateConstructorUsedError;
   @override
-  DateTime get createdDate => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  DateTime? get createdDate => throw _privateConstructorUsedError;
   @override
   String get requestTitle => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: "time", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
   DateTime? get time => throw _privateConstructorUsedError;
   @override
-  DateTime get decisionTime => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: "decisionTime", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+  DateTime? get decisionTime => throw _privateConstructorUsedError;
+  @override
+  String? get modificationId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ModificationModelCopyWith<_ModificationModel> get copyWith =>

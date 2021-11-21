@@ -25,9 +25,7 @@ import 'package:halawork/repositories/user_repository.dart';
 import 'package:halawork/utils/random_number_generator.dart';
 import 'package:halawork/widgets/error_widget.dart';
 import 'offers_sent_detailpage_component/custom_divider.dart';
-import 'package:halawork/utils/random_number_generator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:halawork/datetime_extension/time_of_day.dart';
 import 'package:intl/intl.dart' show DateFormat;
 class OfferSentDetailPage extends StatefulHookWidget {
   final UserModel userModel;
@@ -49,7 +47,9 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
         appBar: AppBar(
           elevation: 5,
           title: Text(
-            widget.userModel.firstName!,
+           widget.userModel.sellerType=="Organization"?
+           "${widget.userModel.orgDetailModel!["firstName"]}":
+           "${widget.userModel.firstName}",
             style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                     color: const Color(0xff3E3E3E),
@@ -99,6 +99,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                             return PayLaterDialog(
                                 orderId: orderId);
                           });
+
                       TimeOfDay t= TimeOfDay.now();
                       final now = new DateTime.now();
                       // DateTime tenMinutesLater = DateTime(now.year, now.month, now.day, t.hour, t.minute);
@@ -146,10 +147,6 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                            await Fluttertoast.showToast(msg: "Order created successfully");
                          }else{
 
-                           //Removing Request from sellers to stop bidding
-                           CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
-                           await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
-
                            final verifyingPaymentProgress = ProgressHUD.of(context);
                            final charge = Charge()
                              ..email = context.read(authControllerProvider)!.email
@@ -170,6 +167,10 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                });
                              }, (r)async{
                                if(r.data.status=="success"){
+                                 //Removing Request from sellers to stop bidding
+                                 CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
+                                 await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
+
                                  OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: widget.offerModel.requestId!, sellerId:widget.offerModel.sellerId!, orderId: orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment:  DateFormat("yyyy-MM-dd").parse(r.data.paid_at), amountPaid: amount.toString(), paymentReference: r.data.reference);
                                  await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, widget.offerModel.requestId!);
                                  verifyingPaymentProgress.dismiss();
@@ -206,9 +207,6 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                            }
                          }
                        }else{
-                         //Removing Request from sellers to stop bidding
-                         CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
-                         await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
 
                          final verifyingPaymentProgress = ProgressHUD.of(context);
                          final charge = Charge()
@@ -230,6 +228,10 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                              });
                            }, (r)async{
                              if(r.data.status=="success"){
+                               //Removing Request from sellers to stop bidding
+                               CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(widget.offerModel.requestId!);
+                               await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, widget.offerModel.requestId!);
+
                                OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: widget.offerModel.requestId!, sellerId:widget.offerModel.sellerId!, orderId: orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment: DateFormat("yyyy-MM-dd").parse(r.data.paid_at), amountPaid: r.data.amount.toString(), paymentReference: r.data.reference);
                                await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, widget.offerModel.requestId!);
                                verifyingPaymentProgress.dismiss();
@@ -279,6 +281,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                           "isSubmitted":false,
                           "requireExtension":false,
                           "isPaid":false,
+                          "amount":amount,
                           "orderPaymentTime":twoDaysTime,
                           "orderPaymentExpired":false,
                           "actionType":"None"

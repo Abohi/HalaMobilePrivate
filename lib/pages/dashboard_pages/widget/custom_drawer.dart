@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/controllers/order_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
@@ -33,13 +34,26 @@ class CustomDrawer extends HookWidget {
                     Container(
                       width: 30,
                       height: 30,
-                      decoration: BoxDecoration(shape: BoxShape.circle,color:const Color(0xff9393FF)),
+                      margin: EdgeInsets.all(10),
+                      child: Center(
+                        child: Text("${userModelState?.userModel.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                            )
+                        ),),
+                      ),
+                      decoration: BoxDecoration(
+                          color: const Color(0xff0000FF),
+                          shape: BoxShape.circle
+                      ),
                     ),
                     SizedBox(
                       width: 11.46,
                     ),
                     Text(
-                      "",
+                     "${userModelState?.userModel.email!.toUpperCase().substring(0,userModelState.userModel.email!.indexOf("@"))}",
                       style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                               fontSize: 16,
@@ -64,7 +78,7 @@ class CustomDrawer extends HookWidget {
                       width: 11.46,
                     ),
                     Text(
-                      "${userModelState.userModel.firstName} ${userModelState.userModel.lastName}",
+                      userModelState.userModel.sellerType=="Organization"?"${userModelState.userModel.orgDetailModel!["firstName"]} ${userModelState.userModel.orgDetailModel!["lastName"]}":"${userModelState.userModel.firstName} ${userModelState.userModel.lastName}",
                       style: GoogleFonts.roboto(
                           textStyle: TextStyle(
                               fontSize: 16,

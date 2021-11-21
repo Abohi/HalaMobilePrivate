@@ -1,7 +1,9 @@
 final String usersCollection="users";
+final String ratingsCollection="ratings";
 final String orderPaymentCollection="order_payment";
 final String serviceCollection="services";
 final String requestCollection="requests";
+final String recentlyVisitedCollection="recently_visited";
 final String activeServiceCollection="active_services";
 final String educationEntryCollection="education";
 final String workEntryCollection="work_history";
@@ -14,6 +16,7 @@ final String offerCollection="offer";
 final String notificationCollection="notifications";
 final String conversationCollection="conversation";
 final String inboxCollection="inbox";
+final String orderInboxCollection="order_inbox";
 final String messageCollection="message";
 final String orderCollection="order";
 final String disputeCollection = "dispute";

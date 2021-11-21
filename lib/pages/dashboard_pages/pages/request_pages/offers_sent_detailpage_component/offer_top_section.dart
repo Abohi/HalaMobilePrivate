@@ -40,7 +40,7 @@ class OfferTopSection extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text( "${userModel.firstName} ${userModel.lastName}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w700,color: const Color(0xff555555))),),
+                  Text(userModel.sellerType=="Organization"?"${userModel.orgDetailModel!["firstName"]} ${userModel.orgDetailModel!["lastName"]}":"${userModel.firstName} ${userModel.lastName}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.w700,color: const Color(0xff555555))),),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,

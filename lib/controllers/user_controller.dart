@@ -88,6 +88,9 @@ class UserController extends StateNotifier<UserModelExtension?> {
   Future<void> uploadMessage(String message,{String? sellerId,String? buyerId,String? receiverId})async{
     await _read(userRepositoryProvider).uploadMessage(message,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
   }
+  Future<void> uploadOrderMessage(String message,{String? sellerId,String? buyerId,String? receiverId})async{
+    await _read(userRepositoryProvider).uploadOrderMessage(message,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+  }
   Future<void>sendOrderModel(Map<String,dynamic> orderModel)async{
     try{
       await _read(userRepositoryProvider).sendOrderModel(orderModel);

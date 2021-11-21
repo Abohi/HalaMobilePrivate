@@ -13,6 +13,7 @@ import 'package:halawork/pages/dashboard_pages/widget/message_btn.dart';
 import 'package:halawork/pages/dashboard_pages/widget/offer_btn.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
+import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:halawork/utils/random_number_generator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:halawork/datetime_extension/time_of_day.dart';
@@ -26,6 +27,7 @@ class OfferBottomSection extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
+    var tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     return Container(
       width: size.width,
       child: Column(
@@ -86,8 +88,9 @@ class OfferBottomSection extends HookWidget {
           ),
           SizedBox(height: 41,),
           MessageBtn(onButtonPressed: (){
-            context.router.navigate(InboxDetailRoute());
+            tabIndexSwitcherState.state = 1;
             buyerSellerIdState.state=[context.read(authControllerProvider)!.uid,offerModel.sellerId!];
+            context.router.navigate(InboxDetailRoute());
           },),
           SizedBox(height: 17,),
           OfferBtn(onButtonPressed: ()async{

@@ -8,6 +8,7 @@ import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
+import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:halawork/providers/state_providers/unreadmessageStateProvider.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,6 +24,7 @@ class ConversationTile extends HookWidget {
     messageCount = conversationModel.messageCount!-conversationModel.userMessageCount!;
     bool shouldShowTimeAgo = useProvider(userControllerProvider)!.userModel.email==conversationModel.recieverEmail;
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
+    var  tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     // WidgetsBinding.instance!
     //     .addPostFrameCallback((_){
     //   buyerSellerIdState.state=[conversationModel.buyerId,conversationModel.sellerId];
@@ -32,6 +34,7 @@ class ConversationTile extends HookWidget {
     return GestureDetector(
       onTap: (){
         buyerSellerIdState.state=[conversationModel.buyerId!,conversationModel.sellerId!];
+        tabIndexSwitcherState.state =0;
         context.router.navigate(InboxDetailRoute());
       },
       child: StreamBuilder<UserModel>(

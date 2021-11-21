@@ -38,9 +38,29 @@ class ByServiceDetailPage extends HookWidget {
                   child:SizedBox(
                     width: 30,
                     height: 30,
-                    child: CircleAvatar(
-                      radius: 28,
-                      backgroundImage: NetworkImage(userModelState!.userModel.profilePictureUrl!),
+                    child: userModelState!.userModel.profilePictureUrl!=null?Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CircleAvatar(
+                        radius: 28,
+                        backgroundImage: NetworkImage(userModelState.userModel.profilePictureUrl!),
+                      ),
+                    ):Container(
+                      width: 30,
+                      height: 30,
+                      margin: EdgeInsets.all(10),
+                      child: Center(
+                        child: Text("${userModelState.userModel.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                            )
+                        ),),
+                      ),
+                      decoration: BoxDecoration(
+                          color: const Color(0xff0000FF),
+                          shape: BoxShape.circle
+                      ),
                     ),
                   ),
                 ),
@@ -53,9 +73,7 @@ class ByServiceDetailPage extends HookWidget {
               SliverToBoxAdapter(child: const SizedBox(height: 20,),),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal:17.0),
-                sliver: SliverList(delegate: SliverChildListDelegate(
-                   userModelState.serviceList!.map((e) => ExpandableServiceTile(activeServiceModel: e)).toList()
-                ),),
+                sliver: ExpandableServiceTile(activeServiceModel: serviceModel),
               )
             ],
           ),

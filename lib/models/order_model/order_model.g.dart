@@ -17,14 +17,15 @@ _$_OrderModel _$_$_OrderModelFromJson(Map<String, dynamic> json) {
     isPaid: json['isPaid'] as bool,
     isDispute: json['isDispute'] as bool,
     isSubmitted: json['isSubmitted'] as bool,
+    isReviewed: json['isReviewed'] as bool?,
     requireExtension: json['requireExtension'] as bool,
-    orderPaymentTime: json['orderPaymentTime'] == null
-        ? null
-        : DateTime.parse(json['orderPaymentTime'] as String),
+    orderPaymentTime: dateTimeFromJson(json['orderPaymentTime'] as Timestamp?),
     orderPaymentExpired: json['orderPaymentExpired'] as bool?,
-    orderDeliveryTime: DateTime.parse(json['orderDeliveryTime'] as String),
-    amount: json['amount'] as num,
-    orderDeliveryTimeExpires: json['orderDeliveryTimeExpires'] as bool,
+    orderDeliveryTime:
+        dateTimeFromJson(json['orderDeliveryTime'] as Timestamp?),
+    releaseFundTime: dateTimeFromJson(json['releaseFundTime'] as Timestamp?),
+    amount: json['amount'] as num?,
+    orderDeliveryTimeExpires: json['orderDeliveryTimeExpires'] as bool?,
     fileTypeModel: json['fileTypeModel'] == null
         ? null
         : FileTypeModel.fromJson(json['fileTypeModel'] as Map<String, dynamic>),
@@ -44,10 +45,12 @@ Map<String, dynamic> _$_$_OrderModelToJson(_$_OrderModel instance) =>
       'isPaid': instance.isPaid,
       'isDispute': instance.isDispute,
       'isSubmitted': instance.isSubmitted,
+      'isReviewed': instance.isReviewed,
       'requireExtension': instance.requireExtension,
-      'orderPaymentTime': instance.orderPaymentTime?.toIso8601String(),
+      'orderPaymentTime': dateTimeToJson(instance.orderPaymentTime),
       'orderPaymentExpired': instance.orderPaymentExpired,
-      'orderDeliveryTime': instance.orderDeliveryTime.toIso8601String(),
+      'orderDeliveryTime': dateTimeToJson(instance.orderDeliveryTime),
+      'releaseFundTime': dateTimeToJson(instance.releaseFundTime),
       'amount': instance.amount,
       'orderDeliveryTimeExpires': instance.orderDeliveryTimeExpires,
       'fileTypeModel': instance.fileTypeModel,

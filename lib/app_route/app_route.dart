@@ -15,8 +15,11 @@ import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_page.dar
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_buyer_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/completed_order_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/ongoin_order_detailpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/pending_order_detail_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/filter_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/home_search_main_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/achievement_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/addlocation_organization_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/education_entry_page.dart';
@@ -31,13 +34,20 @@ import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pag
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/sellersetup_complete_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/work_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/byservice_detail_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/byservice_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/subservice_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/homepage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/inbox_pages/inbox_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/inboxpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notification_pages/notification_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notificationpage.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_skills_page/edit_skill_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_description.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/sevice_pages/edit_service_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/sevice_pages/edit_service_preference_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/profile_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/profile_view_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/offer_sent_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/offer_sent_pages.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/send_offer_page.dart';
@@ -97,6 +107,7 @@ import '../main.dart';
     //Start of order pages
     const AutoRoute(page: PendingOrderDetailPage),
     const AutoRoute(page: OngoingOrderDetailPage),
+    const AutoRoute(page: CompletedOrderDetailPage),
     //End of order pages
     //Notification pages
     const AutoRoute(page: NotificationDetailPage),
@@ -106,7 +117,15 @@ import '../main.dart';
     const AutoRoute(page: InboxDetailPage),
     const AutoRoute(page: ModificationBuyerPage),
     const AutoRoute(page: ModificationDetailPage),
-
+    const AutoRoute(page: EditServicePage),
+    const AutoRoute(page: EditServicePagePreferencePage),
+    const AutoRoute(page:  EditSkillPage),
+    const AutoRoute(page:  ProfileViewPage),
+    const AutoRoute(page:  AddPortfolioPhotoPage),
+    const AutoRoute(page:  AddPortfolioDescriptionPage),
+    const AutoRoute(page:  ByServicePage),
+    const AutoRoute(page:  HomeSearchMainPage),
+    const AutoRoute(page:  FilterPage),
     //End of Inbox pages
     const AutoRoute(
         path: '/dashboard',

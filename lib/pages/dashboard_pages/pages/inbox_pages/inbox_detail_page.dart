@@ -5,11 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/inbox_controller.dart';
+import 'package:halawork/controllers/order_message_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/widget/tab_bar_decorator.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
+import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -23,8 +25,11 @@ class InboxDetailPage extends HookWidget{
   @override
   Widget build(BuildContext context) {
      var _tabController = useTabController(initialLength: 2);
+     var  tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
+     _tabController.animateTo(tabIndexSwitcherState.state);
      var _textEditingController = useTextEditingController();
      var inboxModelState = useProvider(inboxControllerProvider);
+     var orderMessageModelState = useProvider(orderMessageControllerProvider);
      var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
      final String buyerId= buyerSellerIdState.state![0];
      final String sellerId = buyerSellerIdState.state![1];
@@ -123,25 +128,25 @@ class InboxDetailPage extends HookWidget{
                         final InboxModel message = inboxModelState[index];
                        return  ProviderScope(
                           overrides: [currentItem.overrideWithValue(message)],
-                          child: MessageTile(receiverId.value,inboxModelState.length),
+                          child: MessageTile(receiverId.value,inboxModelState.length,0),
                         );
                       },
                     ),
                   ),
                 ),
-                inboxModelState==null?SizedBox.shrink():GestureDetector(
+                orderMessageModelState==null?SizedBox.shrink():GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal:17.0),
                     child: ListView.builder(
                       reverse: true,
                       padding: EdgeInsets.only(top: 15.0),
-                      itemCount: inboxModelState.length,
+                      itemCount: orderMessageModelState.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final InboxModel message = inboxModelState[index];
+                        final InboxModel message = orderMessageModelState[index];
                         return  ProviderScope(
                           overrides: [currentItem.overrideWithValue(message)],
-                          child: MessageTile(receiverId.value,inboxModelState.length),
+                          child: MessageTile(receiverId.value,orderMessageModelState.length,1),
                         );
                       },
                     ),
@@ -155,11 +160,11 @@ class InboxDetailPage extends HookWidget{
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
-        child: _buildMessageComposer(receiverId.value,context,_textEditingController,sellerId,buyerId),
+        child: _buildMessageComposer(receiverId.value,context,_textEditingController,sellerId,buyerId,_tabController),
       ),
     );
   }
-  _buildMessageComposer(String receiverId,BuildContext context,TextEditingController _textEditingController,String sellerId,String buyerId) {
+  _buildMessageComposer(String receiverId,BuildContext context,TextEditingController _textEditingController,String sellerId,String buyerId,TabController _tabController) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 17.0),
       height: 70.0,
@@ -207,7 +212,11 @@ class InboxDetailPage extends HookWidget{
                 onPressed:()async {
                   FocusScope.of(context).unfocus();
                   if(_textEditingController.text.isNotEmpty){
-                    await context.read(userControllerProvider.notifier).uploadMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+                    if(_tabController.index==0){
+                      await context.read(userControllerProvider.notifier).uploadMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+                    }else{
+                      await context.read(userControllerProvider.notifier).uploadOrderMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+                    }
                   }else{
                     await Fluttertoast.showToast(msg: "Field cannot be empty",toastLength: Toast.LENGTH_LONG);
                   }
@@ -248,7 +257,8 @@ class InboxDetailPage extends HookWidget{
 class MessageTile extends HookWidget {
   final String receiverId;
   final int documentLength;
-  const MessageTile(this.receiverId,this.documentLength);
+  final int tabIndex;
+  const MessageTile(this.receiverId,this.documentLength,this.tabIndex);
 
   @override
   Widget build(BuildContext context) {
@@ -309,7 +319,7 @@ class MessageTile extends HookWidget {
       ),
     ):
     FutureBuilder(
-      future:context.read(userRepositoryProvider).updateMessage(item.sellerId!, item.buyerId!, item.messageId!, documentLength),
+      future:context.read(userRepositoryProvider).updateMessage(item.sellerId!, item.buyerId!, item.messageId!, documentLength,tabIndex),
       builder: (context,snapshot){
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,

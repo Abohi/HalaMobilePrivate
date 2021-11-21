@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
+import 'package:halawork/controllers/servicetype_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/user_model/user_model.dart';
@@ -24,7 +25,7 @@ import 'package:pinput/pin_put/pin_put.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 class PhoneVerificationPage extends HookWidget{
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *1;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *5;
   late CountdownTimerController controller;
   late String? phoneNo =null;
   BoxDecoration get _pinPutDecoration {
@@ -199,8 +200,9 @@ class PhoneVerificationPage extends HookWidget{
                               final progress = ProgressHUD.of(context);
                               progress!.showWithText('Verifying phone number...');
                               //verify buyer
-                              await context.read(authControllerProvider.notifier).verifyAsBuyer(UserModel(phoneNumber: "",isPhoneNumberVerified: true,
-                                  isBuyer: true));
+                              UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true);
+                              await context.read(authControllerProvider.notifier).verifyAsBuyer(userModel);
+                              await context.read(serviceTypeControllerProvider.notifier).saveServicesToCollectionRef();
                               progress.dismiss();
                               context.router.replaceAll([DashBoardRoute()]);
 

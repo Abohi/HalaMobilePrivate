@@ -19,6 +19,8 @@ import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/orderpayment/order_payment.dart';
 import 'package:halawork/models/paystack_verify_model/verify_model.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
+import 'package:halawork/models/rating_model/rating_model.dart';
+import 'package:halawork/models/recently_visited_model/recently_visited_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/seller_setup_model/seller_setup_model.dart';
 import 'package:halawork/models/seller_setup_models/achievement_entry_model/achievement_entry_model.dart';
@@ -28,6 +30,7 @@ import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
 import 'package:halawork/providers/general_providers/general_providers.dart';
 import 'package:halawork/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -64,6 +67,8 @@ abstract class BaseUserRepository {
   Future<Either<NetworkFailure,VerifyModel>> verifyTransactionReference(String transactionReference);
   Future<void> addOrderPayment(OrderPaymentModel orderPaymentModel,String requestId);
   Future<void> addUserMap(Map<String,dynamic>userMap);
+  Future<void>uploadPortfolio(PortfolioModel portfolioModel,String userId);
+  Future<void>recentlyVisitedProfiles(String sellerId);
 }
 final userRepositoryProvider =
 Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -161,6 +166,17 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+
+  @override
+  Stream<List<UserModel>> getSearchedSellers(List<String>subservices) {
+    List<String>subservice =[...{...subservices}];
+    try{
+      return _read(firebaseFirestoreProvider).userCollectionRef().where("subServices",arrayContainsAny: subservice).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(documentId: e.id)).toList());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
   @override
   Stream<List<LocationModel>> getLocationModels(String userId) {
     try{
@@ -180,7 +196,24 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
-
+  @override
+  Future<void>uploadPortfolio(PortfolioModel portfolioModel,String userId)async{
+    try{
+      var docId = _read(firebaseFirestoreProvider).portfolioEntryCollectionRef(userId).id;
+      UploadTask storageUploadTask;
+      storageUploadTask =  _read(firebaseStorageProvider)
+          .ref()
+          .child(usersCollection)
+          .child(userId)
+          .child("portfolio_photos")
+          .child(docId)
+          .putFile(File(_read(portfolioStateProvider).state!.path));
+      String photoUrl = await (await storageUploadTask).ref.getDownloadURL();
+      await _read(firebaseFirestoreProvider).portfolioEntryCollectionRef(userId).doc(docId).set(portfolioModel.copyWith(photoUrl:photoUrl),SetOptions(merge: true));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
   @override
   Future<void> completeSellerProfileSetup(SellerSetupModel sellerSetupModel) async{
    try{
@@ -305,6 +338,17 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+  @override
+  Future<void>recentlyVisitedProfiles(String sellerId)async{
+   try{
+     await _read(firebaseFirestoreProvider).recentlyVisitedCollectionRef(_read(authControllerProvider)!.uid).doc(sellerId).set(RecentlyVisitedModel(sellerId: sellerId),SetOptions(merge: true));
+   }on FirebaseAuthException catch (e) {
+     throw CustomException(message: e.message);
+   }
+  }
+  Stream<List<RecentlyVisitedModel>>getRecentlyVisited(){
+    return _read(firebaseFirestoreProvider).recentlyVisitedCollectionRef(_read(authControllerProvider)!.uid).snapshots().map((event) => event.docs.map((e) => e.data()).toList());
+  }
 
   @override
   Stream<List<CreateRequestModel>> getRequests() {
@@ -383,6 +427,15 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+  @override
+  Stream<List<InboxModel>> getOrderMessages(String buyerId,String sellerId){
+    try{
+      return _read(firebaseFirestoreProvider).orderSendCollectionRef(buyerId, sellerId).orderBy("createdAt", descending: true).snapshots().map((event) => event.docs.map((e) => InboxModel.fromJson(e.data(),
+          e.id, e.data()["${_read(authControllerProvider)!.uid}messageCount"]??0)).toList());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
   Stream<List<ConversationModel>> getConversationModel(){
     try{
       return _read(firebaseFirestoreProvider).conversationCollectionRef(_read(authControllerProvider)!.uid).snapshots().map((event) => event.docs.map((e) => ConversationModel.fromJson(e.data(),e.id,e.data()["${_read(authControllerProvider)!.uid}messageCount"]??0)).toList());
@@ -423,10 +476,48 @@ class UserRepository implements BaseUserRepository {
     },SetOptions(merge: true));
   }
 
-  Future<void>updateMessage(String sellerId,String buyerId,String documentId,int documentLength)async{
-    await _read(firebaseFirestoreProvider).inboxSendCollectionRef(buyerId, sellerId).doc(documentId).update({
-      "${_read(authControllerProvider)!.uid}messageCount":documentLength
+  @override
+  Future<void> uploadOrderMessage(String message,{String? sellerId,String? buyerId,String? receiverId}) async {
+    final user = _read(authControllerProvider);
+    DateTime time = DateTime.now();
+    await _read(firebaseFirestoreProvider).orderSendCollectionRef(buyerId!, sellerId!).add({
+      "messageRecepientId":user!.uid,
+      "message":message,
+      "receiverID":receiverId,
+      "buyerId":buyerId,
+      "sellerId":sellerId,
+      "createdAt":time,
     });
+    UserModel usermodel= await getUserModelFuture(receiverId!);
+    print(usermodel.email);
+    await _read(firebaseFirestoreProvider).conversationForBuyerDocumentRef(sellerId, buyerId).set({"buyerId":buyerId,
+      "sellerId":sellerId,
+      "messageCount":FieldValue.increment(1),
+      "${_read(authControllerProvider)!.uid}messageCount":FieldValue.increment(1),
+      "messageRecepientEmail":user.email,
+      "recieverEmail":usermodel.email,
+      "createdAt":time,
+    },SetOptions(merge: true));
+    await _read(firebaseFirestoreProvider).conversationForSellerDocumentRef(sellerId, buyerId).set({
+      "buyerId":buyerId,
+      "sellerId":sellerId,
+      "messageCount":FieldValue.increment(1),
+      "${_read(authControllerProvider)!.uid}messageCount":FieldValue.increment(1),
+      "messageRecepientEmail":user.email,
+      "recieverEmail":usermodel.email,
+      "createdAt":time,
+    },SetOptions(merge: true));
+  }
+  Future<void>updateMessage(String sellerId,String buyerId,String documentId,int documentLength,int tabIndex)async{
+    if(tabIndex==0){
+      await _read(firebaseFirestoreProvider).inboxSendCollectionRef(buyerId, sellerId).doc(documentId).update({
+        "${_read(authControllerProvider)!.uid}messageCount":documentLength
+      });
+    }else{
+      await _read(firebaseFirestoreProvider).orderSendCollectionRef(buyerId, sellerId).doc(documentId).update({
+        "${_read(authControllerProvider)!.uid}messageCount":documentLength
+      });
+    }
     await _read(firebaseFirestoreProvider).conversationForBuyerDocumentRef(sellerId, buyerId).set({"buyerId":buyerId,
       "sellerId":sellerId,
       "${_read(authControllerProvider)!.uid}messageCount":documentLength,
@@ -488,5 +579,20 @@ class UserRepository implements BaseUserRepository {
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
+  }
+
+  //Submitting buyers rating
+  Future<void>submitBuyersRating({required String requestId,required String sellerId,required RatingModel ratingModel,required OrderModel orderModel})async{
+    try{
+      await _read(firebaseFirestoreProvider).ratingDocumentRef(sellerId, requestId).set(ratingModel,SetOptions(merge: true));
+      await _read(firebaseFirestoreProvider).orderDocumentMapRef(requestId).set({
+        "isReviewed":true
+      },SetOptions(merge: true));
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+  Stream<RatingModel>getRating(String sellerId,String requestId){
+    return _read(firebaseFirestoreProvider).ratingDocumentRef(sellerId, requestId).snapshots().map((event) => event.data()!.copyWith(ratingId:event.id));
   }
 }

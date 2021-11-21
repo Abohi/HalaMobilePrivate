@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
@@ -9,6 +10,7 @@ import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/wi
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';
 import 'package:halawork/pages/dashboard_pages/widget/message_btn.dart';
 import 'package:halawork/pages/dashboard_pages/widget/offer_btn.dart';
+import 'package:halawork/utils/locale_currency_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -58,7 +60,6 @@ class ModificationDetailPage extends HookWidget{
                 SizedBox(height: 20,),
                 Container(
                   width: size.width,
-                  height: size.height * 0.25,
                   margin: EdgeInsets.only(bottom: 20),
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(color: const Color(0xffF8F8F8),
@@ -85,7 +86,7 @@ class ModificationDetailPage extends HookWidget{
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                modificationModel.amountString==null?"0":modificationModel.amountString!,
+                                modificationModel.amountString==null?"0":"${LocaleCurrencyUtils.getCurrencySymbol(context)}${modificationModel.amountString!}",
                                 style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                         color: const Color(0xff555555),
@@ -109,7 +110,7 @@ class ModificationDetailPage extends HookWidget{
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                DateFormat("yyyy-MM-dd").format(modificationModel.createdDate),
+                              DateFormat.yMMMMd().format(modificationModel.createdDate!),
                                 style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                         color: const Color(0xff555555),
@@ -155,7 +156,7 @@ class ModificationDetailPage extends HookWidget{
                                 fontWeight: FontWeight.normal)),
                       ),
                       SizedBox(height: 10,),
-                      CountDownTimerPayment(endTime:  modificationModel.decisionTime.difference(DateTime.now()).inSeconds,),
+                      CountDownTimerPayment(endTime:  modificationModel.decisionTime!.millisecondsSinceEpoch,),
                       SizedBox(height: 21,),
                       context.read(userControllerProvider)!.userModel.isSeller?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,6 +170,11 @@ class ModificationDetailPage extends HookWidget{
                                 await context.read(userControllerProvider.notifier).sendOrderModel({
                                   "orderDeliveryTimeExpires":false,
                                   "orderDeliveryTime":modificationModel.time,
+                                  "actionType":"None",
+                                  "orderState":"activated",
+                                  "orderStatus":"ongoing",
+                                  "requestId":modificationModel.modificationId,
+                                  "amount":FieldValue.increment(modificationModel.amount?.toDouble()??0)
                                 });
                                 progress.dismiss();
                                 await Fluttertoast.showToast(msg: "Modification Offer Accepted Successfully",toastLength: Toast.LENGTH_LONG);

@@ -118,7 +118,35 @@ class LoginPage extends HookWidget {
                                 children: <Widget>[
                                   CircularButton(
                                     onButtonPressed: ()async{
+                                      final progress = ProgressHUD.of(context);
+                                      progress!.showWithText('Creating Account...');
+                                      bool? result =  await context.read(authRepositoryProvider).logInWithFacebook();
+                                      if(result!){
+                                        if(context.read(authControllerProvider)!=null){
+                                          FirebaseMessaging _fcm = FirebaseMessaging.instance;
+                                          if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
+                                            String? fcmToken = await _fcm.getToken();
+                                            if(fcmToken!=null){
+                                              await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
+                                              progress.dismiss();
+                                              context.router.navigate(AppEntryRoute());
+                                            }else{
+                                              String? fcmToken = await _fcm.getToken();
+                                              await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
+                                              progress.dismiss();
+                                              context.router.navigate(AppEntryRoute());
+                                            }
 
+                                          }else{
+                                            progress.dismiss();
+                                            context.router.navigate(AppEntryRoute());
+                                          }
+                                        }else{
+                                          progress.dismiss();
+                                        }
+                                      }else{
+                                        progress.dismiss();
+                                      }
                                     },
                                     iconImage:
                                     SvgPicture.asset("assets/images/fb_icon.svg"),

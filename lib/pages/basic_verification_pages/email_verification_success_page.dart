@@ -21,6 +21,7 @@ late NetworkFailure networkFailure;
     var isNetworkError=useState(false);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    final userModelState = useProvider(userControllerProvider);
     return WillPopScope(
       onWillPop: () async{
        return false;
@@ -58,18 +59,22 @@ late NetworkFailure networkFailure;
                           await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
                         },
                       ):CustomButtonSignup(buttonBg: Colors.white, buttonTitle: "Continue", buttonFontColor: const Color(0xff0000FF), onButtonPressed: ()async{
-                        final progress = ProgressHUD.of(context);
-                        progress!.showWithText('Sending phone verification code...');
-                      Either<NetworkFailure,bool> response =  await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
-                      response.fold((l){
-                        progress.dismiss();
-                        isNetworkError.value = true;
-                      }, (r){
-                        if(r){
-                          progress.dismiss();
-                          return context.router.navigate(PhoneVerificationRoute());
-                        }
-                      });
+                          if(userModelState==null){
+                            context.router.navigate(EnterPhoneNumberRoute());
+                          }else{
+                            final progress = ProgressHUD.of(context);
+                            progress!.showWithText('Sending phone verification code...');
+                            Either<NetworkFailure,bool> response =  await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
+                            response.fold((l){
+                              progress.dismiss();
+                              isNetworkError.value = true;
+                            }, (r){
+                              if(r){
+                                progress.dismiss();
+                                return context.router.navigate(PhoneVerificationRoute());
+                              }
+                            });
+                          }
                       }, imageIcon: null,),
                       SizedBox(height: height*0.10,)
                     ],

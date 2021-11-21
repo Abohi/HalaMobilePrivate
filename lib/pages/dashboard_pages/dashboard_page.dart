@@ -35,10 +35,26 @@ class DashBoardPage extends HookWidget {
               onTap: (){
                 scafKey.currentState?.openDrawer();
               },
-              child: Container(
+              child: userModelState.userModel.profilePictureUrl==null?Container(
                 width: 30,
                 height: 30,
-                decoration: BoxDecoration(shape: BoxShape.circle,color:const Color(0xff9393FF)),
+                margin: EdgeInsets.all(10),
+                child: Center(
+                  child: Text("${userModelState.userModel.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold
+                      )
+                  ),),
+                ),
+                decoration: BoxDecoration(
+                    color: const Color(0xff0000FF),
+                    shape: BoxShape.circle
+                ),
+              ):CircleAvatar(
+                radius: 28,
+                backgroundImage: NetworkImage(userModelState.userModel.profilePictureUrl!),
               ),
             ),
               backgroundColor:Colors.white,centerTitle: true,),

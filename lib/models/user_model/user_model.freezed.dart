@@ -49,7 +49,8 @@ class _$UserModelTearOff {
       Map<String, dynamic>? orgDetailModel,
       String? fcmtoken,
       String? email,
-      WalletModel? wallet}) {
+      WalletModel? wallet,
+      String? documentId}) {
     return _UserModel(
       phoneNumber: phoneNumber,
       isPhoneNumberVerified: isPhoneNumberVerified,
@@ -80,6 +81,7 @@ class _$UserModelTearOff {
       fcmtoken: fcmtoken,
       email: email,
       wallet: wallet,
+      documentId: documentId,
     );
   }
 
@@ -123,6 +125,7 @@ mixin _$UserModel {
   String? get fcmtoken => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   WalletModel? get wallet => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -163,7 +166,8 @@ abstract class $UserModelCopyWith<$Res> {
       Map<String, dynamic>? orgDetailModel,
       String? fcmtoken,
       String? email,
-      WalletModel? wallet});
+      WalletModel? wallet,
+      String? documentId});
 
   $UserRatingModelCopyWith<$Res>? get ratings;
   $WalletModelCopyWith<$Res>? get wallet;
@@ -208,6 +212,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? fcmtoken = freezed,
     Object? email = freezed,
     Object? wallet = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_value.copyWith(
       phoneNumber: phoneNumber == freezed
@@ -326,6 +331,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel?,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -387,7 +396,8 @@ abstract class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       Map<String, dynamic>? orgDetailModel,
       String? fcmtoken,
       String? email,
-      WalletModel? wallet});
+      WalletModel? wallet,
+      String? documentId});
 
   @override
   $UserRatingModelCopyWith<$Res>? get ratings;
@@ -435,6 +445,7 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? fcmtoken = freezed,
     Object? email = freezed,
     Object? wallet = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_UserModel(
       phoneNumber: phoneNumber == freezed
@@ -553,6 +564,10 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.wallet
           : wallet // ignore: cast_nullable_to_non_nullable
               as WalletModel?,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -589,7 +604,8 @@ class _$_UserModel implements _UserModel {
       this.orgDetailModel,
       this.fcmtoken,
       this.email,
-      this.wallet});
+      this.wallet,
+      this.documentId});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$_$_UserModelFromJson(json);
@@ -659,10 +675,12 @@ class _$_UserModel implements _UserModel {
   final String? email;
   @override
   final WalletModel? wallet;
+  @override
+  final String? documentId;
 
   @override
   String toString() {
-    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet)';
+    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet, documentId: $documentId)';
   }
 
   @override
@@ -739,7 +757,8 @@ class _$_UserModel implements _UserModel {
             (identical(other.orgDetailModel, orgDetailModel) || const DeepCollectionEquality().equals(other.orgDetailModel, orgDetailModel)) &&
             (identical(other.fcmtoken, fcmtoken) || const DeepCollectionEquality().equals(other.fcmtoken, fcmtoken)) &&
             (identical(other.email, email) || const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.wallet, wallet) || const DeepCollectionEquality().equals(other.wallet, wallet)));
+            (identical(other.wallet, wallet) || const DeepCollectionEquality().equals(other.wallet, wallet)) &&
+            (identical(other.documentId, documentId) || const DeepCollectionEquality().equals(other.documentId, documentId)));
   }
 
   @override
@@ -773,7 +792,8 @@ class _$_UserModel implements _UserModel {
       const DeepCollectionEquality().hash(orgDetailModel) ^
       const DeepCollectionEquality().hash(fcmtoken) ^
       const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(wallet);
+      const DeepCollectionEquality().hash(wallet) ^
+      const DeepCollectionEquality().hash(documentId);
 
   @JsonKey(ignore: true)
   @override
@@ -816,7 +836,8 @@ abstract class _UserModel implements UserModel {
       Map<String, dynamic>? orgDetailModel,
       String? fcmtoken,
       String? email,
-      WalletModel? wallet}) = _$_UserModel;
+      WalletModel? wallet,
+      String? documentId}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -880,6 +901,8 @@ abstract class _UserModel implements UserModel {
   String? get email => throw _privateConstructorUsedError;
   @override
   WalletModel? get wallet => throw _privateConstructorUsedError;
+  @override
+  String? get documentId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserModelCopyWith<_UserModel> get copyWith =>

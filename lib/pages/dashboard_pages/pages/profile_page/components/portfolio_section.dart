@@ -1,11 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
+import 'package:halawork/models/user_model/user_model.dart';
+import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/widgets/skill_chip_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:auto_route/auto_route.dart';
+class PortFolioSection extends HookWidget {
+  final bool isProfileView;
+  final UserModelExtension? userModel;
+  const PortFolioSection({required this.userModel,required this.isProfileView});
 
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    if(isProfileView){
+      return userModel==null?SliverToBoxAdapter(
+        child: Text(""),
+      ):
+      SliverToBoxAdapter(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            userModel!.userModel.isBuyer?SizedBox.shrink():Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Portfolio",
+                  style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                          color: const Color(0xff29283C),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ),
+            userModel!.portfolios!.isEmpty?Text(""):SizedBox(
+              height: 24,
+            ),
+            userModel!.portfolios!.isEmpty?Text(""): Container(
+              height: size.height * 0.4,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      bottom:
+                      BorderSide(color: const Color(0xffACACAC), width: 1))),
+              width: size.width,
+              child:userModel!.portfolios!.isEmpty?Text(""):ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children:userModel!.portfolios!.map((e) => PortfolioItems(
+                    portfolioModel: e,)).toList()
+              ),
+            )
+          ],
+        ),
+      );
+    }else{
+      var userModelState = useProvider(userControllerProvider);
+      return userModelState==null?SliverToBoxAdapter(
+        child: Text(""),
+      ):
+      SliverToBoxAdapter(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            userModelState.userModel.isBuyer?SizedBox.shrink():Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Portfolio",
+                  style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                          color: const Color(0xff29283C),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700)),
+                ),
+                GestureDetector(
+                  onTap: (){
+                      context.router.navigate(AddPortfolioDescriptionRoute());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      "ADD",
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              color: const Color(0xff0000FF),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            userModelState.portfolios!.isEmpty?Text(""):SizedBox(
+              height: 24,
+            ),
+            userModelState.portfolios!.isEmpty?Text(""): Container(
+              height: size.height * 0.4,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                      bottom:
+                      BorderSide(color: const Color(0xffACACAC), width: 1))),
+              width: size.width,
+              child: userModelState.portfolios!.isEmpty?Text(""):ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children:userModelState.portfolios!.map((e) => PortfolioItems(
+                    portfolioModel: e,)).toList()
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+  }
+}
 
 class PortfolioItems extends StatelessWidget {
   final PortfolioModel portfolioModel;
@@ -102,74 +222,5 @@ class PortfolioItems extends StatelessWidget {
 
   List<Widget>getSkillsItems({required List<String> skills}){
     return skills.map((e) => SkillItemChip(name: e)).toList();
-  }
-}
-
-class PortFolioSection extends HookWidget {
-  const PortFolioSection();
-
-  @override
-  Widget build(BuildContext context) {
-    var userModelState = useProvider(userControllerProvider);
-    var size = MediaQuery.of(context).size;
-    return userModelState==null?SliverToBoxAdapter(
-      child: Text(""),
-    ):
-    SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          userModelState.userModel.isBuyer?SizedBox.shrink():Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Portfolio",
-                style: GoogleFonts.roboto(
-                    textStyle: TextStyle(
-                        color: const Color(0xff29283C),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700)),
-              ),
-              GestureDetector(
-                onTap: (){
-
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "ADD",
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                            color: const Color(0xff0000FF),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          userModelState.portfolios!.isEmpty?Text(""):SizedBox(
-            height: 24,
-          ),
-          userModelState.portfolios!.isEmpty?Text(""): Container(
-            height: size.height * 0.4,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                    bottom:
-                    BorderSide(color: const Color(0xffACACAC), width: 1))),
-            width: size.width,
-            child: userModelState.portfolios!.isEmpty?Text(""):ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children:userModelState.portfolios!.map((e) => PortfolioItems(
-                  portfolioModel: e,)).toList()
-            ),
-          )
-        ],
-      ),
-    );
   }
 }

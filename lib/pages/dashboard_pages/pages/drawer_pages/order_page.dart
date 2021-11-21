@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/order_controller.dart';
 import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/widgets/order_tile.dart';
 import 'package:halawork/pages/dashboard_pages/widget/tab_bar_decorator.dart';
+import 'package:halawork/repositories/order_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -16,6 +18,7 @@ class OrderPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var tabController = useTabController(initialLength: 3);
+    var orderState = useProvider(orderControllerProvider);
     var size = MediaQuery.of(context).size;
     return SafeArea(child: Scaffold(
     appBar: AppBar(
@@ -41,80 +44,91 @@ class OrderPage extends HookWidget {
         },
       ),
     ),
-        body: Container(
-      width: size.width,
-      height: size.height,
-      child: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-              titleSpacing: 0,
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              toolbarHeight: 0,
-              backgroundColor: const Color(0xffF8F8F8),
-              pinned: true,
-              centerTitle: false,
-              bottom: DecoratedTabBar(tabBar: _getTabBar(tabController), decoration: BoxDecoration(border:  Border(
-                bottom: BorderSide(
-                  color: const Color(0xffF8F8F8),
-                  width: 4.0,
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+                titleSpacing: 0,
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 0,
+                backgroundColor: const Color(0xffF8F8F8),
+                pinned: true,
+                centerTitle: false,
+                bottom: DecoratedTabBar(tabBar: _getTabBar(tabController), decoration: BoxDecoration(border:  Border(
+                  bottom: BorderSide(
+                    color: const Color(0xffF8F8F8),
+                    width: 4.0,
+                  ),
+                )))
+            ),
+            // StreamBuilder<List<OrderModel>>(
+            // stream: context.read(orderRepositoryProvider).orderStream(),
+            //     builder: (context,snapshot){
+            //   if(snapshot.hasData){
+            //     return SliverList(
+            //       delegate: SliverChildListDelegate(
+            //         snapshot.data!.map((e) => Text(e.orderStatus)).toList()
+            //       ),
+            //     );
+            //   }else{
+            //     return SliverToBoxAdapter(
+            //       child: Text("empty"),
+            //     );
+            //   }
+            // })
+            SliverFillRemaining(
+              child: _getTabBarView(<Widget>[
+                context.read(orderControllerProvider.notifier).fetchByOrderType("completed")==null?Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("No order available yet")
+                  ],
+                ):
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:17.0),
+                  child: ListView.builder(itemBuilder: (context,index){
+                    return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index],onButtonPressed: (){
+                      context.router.navigate(CompletedOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index]));
+                    },);
+                  },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")?.length,),
                 ),
-              )))
-          ),
-          SliverFillRemaining(
-            child: _getTabBarView(<Widget>[
-              context.read(orderControllerProvider.notifier).fetchByOrderType("completed")==null?Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("No order available yet")
-                ],
-              ):
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:17.0),
-                child: ListView.builder(itemBuilder: (context,index){
-                  return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index],onButtonPressed: (){
 
-                  },);
-                },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")?.length,),
-              ),
+                context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")==null?Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("No order available yet")
+                  ],
+                ):
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:17.0),
+                  child: ListView.builder(itemBuilder: (context,index){
+                    return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index],onButtonPressed: (){
+                      context.router.navigate(OngoingOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index]));
+                    },);
+                  },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")?.length,),
+                ),
 
-              context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")==null?Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("No order available yet")
-                ],
-              ):
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:17.0),
-                child: ListView.builder(itemBuilder: (context,index){
-                  return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index],onButtonPressed: (){
-
-                  },);
-                },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")?.length,),
-              ),
-
-              context.read(orderControllerProvider.notifier).fetchByOrderType("pending")==null?Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("No order available yet")
-                ],
-              ):
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:17.0),
-                child: ListView.builder(itemBuilder: (context,index){
-                  return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index],onButtonPressed: (){
-
-                  },);
-                },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")?.length,),
-              ),
-            ],tabController),
-          )
-        ],
-      ),
-    )));
+                context.read(orderControllerProvider.notifier).fetchByOrderType("pending")==null?Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("No order available yet")
+                  ],
+                ):
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:17.0),
+                  child: ListView.builder(itemBuilder: (context,index){
+                    return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index],onButtonPressed: (){
+                      context.router.navigate(PendingOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index]));
+                    },);
+                  },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")?.length,),
+                ),
+              ],tabController),
+            )
+          ],
+        )));
   }
 
   //tabs widget
@@ -142,3 +156,8 @@ class OrderPage extends HookWidget {
     );
   }
 }
+
+
+
+
+

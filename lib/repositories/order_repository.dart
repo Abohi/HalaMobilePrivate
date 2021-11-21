@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
@@ -36,7 +37,9 @@ class OrderRepository implements BaseOrderRepository {
   @override
   Stream<List<OrderModel>> orderStream() {
     try{
-      return _read(firebaseFirestoreProvider).orderCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data()).toList());
+      return _read(firebaseFirestoreProvider).orderCollectionRef().snapshots().map((event) =>
+          event.docs.map((e) =>
+              e.data()).toList());
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -115,8 +118,15 @@ class OrderRepository implements BaseOrderRepository {
       contentType: '$fileType/$_extension',
     ));
     String fileUrl = await (await storageUploadTask).ref.getDownloadURL();
+    TimeOfDay t= TimeOfDay.now();
+    final now = new DateTime.now();
+    DateTime twoDaysTime = DateTime(now.year, now.month, now.day+2, t.hour, t.minute);
+    // DateTime twoDaysTime = DateTime(now.year, now.month, now.day, t.hour, t.minute+2);
    await _read(firebaseFirestoreProvider).orderDocumentMapRef(requestId).set({
       "isSubmitted":true,
+     "orderDeliveryTimeExpires":false,
+     "releaseFundTime":twoDaysTime,
+     "orderDeliveryTime":null,
       "orderNote":text,
       "fileTypeModel":{
         "fileRef":fileUrl,
@@ -162,6 +172,6 @@ class OrderRepository implements BaseOrderRepository {
     },SetOptions(merge: true));
   }
   Stream<List<ModificationModel>>getModifications(){
-    return _read(firebaseFirestoreProvider).modificationCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data()).toList());
+    return _read(firebaseFirestoreProvider).modificationCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data().copyWith(modificationId: e.id)).toList());
   }
 }

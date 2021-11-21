@@ -249,10 +249,10 @@ class SendOfferPage extends HookWidget {
                                 final progress = ProgressHUD.of(context);
                                 progress!.showWithText('Sending Offer...');
                                 int mintues=0;
-                                if(durationDate.value!.minute==30){
-                                  mintues = 30;
+                                if(durationDate.value!.minute.isEven){
+                                  mintues = durationDate.value!.minute;
                                 }else{
-                                  mintues = 30;
+                                  mintues = durationDate.value!.minute+1;
                                 }
                                 DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day, durationDate.value!.hour,mintues);
                                 String requestId= createRequestModel2.requestId!;

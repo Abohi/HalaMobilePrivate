@@ -27,7 +27,7 @@ class ModificationPage extends HookWidget {
                   fontWeight: FontWeight.w700)),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor:  const Color(0xffF8F8F8),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -43,13 +43,14 @@ class ModificationPage extends HookWidget {
       body: Container(
         width: size.width,
         height: size.height,
+
         padding: EdgeInsets.symmetric(horizontal: 17),
         child: StreamBuilder<List<ModificationModel>>(
           stream:context.read(orderRepositoryProvider).getModifications(),
           builder: (context,snapshot){
             if(snapshot.hasData){
               return  ListView(
-                children:snapshot.data!.map((e) => ModificationTile(title: e.requestTitle, date: DateFormat("yyyy-MM-dd").format(e.createdDate), onButtonPressed: (){
+                children:snapshot.data!.map((e) => ModificationTile(title: e.requestTitle, date: "Created: ${DateFormat.yMMMMd().format(e.createdDate!)}", onButtonPressed: (){
                   context.router.navigate(ModificationDetailRoute(modificationModel: e));
                 })).toList(),
               );

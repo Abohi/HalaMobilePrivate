@@ -32,7 +32,7 @@ class SelectServiceTypePage extends HookWidget {
             child: WillPopScope(
               onWillPop: ()async{
                 context.popRoute();
-                return false;
+                return true;
               },
               child: Container(
                 width: size.width,
@@ -289,7 +289,7 @@ class SelectServiceTypePage extends HookWidget {
               ),
             ),
           )),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Scaffold(body: Container(child: Center(child: CircularProgressIndicator(backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff0000FF)),)))),
       error: (error, _) => Center(
         child: FirebaseErrorWidget(
           message:

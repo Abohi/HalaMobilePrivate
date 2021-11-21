@@ -12,7 +12,7 @@ class ServiceTypeController extends StateNotifier<AsyncValue<ServiceTypeModel>> 
 
 
   ServiceTypeController(this._read) : super(AsyncValue.loading()) {
-    retrieveServiceType();
+    retrieveServiceType(isRefreshing:true);
   }
 
   Future<void> retrieveServiceType({bool isRefreshing = false}) async {

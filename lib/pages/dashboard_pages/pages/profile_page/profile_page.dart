@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/pages/auth_pages/login_widget/custom_login_divider.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/achievement_section.dart';
@@ -61,13 +62,13 @@ class ProfilePage extends HookWidget{
                  padding: EdgeInsets.only(left: 17,right:17),
                  width: size.width,
                  color: const Color(0xffEBEBFF),
-                 child: ProfilePhotoSection(),
+                 child: ProfilePhotoSection(isProfileView: false, userModel: null,),
                ),
                Container(
                  padding: EdgeInsets.only(left: 17,right:17,bottom: 44),
                  width: size.width,
                  color: const Color(0xffEBEBFF),
-                 child: const ProfilePresenceSection(),
+                 child: const ProfilePresenceSection(userModel: null, isProfileView: false,),
                )
              ]),
            ),
@@ -89,34 +90,34 @@ class ProfilePage extends HookWidget{
                         padding: EdgeInsets.only(left: 17,right:17,top: 40),
                         child: CustomScrollView(
                           slivers: [
-                            SliverToBoxAdapter(child: const DescriptionSection()),
-                            const ServiceSection(),
-                            userModelState!.userModel.subServices==null ||userModelState.userModel.subServices!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):const SubServiceSection(),
+                            SliverToBoxAdapter(child: const DescriptionSection(isProfileView: false, userModel: null,)),
+                            const ServiceSection(isProfileView: false, userModel: null,),
+                            userModelState!.userModel.subServices==null ||userModelState.userModel.subServices!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):SubServiceSection(userModel: null, isProfileView: false,),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Skills", rightHeaderTitle: "EDIT", voidButtonPressed: (){
-
+                              context.router.navigate(EditSkillRoute());
                             }),
-                            userModelState.userModel.skills==null ||userModelState.userModel.skills!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):const SkillsSection(),
+                            userModelState.userModel.skills==null ||userModelState.userModel.skills!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()): SkillsSection(userModel: null, isProfileView: false,),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()): CustomSliverDivider(),
-                            const PortFolioSection(),
+                           PortFolioSection(isProfileView: false, userModel: null,),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverDivider(),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Work History", rightHeaderTitle: "ADD", voidButtonPressed: (){
                             }),
-                            userModelState.workEntrieModels==null ||userModelState.workEntrieModels!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):const WorkSection(),
+                            userModelState.workEntrieModels==null ||userModelState.workEntrieModels!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()): WorkSection(isProfileView: false, userModel: null,),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverDivider(),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Achievement", rightHeaderTitle: "ADD", voidButtonPressed: (){
                             }),
-                            userModelState.achievementModels==null ||userModelState.achievementModels!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):const AchievementSection(),
+                            userModelState.achievementModels==null ||userModelState.achievementModels!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):AchievementSection(userModel: null, isProfileView: false,),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverDivider(),
                             userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Education", rightHeaderTitle: "ADD", voidButtonPressed: (){
                             }),
                             userModelState.educationModels==null ||userModelState.educationModels!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):
-                            const EducationSection()
+                          EducationSection(isProfileView: false, userModel: null,)
                           ],
                         ),
                       ),
                       Positioned(
                         top: 0,
-                        child:ToggleAsSeller(),
+                        child:ToggleAsSeller(isProfileView: false, userModel: null,),
                       )
                     ],
                   ),

@@ -22,11 +22,14 @@ import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/widgets/order_countdown_timer.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/widgets/payment_expires_dialog.dart';
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';
+import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
+import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:halawork/repositories/order_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:halawork/widgets/error_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:intl/intl.dart' show DateFormat;
 class PendingOrderDetailPage extends HookWidget {
   final OrderModel orderModel;
@@ -37,6 +40,8 @@ class PendingOrderDetailPage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var userModelState = useProvider(userControllerProvider);
+    var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
+    var tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -56,219 +61,224 @@ class PendingOrderDetailPage extends HookWidget {
               size: 24,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              context.popRoute();
             },
           ),
         ),
-        body: Container(
-            width: size.width,
-            height: size.height,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 17),
-              child: StreamBuilder<CreateRequestModel?>(
-                stream: context
-                    .read(userRepositoryProvider)
-                    .getRequestStream(orderModel.requestId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        orderModel.orderPaymentExpired!
-                            ? const SizedBox(
+        body: ProgressHUD(
+          backgroundColor:const Color(0xff0000FF),
+          indicatorColor: Colors.white,
+          child: Builder(
+            builder: (context){
+              return Container(
+                  width: size.width,
+                  height: size.height,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 17),
+                    child: StreamBuilder<CreateRequestModel?>(
+                      stream: context
+                          .read(userRepositoryProvider)
+                          .getRequestStream(orderModel.requestId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              orderModel.orderPaymentExpired!
+                                  ? const SizedBox(
                                 height: 25,
                               )
-                            : Text(""),
-                        orderModel.orderPaymentExpired!
-                            ? PaymentExpirationDialog(
+                                  : Text(""),
+                              orderModel.orderPaymentExpired!
+                                  ? PaymentExpirationDialog(
                                 onMessageSeller: () {
-                                  //Order Message
+                                  buyerSellerIdState.state=[orderModel.buyerId,orderModel.sellerId];
+                                  tabIndexSwitcherState.state = 1;
+                                  context.router.navigate(InboxDetailRoute());
                                 },
                                 onDonotMessageSeller: () async {
                                   context
                                       .read(orderRepositoryProvider)
                                       .deleteOfferAndOrder(
-                                          orderModel.sellerId,
-                                          orderModel.requestId,
-                                          orderModel.buyerId);
+                                      orderModel.sellerId,
+                                      orderModel.requestId,
+                                      orderModel.buyerId);
                                   await Fluttertoast.showToast(
                                       msg: "Order deleted Successfully",
                                       toastLength: Toast.LENGTH_LONG);
                                 },
                               )
-                            : Text(""),
-                        Container(
-                          width: size.width,
-                          height: size.height * 0.25,
-                          margin: EdgeInsets.only(bottom: 20),
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                              color: const Color(0xffF8F8F8),
-                              borderRadius: BorderRadius.circular(4)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 10,
+                                  : Text(""),
+                              Container(
+                                width: size.width,
+                                height: size.height * 0.25,
+                                margin: EdgeInsets.only(bottom: 20),
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffF8F8F8),
+                                    borderRadius: BorderRadius.circular(4)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      snapshot.data!.title,
+                                      style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              color: const Color(0xff555555),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700)),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data!.budget,
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff555555),
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w700)),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Text(
+                                              "Budget",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff7C7C7C),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.normal)),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              snapshot.data!.state,
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff555555),
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w700)),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Text(
+                                              "State",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff7C7C7C),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.normal)),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Created: ${DateFormat.yMMMMd().format(DateFormat("yyyy-MM-dd").parse(snapshot.data!.date))}",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff555555),
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w700)),
+                                            ),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            Text(
+                                              "date",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      color: const Color(0xff7C7C7C),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.normal)),
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 21,
+                                    ),
+                                    Consumer(
+                                      builder: (BuildContext context,
+                                          T Function<T>(ProviderBase<Object?, T>)
+                                          watch,
+                                          Widget? child) {
+                                        var firstHalfState =
+                                            watch(firstHalfStateProvider).state;
+                                        var secondHalfState =
+                                            watch(secondHalfStateProvider).state;
+                                        if (snapshot.data!.description.length > 200) {
+                                          firstHalfState = snapshot.data!.description
+                                              .substring(0, 200);
+                                          secondHalfState = snapshot.data!.description
+                                              .substring(200,
+                                              snapshot.data!.description.length);
+                                        } else {
+                                          firstHalfState = snapshot.data!.description;
+                                          secondHalfState = "";
+                                        }
+                                        return ExpandableTextView(
+                                            textColor: const Color(0xff7C7C7C),
+                                            textSize: 14);
+                                      },
+                                    )
+                                  ],
+                                ),
                               ),
-                              Text(
-                                snapshot.data!.title,
-                                style: GoogleFonts.roboto(
-                                    textStyle: TextStyle(
-                                        color: const Color(0xff555555),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700)),
-                              ),
-                              SizedBox(
-                                height: 16,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.budget,
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff555555),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700)),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        "Budget",
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff7C7C7C),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal)),
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    height: 7,
                                   ),
-                                  Spacer(),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.state,
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff555555),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700)),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        "State",
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff7C7C7C),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal)),
-                                      ),
-                                    ],
+                                  Text(
+                                    "Expected time of Payment",
+                                    style: GoogleFonts.roboto(
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xff29283C))),
                                   ),
-                                  Spacer(),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.date,
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff555555),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700)),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        "date",
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff7C7C7C),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal)),
-                                      ),
-                                    ],
+                                  SizedBox(
+                                    height: 20,
                                   ),
-                                  Spacer(),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 21,
-                              ),
-                              Consumer(
-                                builder: (BuildContext context,
-                                    T Function<T>(ProviderBase<Object?, T>)
-                                        watch,
-                                    Widget? child) {
-                                  var firstHalfState =
-                                      watch(firstHalfStateProvider).state;
-                                  var secondHalfState =
-                                      watch(secondHalfStateProvider).state;
-                                  if (snapshot.data!.description.length > 200) {
-                                    firstHalfState = snapshot.data!.description
-                                        .substring(0, 200);
-                                    secondHalfState = snapshot.data!.description
-                                        .substring(200,
-                                            snapshot.data!.description.length);
-                                  } else {
-                                    firstHalfState = snapshot.data!.description;
-                                    secondHalfState = "";
-                                  }
-                                  return ExpandableTextView(
-                                      textColor: const Color(0xff7C7C7C),
-                                      textSize: 14);
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 7,
-                            ),
-                            Text(
-                              "Expected time of Payment",
-                              style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color(0xff29283C))),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            CountDownTimerPayment(
-                              endTime: orderModel.orderPaymentTime!
-                                  .difference(DateTime.now())
-                                  .inSeconds,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            userModelState!.userModel.isSeller
-                                ? SizedBox.shrink()
-                                : CustomButtonSignup(
+                                  CountDownTimerPayment(
+                                    endTime: orderModel.orderPaymentTime!.millisecondsSinceEpoch,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  userModelState!.userModel.isSeller
+                                      ? SizedBox.shrink()
+                                      : CustomButtonSignup(
                                     buttonBg: const Color(0xff0000FF),
                                     buttonTitle: "PAY FOR ORDER",
                                     buttonFontColor: Colors.white,
@@ -276,14 +286,14 @@ class PendingOrderDetailPage extends HookWidget {
                                       OfferModel? offerModel =  await context.read(userRepositoryProvider).getOffer(orderModel.buyerId, orderModel.sellerId, orderModel.requestId);
                                       if(userModelState.userModel.wallet!=null){
                                         num balance = userModelState.userModel.wallet!.creditBalance-userModelState.userModel.wallet!.debitBalance;
-                                        if(balance.toDouble()>orderModel.amount.toDouble()){
+                                        if(balance.toDouble()>orderModel.amount!.toDouble()){
                                           final paymentProgress = ProgressHUD.of(context);
                                           paymentProgress!.showWithText('Creating Order For Request...');
                                           String reference = 'ref_${DateTime.now().millisecondsSinceEpoch}';
                                           DateTime paidAt = DateTime.now();
                                           await context.read(userRepositoryProvider).addUserMap({
                                             "wallet":{
-                                              "debitBalance":FieldValue.increment(orderModel.amount.toInt())
+                                              "debitBalance":FieldValue.increment(orderModel.amount!.toInt())
                                             }
                                           });
 
@@ -305,7 +315,7 @@ class PendingOrderDetailPage extends HookWidget {
                                             "requireExtension":false,
                                             "isPaid":true,
                                             "orderDeliveryTime":offerModel!.dateOfDelivery,
-                                            "amount":orderModel.amount.toInt(),
+                                            "amount":orderModel.amount!.toInt(),
                                             "orderDeliveryTimeExpires":false,
                                             "orderPaymentExpired":false,
                                             "actionType":"None"
@@ -313,14 +323,10 @@ class PendingOrderDetailPage extends HookWidget {
                                           paymentProgress.dismiss();
                                           await Fluttertoast.showToast(msg: "Order created successfully");
                                         }else{
-                                          //Removing Request from sellers to stop bidding
-                                          CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
-                                          await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, orderModel.requestId);
-
                                           final verifyingPaymentProgress = ProgressHUD.of(context);
                                           final charge = Charge()
                                             ..email = context.read(authControllerProvider)!.email
-                                            ..amount = orderModel.amount.toInt()*100
+                                            ..amount = orderModel.amount!.toInt()*100
                                             ..reference = 'ref_${DateTime.now().millisecondsSinceEpoch}';
                                           final res =
                                           await PaystackClient.checkout(context, charge: charge);
@@ -337,6 +343,10 @@ class PendingOrderDetailPage extends HookWidget {
                                               });
                                             }, (r)async{
                                               if(r.data.status=="success"){
+                                                //Removing Request from sellers to stop bidding
+                                                CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
+                                                await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, orderModel.requestId);
+
                                                 OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: orderModel.requestId, sellerId:orderModel.sellerId, orderId: orderModel.orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment:  DateFormat("yyyy-MM-dd").parse(r.data.paid_at), amountPaid: orderModel.amount.toString(), paymentReference: r.data.reference);
                                                 await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, orderModel.requestId);
                                                 verifyingPaymentProgress.dismiss();
@@ -355,7 +365,7 @@ class PendingOrderDetailPage extends HookWidget {
                                                   "requireExtension":false,
                                                   "isPaid":true,
                                                   "orderDeliveryTime":offerModel!.dateOfDelivery,
-                                                  "amount":orderModel.amount.toInt(),
+                                                  "amount":orderModel.amount!.toInt(),
                                                   "orderDeliveryTimeExpires":false,
                                                   "orderPaymentExpired":false,
                                                   "actionType":"None"
@@ -373,14 +383,11 @@ class PendingOrderDetailPage extends HookWidget {
                                           }
                                         }
                                       }else{
-                                        //Removing Request from sellers to stop bidding
-                                        CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
-                                        await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, orderModel.requestId);
 
                                         final verifyingPaymentProgress = ProgressHUD.of(context);
                                         final charge = Charge()
                                           ..email = context.read(authControllerProvider)!.email
-                                          ..amount = orderModel.amount.toInt()*100
+                                          ..amount = orderModel.amount!.toInt()*100
                                           ..reference = 'ref_${DateTime.now().millisecondsSinceEpoch}';
                                         final res =
                                         await PaystackClient.checkout(context, charge: charge);
@@ -397,6 +404,10 @@ class PendingOrderDetailPage extends HookWidget {
                                             });
                                           }, (r)async{
                                             if(r.data.status=="success"){
+                                              //Removing Request from sellers to stop bidding
+                                              CreateRequestModel? createRequestModel = await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
+                                              await context.read(userRepositoryProvider).updateRequestStatus(createRequestModel!, orderModel.requestId);
+
                                               OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: orderModel.requestId, sellerId:orderModel.sellerId, orderId: orderModel.orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment:  DateFormat("yyyy-MM-dd").parse(r.data.paid_at), amountPaid: orderModel.amount.toString(), paymentReference: r.data.reference);
                                               await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, orderModel.requestId);
                                               verifyingPaymentProgress.dismiss();
@@ -416,7 +427,7 @@ class PendingOrderDetailPage extends HookWidget {
                                                 "requireExtension":false,
                                                 "isPaid":true,
                                                 "orderDeliveryTime":offerModel!.dateOfDelivery,
-                                                "amount":orderModel.amount.toInt(),
+                                                "amount":orderModel.amount!.toInt(),
                                                 "orderDeliveryTimeExpires":false,
                                                 "orderPaymentExpired":false,
                                                 "actionType":"None"
@@ -437,33 +448,36 @@ class PendingOrderDetailPage extends HookWidget {
                                     },
                                     imageIcon: null,
                                   )
-                          ],
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                            child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              const Color(0xff0000FF)),
-                        )),
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [Text("No Pending Orders")],
-                    );
-                  }
-                },
-              ),
-            )));
+                                ],
+                              ),
+                            ],
+                          );
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        const Color(0xff0000FF)),
+                                  )),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [Text("No Pending Orders")],
+                          );
+                        }
+                      },
+                    ),
+                  ));
+            },
+          ),
+        ));
   }
 }
