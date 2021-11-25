@@ -8,6 +8,7 @@ import 'package:halawork/models/location_model/location_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/addlocation_organization_entry_page.dart';
+import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -15,7 +16,8 @@ import 'package:intl/intl.dart' show DateFormat;
 class ProfilePresenceSection extends HookWidget {
   final bool isProfileView;
   final UserModelExtension? userModel;
-  const ProfilePresenceSection({required this.isProfileView,required this.userModel});
+  final Function(bool isVisibility) updateNationalAvailability;
+  const ProfilePresenceSection({required this.isProfileView,required this.userModel,required this.updateNationalAvailability});
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +138,7 @@ class ProfilePresenceSection extends HookWidget {
                     TextStyle(color: const Color(0xff29283C), fontSize: 12)),
               ),
               Switch(
-                value: false,
+                value: userModel!.userModel.isActiveService!,
                 onChanged: (value) async{
 
                 },
@@ -281,9 +283,9 @@ class ProfilePresenceSection extends HookWidget {
                     TextStyle(color: const Color(0xff29283C), fontSize: 12)),
               ),
               Switch(
-                value: false,
+                value: userModelState.userModel.isActiveService!,
                 onChanged: (value) async{
-
+                  updateNationalAvailability(value);
                 },
                 activeTrackColor: Colors.white,
                 activeColor: const Color(0xff5A5AFC),

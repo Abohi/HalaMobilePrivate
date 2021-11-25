@@ -200,7 +200,7 @@ class PhoneVerificationPage extends HookWidget{
                               final progress = ProgressHUD.of(context);
                               progress!.showWithText('Verifying phone number...');
                               //verify buyer
-                              UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true);
+                              UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true,email: context.read(authControllerProvider)!.email);
                               await context.read(authControllerProvider.notifier).verifyAsBuyer(userModel);
                               await context.read(serviceTypeControllerProvider.notifier).saveServicesToCollectionRef();
                               progress.dismiss();

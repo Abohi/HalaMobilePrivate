@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-class CompleteSellerProfile extends StatelessWidget {
+import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/models/user_model/user_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+class CompleteSellerProfile extends HookWidget {
+  final Function onDismissedClicked;
 
-  const CompleteSellerProfile();
+  const CompleteSellerProfile({required this.onDismissedClicked});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var userModelState = useProvider(userControllerProvider);
     return SliverAppBar(
       titleSpacing: 0,
       elevation: 0,
@@ -42,13 +48,18 @@ class CompleteSellerProfile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Spacer(),
-                Text(
-                  "DISMISS",
-                  style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xff0000FF))),
+                (userModelState!.userModel.isSeller==false)&&(userModelState.userModel.isDismissCompleteProfile==true)?SizedBox.shrink():GestureDetector(
+                  onTap: (){
+                   onDismissedClicked();
+                  },
+                  child: Text(
+                    "DISMISS",
+                    style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff0000FF))),
+                  ),
                 ),
                 SizedBox(
                   width: 20,

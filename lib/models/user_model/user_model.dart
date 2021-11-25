@@ -15,7 +15,7 @@ class UserModel with _$UserModel{
     String?service,String? serviceIcon,bool? isServiceDefault,List<String>?subServices,
   String?expertiseLevel,String? profilePictureUrl,
     String?profileDescriptionTitle,String?profileDescription,DateTime? joined,@Default(0.0) double completedOrders,@Default(0.0) double uncompletedOrders,@Default(0.0) double totalOrders,
-  @Default("Available to work")String?available,UserRatingModel?ratings,Map<String,dynamic>? orgDetailModel,String? fcmtoken,String? email, WalletModel? wallet,String?documentId})=_UserModel;
+  @Default("Available to work")String?available,UserRatingModel?ratings,Map<String,dynamic>? orgDetailModel,String? fcmtoken,String? email, WalletModel? wallet,String?documentId,@Default(false) bool isDismissCompleteProfile,List<String>?states,bool? isActiveService})=_UserModel;
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 }

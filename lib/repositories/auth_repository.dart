@@ -75,7 +75,9 @@ class AuthRepository implements BaseAuthRepository {
       UserCredential userCredential = await _read.read(firebaseAuthProvider).createUserWithEmailAndPassword(email: payload["email"]!, password:payload["password"]! );
       if(userCredential.user!=null){
         await userCredential.user!.sendEmailVerification();
-        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]! ));
+        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]!),SetOptions(
+          merge: true
+        ));
       }
     } on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);

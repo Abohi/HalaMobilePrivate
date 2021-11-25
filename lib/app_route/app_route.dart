@@ -41,7 +41,10 @@ import 'package:halawork/pages/dashboard_pages/pages/inbox_pages/inbox_detail_pa
 import 'package:halawork/pages/dashboard_pages/pages/inboxpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notification_pages/notification_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notificationpage.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_achievement_page/edit_achievement_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_education_page/edit_education_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_skills_page/edit_skill_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_work_history/edit_work_history.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_description.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/sevice_pages/edit_service_page.dart';
@@ -126,6 +129,9 @@ import '../main.dart';
     const AutoRoute(page:  ByServicePage),
     const AutoRoute(page:  HomeSearchMainPage),
     const AutoRoute(page:  FilterPage),
+    const AutoRoute(page:  EditWorkHistoryPage),
+    const AutoRoute(page:  EditAchievementPage),
+    const AutoRoute(page:  EditEducationPage),
     //End of Inbox pages
     const AutoRoute(
         path: '/dashboard',

@@ -49,6 +49,11 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
         ? null
         : WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
     documentId: json['documentId'] as String?,
+    isDismissCompleteProfile:
+        json['isDismissCompleteProfile'] as bool? ?? false,
+    states:
+        (json['states'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    isActiveService: json['isActiveService'] as bool?,
   );
 }
 
@@ -84,4 +89,7 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'email': instance.email,
       'wallet': instance.wallet,
       'documentId': instance.documentId,
+      'isDismissCompleteProfile': instance.isDismissCompleteProfile,
+      'states': instance.states,
+      'isActiveService': instance.isActiveService,
     };

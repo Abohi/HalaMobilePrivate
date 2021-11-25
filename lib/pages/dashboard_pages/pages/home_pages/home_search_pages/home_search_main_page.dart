@@ -9,6 +9,7 @@ import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/widgets/seller_searched_tile.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/custom_chipinput.dart';
 import 'package:halawork/pages/dashboard_pages/widget/custom_drawer.dart';
+import 'package:halawork/providers/state_providers/searchedUsersProviders.dart';
 import 'package:halawork/providers/state_providers/subServicesListProvider.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,6 +24,7 @@ class HomeSearchMainPage extends HookWidget {
     final _chipKey = useMemoized(() => GlobalKey<ChipsInputState>());
     var chipsInputNode = useMemoized(()=>FocusNode());
     final selectedSubservices = useState<List<String>?>([]);
+    var searchedUserState = useProvider(searchedUsersProvider);
     useEffect((){
       Future.microtask((){
         List<String> subServices =[];
@@ -116,6 +118,7 @@ class HomeSearchMainPage extends HookWidget {
                         decoration: InputDecoration(
                           prefixIcon: GestureDetector(
                               onTap: (){
+                                searchedUserState.state=null;
                                 FocusScope.of(context).requestFocus(chipsInputNode);
                               },
                               child: Icon(Icons.search,color: const Color(0xff0000FF),)),
@@ -227,48 +230,67 @@ class HomeSearchMainPage extends HookWidget {
                   SliverToBoxAdapter(
                     child: const SizedBox(height: 38,),
                   ),
-                  selectedSubservices.value==null || selectedSubservices.value!.isEmpty?SliverToBoxAdapter(
+                  searchedUserState.state==null &&(selectedSubservices.value==null || selectedSubservices.value!.isEmpty)?SliverToBoxAdapter(
                     child: Center(child: Text("No selection has been made")),
-                  ):StreamBuilder<List<UserModel>>(
-                    stream: context.read(userRepositoryProvider).getSearchedSellers(selectedSubservices.value!),
-                    builder: (context,snapshot){
-                      if(snapshot.connectionState==ConnectionState.waiting){
-                        return SliverToBoxAdapter(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(child: CircularProgressIndicator(backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff0000FF)),)),
-                            ],
-                          ),
-                        );
-                      }else if(snapshot.hasData){
-                        return SliverPadding(
-                          sliver: SliverList(
-                            delegate: SliverChildListDelegate(
-                              snapshot.data!.map((e) => SellerSearchedTile(userModel: e,)).toList()
-                            ),
-                          ), padding: EdgeInsets.symmetric(horizontal: 17),
-                        );
-                      }else{
-                        return SliverToBoxAdapter(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("No record available")
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                  )
+                  ):FilteredUserConditionalWidget(selectedSubservices: selectedSubservices)
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+class FilteredUserConditionalWidget extends HookWidget {
+  final ValueNotifier selectedSubservices;
+  const FilteredUserConditionalWidget({required this.selectedSubservices});
+
+  @override
+  Widget build(BuildContext context) {
+    var searchedUserState = useProvider(searchedUsersProvider);
+    return searchedUserState.state==null?StreamBuilder<List<UserModel>>(
+      stream: context.read(userRepositoryProvider).getSearchedSellers(selectedSubservices.value!),
+      builder: (context,snapshot){
+        if(snapshot.connectionState==ConnectionState.waiting){
+          return SliverToBoxAdapter(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(child: CircularProgressIndicator(backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff0000FF)),)),
+              ],
+            ),
+          );
+        }else if(snapshot.hasData){
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+
+          });
+          return SliverPadding(
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                  snapshot.data!.map((e) => SellerSearchedTile(userModel: e,)).toList()
+              ),
+            ), padding: EdgeInsets.symmetric(horizontal: 17),
+          );
+        }else{
+          return SliverToBoxAdapter(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("No record available")
+              ],
+            ),
+          );
+        }
+      },
+    ):SliverPadding(
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+            searchedUserState.state!.map((e) => SellerSearchedTile(userModel: e,)).toList()
+        ),
+      ), padding: EdgeInsets.symmetric(horizontal: 17),
     );
   }
 }

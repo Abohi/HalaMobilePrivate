@@ -30,8 +30,10 @@ import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
+import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/profile_picture_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
 import 'package:halawork/providers/general_providers/general_providers.dart';
+import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:halawork/firebase_reference_extension/firebase_firestore_extension.dart';
@@ -69,6 +71,10 @@ abstract class BaseUserRepository {
   Future<void> addUserMap(Map<String,dynamic>userMap);
   Future<void>uploadPortfolio(PortfolioModel portfolioModel,String userId);
   Future<void>recentlyVisitedProfiles(String sellerId);
+  Future<void>updateNationalAvailability(UserModelExtension userModelExtension,bool visibility);
+  Future<void>updateWorkHistory(List<WorkEntryModel> workEntryModelList);
+  Future<void>updateAchievement(List<AchievementEntryModel> achievementEntryModelList);
+  Future<void>updateEducation(List<EducationEntryModel> educationEntryModelList);
 }
 final userRepositoryProvider =
 Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -214,6 +220,49 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+
+  Future<void>updateSellerProfilePicture()async{
+    final String  userId = _read(authControllerProvider)!.uid;
+    final firestoreReference =   await _read(firebaseFirestoreProvider);
+    UploadTask storageUploadTask;
+    storageUploadTask =  _read(firebaseStorageProvider)
+        .ref()
+        .child(usersCollection)
+        .child(userId)
+        .child("profile_photo")
+        .child(userId)
+        .putFile(File(_read(profilePictureStateProvider).state!.path));
+    String photoUrl = await (await storageUploadTask).ref.getDownloadURL();
+    UserModel userModel = _read(userControllerProvider)?.userModel.copyWith(profilePictureUrl: photoUrl);
+    await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
+  }
+
+  Future<void>updateNationalAvailability(UserModelExtension userModelExtension,bool visibility)async{
+    final firestoreReference =   await _read(firebaseFirestoreProvider);
+    UserModel userModel = _read(userControllerProvider)?.userModel.copyWith(isActiveService:visibility);
+    await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
+    DocumentReference documentReference =firestoreReference.collection(activeServiceCollection).doc(userModelExtension.userModel.serviceId);
+    for(int i=0;i<userModelExtension.userModel.subServices!.length;i++){
+      await documentReference.collection(userModelExtension.userModel.subServices![i]).doc(_read(authControllerProvider)!.uid).set({
+        "isActiveService":visibility
+      },SetOptions(merge: true));
+    }
+  }
+  Future<void>updateWorkHistory(List<WorkEntryModel> workEntryModelList)async{
+    for(int i =0;i<workEntryModelList.length;i++){
+      await _read(firebaseFirestoreProvider).workEntryCollectionRef(_read(authControllerProvider)!.uid).doc().set(workEntryModelList[i],SetOptions(merge: true));
+    }
+  }
+  Future<void>updateEducation(List<EducationEntryModel> educationEntryModelList)async{
+    for(int i =0;i<educationEntryModelList.length;i++){
+      await _read(firebaseFirestoreProvider).educationEntryCollectionRef(_read(authControllerProvider)!.uid).doc().set(educationEntryModelList[i],SetOptions(merge: true));
+    }
+  }
+  Future<void>updateAchievement(List<AchievementEntryModel> achievementEntryModelList)async{
+    for(int i =0;i<achievementEntryModelList.length;i++){
+      await _read(firebaseFirestoreProvider).achievementEntryCollectionRef(_read(authControllerProvider)!.uid).doc().set(achievementEntryModelList[i],SetOptions(merge: true));
+    }
+  }
   @override
   Future<void> completeSellerProfileSetup(SellerSetupModel sellerSetupModel) async{
    try{
@@ -235,7 +284,7 @@ class UserRepository implements BaseUserRepository {
        expertiseLevel: sellerSetupModel.saveExpertiseType,profileDescription: sellerSetupModel.saveProfileDescModel?.description,
        profileDescriptionTitle: sellerSetupModel.saveProfileDescModel?.title,
        serviceId: sellerSetupModel.serviceId,joined: DateTime.now(),isBuyer: false,
-       isSeller:true,orgDetailModel: sellerSetupModel.orgDetailModel!.toJson()
+       isSeller:true,orgDetailModel: sellerSetupModel.orgDetailModel!.toJson(),states:sellerSetupModel.locationModel!.map((e) => e.state).toList(),isActiveService:true
      );
      await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
      var collectionBatchRef = firestoreReference.batch();

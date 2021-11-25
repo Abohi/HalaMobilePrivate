@@ -75,13 +75,15 @@ class ProfileViewPage extends HookWidget {
                     padding: EdgeInsets.only(left: 17,right:17),
                     width: size.width,
                     color: const Color(0xffEBEBFF),
-                    child: ProfilePhotoSection(isProfileView: true, userModel: data.userModel,),
+                    child: ProfilePhotoSection(isProfileView: true, userModel: data.userModel, updateProfilePicture: (){
+
+                    },),
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 17,right:17,bottom: 44),
                     width: size.width,
                     color: const Color(0xffEBEBFF),
-                    child: ProfilePresenceSection(userModel: data, isProfileView: true,),
+                    child: ProfilePresenceSection(userModel: data, isProfileView: true, updateNationalAvailability: (bool isVisibility) {  },),
                   )
                 ]),
               ),

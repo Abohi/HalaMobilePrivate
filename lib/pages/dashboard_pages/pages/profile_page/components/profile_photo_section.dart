@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
+import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,7 +18,8 @@ final profilePictureStateProvider = StateProvider<XFile?>((ref){
 class ProfilePhotoSection extends HookWidget {
   final bool isProfileView;
   final UserModel? userModel;
-  const ProfilePhotoSection({required this.isProfileView,required this.userModel});
+  final Function updateProfilePicture;
+  const ProfilePhotoSection({required this.isProfileView,required this.userModel,required this.updateProfilePicture});
   @override
   Widget build(BuildContext context) {
     if(isProfileView){
@@ -154,7 +156,7 @@ class ProfilePhotoSection extends HookWidget {
                       onTap: () async {
                         context.read(profilePictureStateProvider).state = await _picker.pickImage(source: ImageSource.gallery);
                         if (context.read(profilePictureStateProvider).state != null) {
-
+                          updateProfilePicture();
                         }
                       },
                       child: SvgPicture.asset(

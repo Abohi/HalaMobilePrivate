@@ -11,6 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/pages/auth_pages/sigup_page/signup_page.dart';
 import 'package:halawork/pages/basic_verification_pages/email_verification_success_page.dart';
 import 'package:halawork/pages/basic_verification_pages/resend_email_verification_link_page.dart';
 import 'package:halawork/pages/splash_screen/splash_screen.dart';
@@ -127,7 +128,7 @@ class CheckPhoneVerificationStateWidgetPage extends HookWidget {
         return EmailVerificationSuccessPage();
       }
     }else{
-      return SplashScreenPage();
+      return SignupPage();
     }
 
   }

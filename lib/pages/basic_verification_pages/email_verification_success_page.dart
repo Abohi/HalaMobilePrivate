@@ -70,6 +70,7 @@ late NetworkFailure networkFailure;
                               isNetworkError.value = true;
                             }, (r){
                               if(r){
+                                isNetworkError.value = false;
                                 progress.dismiss();
                                 return context.router.navigate(PhoneVerificationRoute());
                               }
