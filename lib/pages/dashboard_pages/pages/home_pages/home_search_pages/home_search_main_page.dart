@@ -118,7 +118,7 @@ class HomeSearchMainPage extends HookWidget {
                         decoration: InputDecoration(
                           prefixIcon: GestureDetector(
                               onTap: (){
-                                searchedUserState.state=null;
+                                searchedUserState.state=[];
                                 FocusScope.of(context).requestFocus(chipsInputNode);
                               },
                               child: Icon(Icons.search,color: const Color(0xff0000FF),)),
@@ -230,7 +230,7 @@ class HomeSearchMainPage extends HookWidget {
                   SliverToBoxAdapter(
                     child: const SizedBox(height: 38,),
                   ),
-                  searchedUserState.state==null &&(selectedSubservices.value==null || selectedSubservices.value!.isEmpty)?SliverToBoxAdapter(
+                  searchedUserState.state.isEmpty &&(selectedSubservices.value==null || selectedSubservices.value!.isEmpty)?SliverToBoxAdapter(
                     child: Center(child: Text("No selection has been made")),
                   ):FilteredUserConditionalWidget(selectedSubservices: selectedSubservices)
                 ],
@@ -249,7 +249,8 @@ class FilteredUserConditionalWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var searchedUserState = useProvider(searchedUsersProvider);
-    return searchedUserState.state==null?StreamBuilder<List<UserModel>>(
+    return searchedUserState.state.isEmpty?
+    StreamBuilder<List<UserModel>>(
       stream: context.read(userRepositoryProvider).getSearchedSellers(selectedSubservices.value!),
       builder: (context,snapshot){
         if(snapshot.connectionState==ConnectionState.waiting){
@@ -264,7 +265,7 @@ class FilteredUserConditionalWidget extends HookWidget {
           );
         }else if(snapshot.hasData){
           WidgetsBinding.instance!.addPostFrameCallback((_) {
-
+            searchedUserState.state=snapshot.data!;
           });
           return SliverPadding(
             sliver: SliverList(
@@ -285,10 +286,11 @@ class FilteredUserConditionalWidget extends HookWidget {
           );
         }
       },
-    ):SliverPadding(
+    ):
+    SliverPadding(
       sliver: SliverList(
         delegate: SliverChildListDelegate(
-            searchedUserState.state!.map((e) => SellerSearchedTile(userModel: e,)).toList()
+            searchedUserState.state.map((e) => SellerSearchedTile(userModel: e,)).toList()
         ),
       ), padding: EdgeInsets.symmetric(horizontal: 17),
     );

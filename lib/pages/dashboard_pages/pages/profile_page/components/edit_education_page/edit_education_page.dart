@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/models/seller_setup_models/education_entry_model/education_entry_model.dart';
@@ -99,6 +100,7 @@ class EditEducationPage extends HookWidget {
                         progress!.showWithText('Updating Education...');
                         await context.read(userRepositoryProvider).updateEducation(educationEntryListChangeNotifier.educationEntryModelList);
                         progress.dismiss();
+                        await Fluttertoast.showToast(msg: "Education updated successfully",toastLength: Toast.LENGTH_LONG);
                       }, imageIcon: null,),
                     ),
                   ),

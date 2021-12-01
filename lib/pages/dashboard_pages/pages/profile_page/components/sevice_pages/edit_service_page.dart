@@ -20,6 +20,8 @@ import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:halawork/widgets/firebase_error_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
+List<String>addedSubServices=[];
+List<String>skillList=[];
 class EditServicePage extends HookWidget {
   final String preference;
   const EditServicePage({required this.preference});
@@ -31,6 +33,7 @@ class EditServicePage extends HookWidget {
     final  _subServices = useState<List<String>?>([]);
     final  _selectedService = useState<ServiceModel?>(null);
     final serviceState = useProvider(serviceTypeControllerProvider);
+    final selectedSkills = useState<List<String>?>([]);
     final _chipKey = useMemoized(() => GlobalKey<ChipsInputState>());
     return serviceState.when(
       data: (serviceTypeModel) =>
@@ -102,7 +105,25 @@ class EditServicePage extends HookWidget {
                                           itemAsString: (ServiceModel service) => service.name.toString(),
                                           onChanged: (value){
                                             _selectedService.value=value;
+                                            addedSubServices.clear();
                                             _subServices.value =value?.value;
+                                          },
+                                          emptyBuilder: (context,error){
+                                            if(error!=null)
+                                              return Center(
+                                                child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                                    textStyle: TextStyle(
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 13,
+                                                        color: const Color(0xff29283C),decoration:TextDecoration.none)),),
+                                              );
+                                            return Center(
+                                              child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 13,
+                                                      color: const Color(0xff29283C),decoration: TextDecoration.none)),),
+                                            );
                                           },
                                           selectedItem: _selectedService.value==null?ServiceModel(name: "Select your main service", isDafault: false, icon: "", value: []):serviceTypeModel.serviceModel?.firstWhere((element) => element.name==_selectedService.value?.name),
                                         ),
@@ -151,15 +172,108 @@ class EditServicePage extends HookWidget {
                                       ) {
                                     print("SubService: $subservice, checked: $picked");
                                     if (picked.value) {
-                                      selectedSubSevices.value?.add(subservice);
+                                      addedSubServices.add(subservice);
+                                      selectedSubSevices.value=addedSubServices;
                                     } else if (!picked.value) {
-                                      bool? subserviceExist =selectedSubSevices.value?.contains(subservice);
-                                      subserviceExist = subserviceExist??false;
+                                      bool? subserviceExist =addedSubServices.contains(subservice);
                                       if(subserviceExist){
-                                        selectedSubSevices.value?.remove(subservice);
+                                        addedSubServices.remove(subservice);
+                                        selectedSubSevices.value=addedSubServices;
                                       }
                                     }
                                   }),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: const SizedBox(height: 15,),
+                          ),
+                          SliverPadding(
+                            padding: EdgeInsets.symmetric(horizontal: 17),
+                            sliver: SliverToBoxAdapter(
+                              child: ChipsInput<String?>(
+                                key: _chipKey,
+                                keyboardAppearance: Brightness.dark,
+                                textCapitalization: TextCapitalization.words,
+                                enabled: true,
+                                maxChips: serviceTypeModel.skillModel!.skills.length,
+                                textStyle: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                        color: const Color(0xff5A5AFC),
+                                        fontSize: 14)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelText: "Start typing your skills",
+                                  labelStyle: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          color: const Color(0xff29283C),
+                                          fontSize: 14)),
+                                  contentPadding: const EdgeInsets.only(
+                                      left: 9.0, bottom: 5.0, top: 7.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xff0000FF),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: const Color(0xffACACAC),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                findSuggestions: (String query) {
+                                  if (query.length != 0) {
+                                    var lowercaseQuery = query.toLowerCase();
+                                    return serviceTypeModel.skillModel!.skills.where((skills) {
+                                      return skills!.toLowerCase().contains(query.toLowerCase());
+                                    }).toList(growable: false)
+                                      ..sort((a, b) => a!
+                                          .toLowerCase()
+                                          .indexOf(lowercaseQuery)
+                                          .compareTo(b!.toLowerCase().indexOf(lowercaseQuery)));
+                                  } else {
+                                    return const <String>[];
+                                  }
+                                },
+                                onChanged: (data) {
+                                  for (int i = 0; i < data.length; i++) {
+                                    skillList.add(data[i]!);
+                                  }
+                                  selectedSkills.value=skillList;
+                                  selectedSkills.value?.toSet().toList();
+                                },
+                                chipBuilder: (context, state, skill) {
+                                  return InputChip(
+                                    key: ObjectKey(skill),
+                                    labelStyle: GoogleFonts.roboto(
+                                        textStyle: TextStyle(
+                                            color: const Color(0xff5A5AFC),
+                                            fontSize: 10)),
+                                    deleteIcon: Icon(
+                                      Icons.clear,
+                                      color: const Color(0xff5A5AFC),
+                                      size: 16,
+                                    ),
+                                    backgroundColor: const Color(0xffEBEBFF),
+                                    label: Text(skill!),
+                                    onDeleted: () {
+                                      selectedSkills.value!.remove(skill);
+                                      return state.deleteChip(skill);
+                                    },
+                                    materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                  );
+                                },
+                                suggestionBuilder: (context, state, skill) {
+                                  return ListTile(
+                                    key: ObjectKey(skill),
+                                    title: Text(skill!),
+                                    onTap: () => state.selectSuggestion(skill),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           SliverPadding(
@@ -168,11 +282,23 @@ class EditServicePage extends HookWidget {
                             sliver: SliverToBoxAdapter(
                               child: CustomButtonSignup(
                                 buttonBg: const Color(0xff0000FF),
-                                buttonTitle: "NEXT  >",
+                                buttonTitle: "UPDATE",
                                 buttonFontColor: Colors.white,
                                 onButtonPressed: () async {
-                                  if(_selectedService.value==null ||selectedSubSevices.value==null){
-                                    return await Fluttertoast.showToast(msg: "Please select a service and subservice",toastLength: Toast.LENGTH_LONG);
+                                  selectedSkills.value = [
+                                    ...{...?selectedSkills.value}
+                                  ];
+                                  selectedSubSevices.value = [
+                                    ...{...?selectedSubSevices.value}
+                                  ];
+
+                                  if(_selectedService.value==null ||selectedSubSevices.value==null || selectedSkills.value==null){
+                                    await Fluttertoast.showToast(msg: "Please select a service,subservice and some skills",toastLength: Toast.LENGTH_LONG);
+                                    return;
+                                  }
+                                  if(selectedSkills.value!.length<3){
+                                    await Fluttertoast.showToast(msg: "Please enter a minimum of 3 skills",toastLength: Toast.LENGTH_LONG);
+                                    return;
                                   }
                                   final progress = ProgressHUD.of(context);
                                   progress!.showWithText('Updating Service...');
@@ -198,6 +324,7 @@ class EditServicePage extends HookWidget {
                                             {
                                               "userid": context.read(authControllerProvider)!.uid,
                                               "isActiveSubservice":true,
+                                              "toggleNationWideVisibility":true
                                             },SetOptions(merge: true));
                                       });
                                     }else{
@@ -214,6 +341,7 @@ class EditServicePage extends HookWidget {
                                             {
                                               "userid": context.read(authControllerProvider)!.uid,
                                               "isActiveSubservice":true,
+                                              "toggleNationWideVisibility":true
                                             },SetOptions(merge: true));
                                       });
                                     }
@@ -225,10 +353,14 @@ class EditServicePage extends HookWidget {
                                     "serviceIcon":_selectedService.value!.icon,
                                     "serviceId":_selectedService.value?.serviceId,
                                     "isServiceDefault":_selectedService.value!.isDafault,
-                                    "subServices":FieldValue.arrayUnion(selectedSubSevices.value!),
-                                    "expertiseLevel":preference
+                                    "subServices":selectedSubSevices.value!,
+                                    "expertiseLevel":preference,
+                                    "skills":selectedSkills.value
                                   });
                                 progress.dismiss();
+                                await Fluttertoast.showToast(msg: "Service updated successfully",toastLength: Toast.LENGTH_LONG);
+                                selectedSkills.value?.clear();
+                                context.popRoute();
                                 }, imageIcon: null,),
                             ),
                           )

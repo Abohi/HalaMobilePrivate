@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/controllers/auth_controller.dart';
+import 'package:halawork/controllers/servicetype_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/user_model/user_model.dart';
@@ -362,8 +364,9 @@ class SellerBasicInfoEntryPage extends HookWidget {
                                       isSeller:customUserModelState.userModel.isSeller,isBuyer:customUserModelState.userModel.isBuyer,
                                       isPhoneNumberVerified:customUserModelState.userModel.isPhoneNumberVerified,
                                       firstName: _firstName.value,lastName: _lastName.value,optionalNumber: _optionalNumber.value==null
-                                      ?"":_optionalNumber.value,dateOfBirth: _dateOfBirth.value,sellerType: context.read(sellerSetupStateProvider).state!.sellerType);
-                                      context.read(userControllerProvider.notifier).saveBasicSellerInfo(userModel);
+                                      ?"":_optionalNumber.value,dateOfBirth: _dateOfBirth.value,sellerType: context.read(sellerSetupStateProvider).state!.sellerType,email: context.read(authControllerProvider)!.email);
+                                      await context.read(userControllerProvider.notifier).saveBasicSellerInfo(userModel);
+                                     await context.read(serviceTypeControllerProvider.notifier).retrieveServiceType(isRefreshing:true);
                                       progress.dismiss();
                                       if(context.read(exceptionMessageProvider).state==null){
                                         await Fluttertoast.showToast(msg: "Basic info saved successfully",toastLength: Toast.LENGTH_LONG);

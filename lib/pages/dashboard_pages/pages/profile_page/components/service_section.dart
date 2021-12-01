@@ -42,7 +42,7 @@ class ServiceSection extends HookWidget{
                 width:size.width,
                 height: size.height*0.065,
                 padding:EdgeInsets.only(left: 22),
-                child: Align(alignment:Alignment.centerLeft,child: Text(userModel!.service!,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.normal,color: Colors.white)),)),
+                child: Align(alignment:Alignment.centerLeft,child: Text(userModel!.service??"",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,fontWeight: FontWeight.normal,color: Colors.white)),)),
                 decoration: BoxDecoration(color: const Color(0xff0000FF),borderRadius: BorderRadius.circular(4)),
               ),
               SizedBox(height: 28,),
@@ -97,7 +97,7 @@ class ServiceSection extends HookWidget{
                 decoration: BoxDecoration(color: const Color(0xff0000FF),borderRadius: BorderRadius.circular(4)),
               ),
               SizedBox(height: 28,),
-              Text("Selected Sub Category",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: const Color(0xff29283C),fontWeight: FontWeight.w700)),),
+              userModelState.userModel.service==null?SizedBox.shrink():Text("Selected Sub Category",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: const Color(0xff29283C),fontWeight: FontWeight.w700)),),
             ],
           )
         ]),

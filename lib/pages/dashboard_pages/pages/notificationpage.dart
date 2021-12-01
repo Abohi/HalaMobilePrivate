@@ -44,7 +44,7 @@ class NotificationPage extends HookWidget {
                       progress!.showWithText('Opening Notification...');
                       await context.read(userControllerProvider.notifier).updateNotification(context.read(authControllerProvider)!.uid, e);
                       progress.dismiss();
-                      context.router.navigate(NotificationDetailRoute(requestId: e.requestId));
+                      context.router.navigate(NotificationDetailRoute(notificationModel: e));
                     },)).toList(),
                   );
                 }else if(snapshot.connectionState==ConnectionState.waiting){

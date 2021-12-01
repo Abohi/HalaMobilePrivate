@@ -17,68 +17,72 @@ class ByServiceDetailPage extends HookWidget {
     var size = MediaQuery.of(context).size;
     final scafKey = useMemoized(() => GlobalKey<ScaffoldState>());
     var userModelState = useProvider(userControllerProvider);
-    return Scaffold(
-      key: scafKey,
-      drawer:CustomDrawer(),
-      body: SafeArea(
-        child: Container(
-          width: size.width,
-          height: size.height,
-          child:  CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                pinned: true,
-                elevation: 3,
-                leading: GestureDetector(
-                  onTap: () {
-                    scafKey.currentState!.openDrawer();
-                  },
-                  child:SizedBox(
+    return SafeArea(
+      child: Scaffold(
+        key: scafKey,
+        drawer:CustomDrawer(),
+        body:CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              centerTitle: true,
+              backgroundColor: Colors.white,
+              pinned: true,
+              elevation: 3,
+              leading: GestureDetector(
+                onTap: () {
+                  scafKey.currentState!.openDrawer();
+                },
+                child:SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: userModelState!.userModel.profilePictureUrl!=null?Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: CircleAvatar(
+                      radius: 28,
+                      backgroundImage: NetworkImage(userModelState.userModel.profilePictureUrl!),
+                    ),
+                  ):Container(
                     width: 30,
                     height: 30,
-                    child: userModelState!.userModel.profilePictureUrl!=null?Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: CircleAvatar(
-                        radius: 28,
-                        backgroundImage: NetworkImage(userModelState.userModel.profilePictureUrl!),
-                      ),
-                    ):Container(
-                      width: 30,
-                      height: 30,
-                      margin: EdgeInsets.all(10),
-                      child: Center(
-                        child: Text("${userModelState.userModel.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                            )
-                        ),),
-                      ),
-                      decoration: BoxDecoration(
-                          color: const Color(0xff0000FF),
-                          shape: BoxShape.circle
-                      ),
+                    margin: EdgeInsets.all(10),
+                    child: Center(
+                      child: Text("${userModelState.userModel.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold
+                          )
+                      ),),
+                    ),
+                    decoration: BoxDecoration(
+                        color: const Color(0xff0000FF),
+                        shape: BoxShape.circle
                     ),
                   ),
                 ),
-                title: Text(serviceModel.service!, style: GoogleFonts.roboto(textStyle: TextStyle(
-                    color: Color(0xFF29283C),
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
-                ))),
               ),
-              SliverToBoxAdapter(child: const SizedBox(height: 20,),),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal:17.0),
-                sliver: ExpandableServiceTile(activeServiceModel: serviceModel),
-              )
-            ],
-          ),
-        ),
+              title: Text(serviceModel.service!, style: GoogleFonts.roboto(textStyle: TextStyle(
+                  color: Color(0xFF29283C),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20
+              ))),
+            ),
+            SliverToBoxAdapter(child: const SizedBox(height: 20,),),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal:17.0),
+              sliver: SliverToBoxAdapter(child: ExpandableServiceTile(activeServiceModel: serviceModel)),
+            )
+          ],
+        ) ,
       ),
     );
   }
 }
+
+
+// CustomScrollView(
+// slivers: [
+
+
+// ],
+// )

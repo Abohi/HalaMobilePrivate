@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
@@ -24,6 +25,7 @@ class AddPortfolioPhotoPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var porfolioPhotoState = useProvider(portfolioStateProvider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -85,10 +87,16 @@ class AddPortfolioPhotoPage extends HookWidget {
                           buttonFontColor: Colors.white,
                           isFullWidth: true,
                           onButtonPressed: () async{
+                            if(porfolioPhotoState.state!.path.isEmpty){
+                              await Fluttertoast.showToast(msg: "Please select a picture",toastLength: Toast.LENGTH_LONG);
+                              return;
+                            }
                             final progress = ProgressHUD.of(context);
                             progress!.showWithText('Adding Portfolio...');
-                            context.read(userRepositoryProvider).uploadPortfolio(PortfolioModel(photoUrl: '',project_name: projectName,skills: skills), context.read(authControllerProvider)!.uid);
+                            await context.read(userRepositoryProvider).uploadPortfolio(PortfolioModel(photoUrl: porfolioPhotoState.state!.path,project_name: projectName,skills: skills), context.read(authControllerProvider)!.uid);
                             progress.dismiss();
+                            await Fluttertoast.showToast(msg: "Portfolio updated successfully",toastLength: Toast.LENGTH_LONG);
+                            context.popRoute();
                           }, imageIcon: null,),
                       ),
                     ),

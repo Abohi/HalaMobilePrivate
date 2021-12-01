@@ -65,7 +65,7 @@ class SellersViewedTiles extends HookWidget {
                             height: 3.21,
                           ),
                           snapshot.data!.userModel.ratings==null?Text(""):RatingBar.builder(
-                            initialRating:snapshot.data!.userModel.ratings!.serviceOfWorkRatinig,
+                            initialRating:snapshot.data!.userModel.ratings!.serviceOfWorkRatinig.toDouble(),
                             minRating: 1,
                             itemSize: 6.92,
                             direction: Axis.horizontal,

@@ -120,6 +120,23 @@ class LocationEntryPage extends HookWidget {
                               label: "Select your state",
                               itemAsString: (StateModel state) => state.state.toString(),
                               onChanged: (state)=>context.read(stateModelStateProvider).state=state,
+                              emptyBuilder: (context,error){
+                                if(error!=null)
+                                  return Center(
+                                    child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 13,
+                                            color: const Color(0xff29283C),decoration:TextDecoration.none)),),
+                                  );
+                                return Center(
+                                  child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                      textStyle: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                          color: const Color(0xff29283C),decoration: TextDecoration.none)),),
+                                );
+                              },
                               selectedItem: context.read(stateModelStateProvider).state==null?StateModel(state: "Select your state", lgas: []):context.read(stateModelStateProvider).state,
                             ),
                             SizedBox(height: 10,),
@@ -140,6 +157,23 @@ class LocationEntryPage extends HookWidget {
                           label: "Select your LGA",
                           itemAsString: (String lga) => lga,
                           onChanged: (state)=>context.read(lgaStateProvider).state=state,
+                          emptyBuilder: (context,error){
+                            if(error!=null)
+                              return Center(
+                                child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                        color: const Color(0xff29283C),decoration:TextDecoration.none)),),
+                              );
+                            return Center(
+                              child: Text("Invalid Selection",style: GoogleFonts.roboto(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 13,
+                                      color: const Color(0xff29283C),decoration: TextDecoration.none)),),
+                            );
+                          },
                           selectedItem: context.read(lgaStateProvider).state==null?"Select your LGA":context.read(lgaStateProvider).state,
                         ),
                         SizedBox(height: 22,),

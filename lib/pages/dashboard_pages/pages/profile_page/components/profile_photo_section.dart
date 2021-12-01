@@ -18,7 +18,7 @@ final profilePictureStateProvider = StateProvider<XFile?>((ref){
 class ProfilePhotoSection extends HookWidget {
   final bool isProfileView;
   final UserModel? userModel;
-  final Function updateProfilePicture;
+  final Function(String path) updateProfilePicture;
   const ProfilePhotoSection({required this.isProfileView,required this.userModel,required this.updateProfilePicture});
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,15 @@ class ProfilePhotoSection extends HookWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              userModel?.profilePictureUrl==null?Center(
+                child: Text("${userModel?.email!.toUpperCase().substring(0,1)}",style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold
+                    )
+                ),),
+              ):SizedBox(
                   height: 116,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(60),
@@ -86,7 +94,7 @@ class ProfilePhotoSection extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RatingBar.builder(
-                initialRating:  userModel!.ratings?.serviceOfWorkRatinig==null?0:userModel!.ratings!.serviceOfWorkRatinig,
+                initialRating:  userModel!.ratings?.serviceOfWorkRatinig==null?0:userModel!.ratings!.serviceOfWorkRatinig.toDouble(),
                 minRating: 1,
                 itemSize: 17.68,
                 unratedColor: const Color(0xffACACAC),
@@ -122,6 +130,7 @@ class ProfilePhotoSection extends HookWidget {
       var userModelState = useProvider(userControllerProvider);
       var size = MediaQuery.of(context).size;
       var _picker =   useMemoized(()=>ImagePicker());
+      var profilePhotoState = useProvider(profilePictureStateProvider);
       return userModelState==null?Text(""):Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -129,6 +138,7 @@ class ProfilePhotoSection extends HookWidget {
           SizedBox(
             height: 28,
           ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,13 +149,13 @@ class ProfilePhotoSection extends HookWidget {
                 children: [
                   SizedBox(
                     height: 116,
-                    child: context.read(profilePictureStateProvider).state==null?ClipRRect(
+                    child: profilePhotoState.state==null?ClipRRect(
                       borderRadius: BorderRadius.circular(60),
-                      child: Image.network(userModelState.userModel.profilePictureUrl!,width: 130,
+                      child: userModelState.userModel.profilePictureUrl==null?Icon(Icons.person_rounded,size: 130,):Image.network(userModelState.userModel.profilePictureUrl!,width: 130,
                         height: 130,fit: BoxFit.fill,),
                     ):ClipRRect(
                       borderRadius: BorderRadius.circular(60),
-                      child: Image.file(File(context.read(profilePictureStateProvider).state!.path),width: 130,
+                      child: Image.file(File(profilePhotoState.state!.path),width: 130,
                         height: 130,fit: BoxFit.fill,),
                     ),
                   ),
@@ -154,9 +164,9 @@ class ProfilePhotoSection extends HookWidget {
                     top: -10,
                     child: GestureDetector(
                       onTap: () async {
-                        context.read(profilePictureStateProvider).state = await _picker.pickImage(source: ImageSource.gallery);
-                        if (context.read(profilePictureStateProvider).state != null) {
-                          updateProfilePicture();
+                        profilePhotoState.state = await _picker.pickImage(source: ImageSource.gallery);
+                        if (profilePhotoState.state != null) {
+                          updateProfilePicture(profilePhotoState.state!.path);
                         }
                       },
                       child: SvgPicture.asset(
@@ -177,14 +187,20 @@ class ProfilePhotoSection extends HookWidget {
               SizedBox(width: 17,)
             ],
           ),
-          SizedBox(
+          userModelState.userModel.profilePictureUrl==null?SizedBox.shrink():SizedBox(
             height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              userModelState.userModel.isBuyer==true && userModelState.userModel.isSeller==false?Text(userModelState.userModel.email!,
+                style: GoogleFonts.roboto(
+                    textStyle: TextStyle(
+                        color: const Color(0xff29283C),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700)),
+              ):Text(
                 userModelState.userModel.sellerType=="Organization"?"${userModelState.userModel.orgDetailModel!["firstName"]} ${userModelState.userModel.orgDetailModel!["lastName"]}":"${userModelState.userModel.firstName} ${userModelState.userModel.lastName}",
                 style: GoogleFonts.roboto(
                     textStyle: TextStyle(
@@ -210,15 +226,15 @@ class ProfilePhotoSection extends HookWidget {
               )
             ],
           ),
-          SizedBox(
+          userModelState.userModel.profilePictureUrl==null?SizedBox.shrink():SizedBox(
             height: 11,
           ),
-          Row(
+          userModelState.userModel.ratings==null?SizedBox.shrink():Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RatingBar.builder(
-                initialRating:  userModelState.userModel.ratings?.serviceOfWorkRatinig==null?0:userModelState.userModel.ratings!.serviceOfWorkRatinig,
+                initialRating:  userModelState.userModel.ratings?.serviceOfWorkRatinig==null?0:userModelState.userModel.ratings!.serviceOfWorkRatinig.toDouble(),
                 minRating: 1,
                 itemSize: 17.68,
                 unratedColor: const Color(0xffACACAC),
@@ -254,3 +270,4 @@ class ProfilePhotoSection extends HookWidget {
 
   }
 }
+

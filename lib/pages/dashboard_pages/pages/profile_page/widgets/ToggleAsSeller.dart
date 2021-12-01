@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/controllers/user_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ToggleAsSeller extends HookWidget {
   final bool isProfileView;
   final UserModel? userModel;
-  const ToggleAsSeller({required this.isProfileView,required this.userModel});
+  final Function(bool isSellerActivated) onSellerModeActivated;
+  const ToggleAsSeller({required this.isProfileView,required this.userModel,required this.onSellerModeActivated});
 
   @override
   Widget build(BuildContext context) {
+    var userModelState = useProvider(userControllerProvider);
     var size = MediaQuery.of(context).size;
     if(isProfileView){
       return Container(
@@ -107,9 +111,9 @@ class ToggleAsSeller extends HookWidget {
               ],
             ),
             Switch(
-              value: true,
+              value: userModelState!.userModel.isSeller,
               onChanged: (value) async{
-
+                  onSellerModeActivated(value);
               },
               activeTrackColor: Colors.white,
               activeColor: const Color(0xff5A5AFC),

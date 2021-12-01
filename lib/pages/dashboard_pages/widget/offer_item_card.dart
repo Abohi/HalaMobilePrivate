@@ -81,7 +81,7 @@ class OfferItemCard extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             RatingBar.builder(
-                              initialRating: 4,
+                              initialRating: snapshot.data!.ratings==null?0:snapshot.data!.ratings!.serviceOfWorkRatinig.toDouble(),
                               minRating: 1,
                               itemSize: 6.92,
                               direction: Axis.horizontal,
@@ -102,7 +102,7 @@ class OfferItemCard extends HookWidget {
                               width: 6.54,
                             ),
                             Text(
-                              "4",
+                              "${snapshot.data!.ratings==null?0:snapshot.data!.ratings!.serviceOfWorkRatinig}",
                               style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       fontSize: 10,

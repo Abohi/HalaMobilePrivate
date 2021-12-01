@@ -27,7 +27,8 @@ class _$NotificationModelTearOff {
           DateTime? createdAt,
       required String title,
       bool isOpen = false,
-      String? notificationId}) {
+      String? notificationId,
+      required String body}) {
     return _NotificationModel(
       buyerId: buyerId,
       requestId: requestId,
@@ -35,6 +36,7 @@ class _$NotificationModelTearOff {
       title: title,
       isOpen: isOpen,
       notificationId: notificationId,
+      body: body,
     );
   }
 
@@ -56,6 +58,7 @@ mixin _$NotificationModel {
   String get title => throw _privateConstructorUsedError;
   bool get isOpen => throw _privateConstructorUsedError;
   String? get notificationId => throw _privateConstructorUsedError;
+  String get body => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -75,7 +78,8 @@ abstract class $NotificationModelCopyWith<$Res> {
           DateTime? createdAt,
       String title,
       bool isOpen,
-      String? notificationId});
+      String? notificationId,
+      String body});
 }
 
 /// @nodoc
@@ -95,6 +99,7 @@ class _$NotificationModelCopyWithImpl<$Res>
     Object? title = freezed,
     Object? isOpen = freezed,
     Object? notificationId = freezed,
+    Object? body = freezed,
   }) {
     return _then(_value.copyWith(
       buyerId: buyerId == freezed
@@ -121,6 +126,10 @@ class _$NotificationModelCopyWithImpl<$Res>
           ? _value.notificationId
           : notificationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -139,7 +148,8 @@ abstract class _$NotificationModelCopyWith<$Res>
           DateTime? createdAt,
       String title,
       bool isOpen,
-      String? notificationId});
+      String? notificationId,
+      String body});
 }
 
 /// @nodoc
@@ -161,6 +171,7 @@ class __$NotificationModelCopyWithImpl<$Res>
     Object? title = freezed,
     Object? isOpen = freezed,
     Object? notificationId = freezed,
+    Object? body = freezed,
   }) {
     return _then(_NotificationModel(
       buyerId: buyerId == freezed
@@ -187,6 +198,10 @@ class __$NotificationModelCopyWithImpl<$Res>
           ? _value.notificationId
           : notificationId // ignore: cast_nullable_to_non_nullable
               as String?,
+      body: body == freezed
+          ? _value.body
+          : body // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -201,7 +216,8 @@ class _$_NotificationModel implements _NotificationModel {
           this.createdAt,
       required this.title,
       this.isOpen = false,
-      this.notificationId});
+      this.notificationId,
+      required this.body});
 
   factory _$_NotificationModel.fromJson(Map<String, dynamic> json) =>
       _$_$_NotificationModelFromJson(json);
@@ -221,10 +237,12 @@ class _$_NotificationModel implements _NotificationModel {
   final bool isOpen;
   @override
   final String? notificationId;
+  @override
+  final String body;
 
   @override
   String toString() {
-    return 'NotificationModel(buyerId: $buyerId, requestId: $requestId, createdAt: $createdAt, title: $title, isOpen: $isOpen, notificationId: $notificationId)';
+    return 'NotificationModel(buyerId: $buyerId, requestId: $requestId, createdAt: $createdAt, title: $title, isOpen: $isOpen, notificationId: $notificationId, body: $body)';
   }
 
   @override
@@ -246,7 +264,9 @@ class _$_NotificationModel implements _NotificationModel {
                 const DeepCollectionEquality().equals(other.isOpen, isOpen)) &&
             (identical(other.notificationId, notificationId) ||
                 const DeepCollectionEquality()
-                    .equals(other.notificationId, notificationId)));
+                    .equals(other.notificationId, notificationId)) &&
+            (identical(other.body, body) ||
+                const DeepCollectionEquality().equals(other.body, body)));
   }
 
   @override
@@ -257,7 +277,8 @@ class _$_NotificationModel implements _NotificationModel {
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(isOpen) ^
-      const DeepCollectionEquality().hash(notificationId);
+      const DeepCollectionEquality().hash(notificationId) ^
+      const DeepCollectionEquality().hash(body);
 
   @JsonKey(ignore: true)
   @override
@@ -278,7 +299,8 @@ abstract class _NotificationModel implements NotificationModel {
           DateTime? createdAt,
       required String title,
       bool isOpen,
-      String? notificationId}) = _$_NotificationModel;
+      String? notificationId,
+      required String body}) = _$_NotificationModel;
 
   factory _NotificationModel.fromJson(Map<String, dynamic> json) =
       _$_NotificationModel.fromJson;
@@ -297,6 +319,8 @@ abstract class _NotificationModel implements NotificationModel {
   bool get isOpen => throw _privateConstructorUsedError;
   @override
   String? get notificationId => throw _privateConstructorUsedError;
+  @override
+  String get body => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NotificationModelCopyWith<_NotificationModel> get copyWith =>

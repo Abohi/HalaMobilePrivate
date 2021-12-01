@@ -21,9 +21,9 @@ class _$UserRatingModelTearOff {
   const _$UserRatingModelTearOff();
 
   _UserRatingModel call(
-      {double communicationRating = 0.0,
-      double likelyRecommendRating = 0.0,
-      double serviceOfWorkRatinig = 0.0}) {
+      {num communicationRating = 0.0,
+      num likelyRecommendRating = 0.0,
+      num serviceOfWorkRatinig = 0.0}) {
     return _UserRatingModel(
       communicationRating: communicationRating,
       likelyRecommendRating: likelyRecommendRating,
@@ -41,9 +41,9 @@ const $UserRatingModel = _$UserRatingModelTearOff();
 
 /// @nodoc
 mixin _$UserRatingModel {
-  double get communicationRating => throw _privateConstructorUsedError;
-  double get likelyRecommendRating => throw _privateConstructorUsedError;
-  double get serviceOfWorkRatinig => throw _privateConstructorUsedError;
+  num get communicationRating => throw _privateConstructorUsedError;
+  num get likelyRecommendRating => throw _privateConstructorUsedError;
+  num get serviceOfWorkRatinig => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,9 +57,9 @@ abstract class $UserRatingModelCopyWith<$Res> {
           UserRatingModel value, $Res Function(UserRatingModel) then) =
       _$UserRatingModelCopyWithImpl<$Res>;
   $Res call(
-      {double communicationRating,
-      double likelyRecommendRating,
-      double serviceOfWorkRatinig});
+      {num communicationRating,
+      num likelyRecommendRating,
+      num serviceOfWorkRatinig});
 }
 
 /// @nodoc
@@ -81,15 +81,15 @@ class _$UserRatingModelCopyWithImpl<$Res>
       communicationRating: communicationRating == freezed
           ? _value.communicationRating
           : communicationRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       likelyRecommendRating: likelyRecommendRating == freezed
           ? _value.likelyRecommendRating
           : likelyRecommendRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       serviceOfWorkRatinig: serviceOfWorkRatinig == freezed
           ? _value.serviceOfWorkRatinig
           : serviceOfWorkRatinig // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
     ));
   }
 }
@@ -102,9 +102,9 @@ abstract class _$UserRatingModelCopyWith<$Res>
       __$UserRatingModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {double communicationRating,
-      double likelyRecommendRating,
-      double serviceOfWorkRatinig});
+      {num communicationRating,
+      num likelyRecommendRating,
+      num serviceOfWorkRatinig});
 }
 
 /// @nodoc
@@ -128,15 +128,15 @@ class __$UserRatingModelCopyWithImpl<$Res>
       communicationRating: communicationRating == freezed
           ? _value.communicationRating
           : communicationRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       likelyRecommendRating: likelyRecommendRating == freezed
           ? _value.likelyRecommendRating
           : likelyRecommendRating // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
       serviceOfWorkRatinig: serviceOfWorkRatinig == freezed
           ? _value.serviceOfWorkRatinig
           : serviceOfWorkRatinig // ignore: cast_nullable_to_non_nullable
-              as double,
+              as num,
     ));
   }
 }
@@ -154,13 +154,13 @@ class _$_UserRatingModel implements _UserRatingModel {
 
   @JsonKey(defaultValue: 0.0)
   @override
-  final double communicationRating;
+  final num communicationRating;
   @JsonKey(defaultValue: 0.0)
   @override
-  final double likelyRecommendRating;
+  final num likelyRecommendRating;
   @JsonKey(defaultValue: 0.0)
   @override
-  final double serviceOfWorkRatinig;
+  final num serviceOfWorkRatinig;
 
   @override
   String toString() {
@@ -202,19 +202,19 @@ class _$_UserRatingModel implements _UserRatingModel {
 
 abstract class _UserRatingModel implements UserRatingModel {
   const factory _UserRatingModel(
-      {double communicationRating,
-      double likelyRecommendRating,
-      double serviceOfWorkRatinig}) = _$_UserRatingModel;
+      {num communicationRating,
+      num likelyRecommendRating,
+      num serviceOfWorkRatinig}) = _$_UserRatingModel;
 
   factory _UserRatingModel.fromJson(Map<String, dynamic> json) =
       _$_UserRatingModel.fromJson;
 
   @override
-  double get communicationRating => throw _privateConstructorUsedError;
+  num get communicationRating => throw _privateConstructorUsedError;
   @override
-  double get likelyRecommendRating => throw _privateConstructorUsedError;
+  num get likelyRecommendRating => throw _privateConstructorUsedError;
   @override
-  double get serviceOfWorkRatinig => throw _privateConstructorUsedError;
+  num get serviceOfWorkRatinig => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserRatingModelCopyWith<_UserRatingModel> get copyWith =>

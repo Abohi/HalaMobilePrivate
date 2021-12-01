@@ -42,6 +42,8 @@ import 'package:halawork/pages/dashboard_pages/pages/inboxpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notification_pages/notification_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/notificationpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_achievement_page/edit_achievement_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_individual_description_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_organization_description_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_education_page/edit_education_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_skills_page/edit_skill_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/edit_work_history/edit_work_history.dart';
@@ -132,6 +134,8 @@ import '../main.dart';
     const AutoRoute(page:  EditWorkHistoryPage),
     const AutoRoute(page:  EditAchievementPage),
     const AutoRoute(page:  EditEducationPage),
+    const AutoRoute(page:  EditOrganizationDescritionPage),
+    const AutoRoute(page:  EditIndividualDescriptionPage),
     //End of Inbox pages
     const AutoRoute(
         path: '/dashboard',

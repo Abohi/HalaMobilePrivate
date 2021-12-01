@@ -54,6 +54,7 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
     states:
         (json['states'] as List<dynamic>?)?.map((e) => e as String).toList(),
     isActiveService: json['isActiveService'] as bool?,
+    toggleNationWideVisibility: json['toggleNationWideVisibility'] as bool?,
   );
 }
 
@@ -92,4 +93,5 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'isDismissCompleteProfile': instance.isDismissCompleteProfile,
       'states': instance.states,
       'isActiveService': instance.isActiveService,
+      'toggleNationWideVisibility': instance.toggleNationWideVisibility,
     };

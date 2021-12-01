@@ -23,7 +23,7 @@ class ProfilePresenceSection extends HookWidget {
   Widget build(BuildContext context) {
     if(isProfileView){
       return userModel==null?Text(""):
-      Column(
+      userModel?.locationModel?.length==0?Text(""):Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -138,7 +138,7 @@ class ProfilePresenceSection extends HookWidget {
                     TextStyle(color: const Color(0xff29283C), fontSize: 12)),
               ),
               Switch(
-                value: userModel!.userModel.isActiveService!,
+                value: userModel!.userModel.toggleNationWideVisibility??true,
                 onChanged: (value) async{
 
                 },
@@ -167,7 +167,7 @@ class ProfilePresenceSection extends HookWidget {
       );
     }else{
       var userModelState = useProvider(userControllerProvider);
-      return userModelState==null?Text(""):
+      return userModelState?.locationModel?.length==0?Text(""):
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +186,7 @@ class ProfilePresenceSection extends HookWidget {
                     TextStyle(color: const Color(0xff29283C), fontSize: 12)),
               ),
               Text(
-                "${userModelState.locationModel![0].state},Nigeria",
+                "${userModelState!.locationModel![0].state},Nigeria",
                 style: GoogleFonts.roboto(
                     textStyle: TextStyle(
                         color: const Color(0xff29283C),
@@ -283,7 +283,7 @@ class ProfilePresenceSection extends HookWidget {
                     TextStyle(color: const Color(0xff29283C), fontSize: 12)),
               ),
               Switch(
-                value: userModelState.userModel.isActiveService!,
+                value: userModelState.userModel.toggleNationWideVisibility??true,
                 onChanged: (value) async{
                   updateNationalAvailability(value);
                 },

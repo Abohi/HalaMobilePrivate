@@ -174,7 +174,11 @@ class ProfilePictureEntryPage extends HookWidget {
           SizedBox(height: 66,),
           GestureDetector(
             onTap: (){
-              context.router.navigate(LocationEntryRoute());
+              if(context.read(sellerSetupStateProvider).state!.sellerType=="Organization"){
+                context.router.navigate(AddLocationOrganizationEntryRoute());
+              }else{
+                context.router.navigate(LocationEntryRoute());
+              }
             },
             child: Center(child: Text("SKIP FOR NOW",style:
             GoogleFonts.roboto(textStyle: TextStyle(fontWeight: FontWeight.w700,fontSize: 14,color: const Color(0xff0000FF)))),),

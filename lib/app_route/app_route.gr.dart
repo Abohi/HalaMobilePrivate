@@ -8,12 +8,13 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import '../main.dart' as _i3;
-import '../models/active_servicemodel/active_service_model.dart' as _i60;
-import '../models/modification_model/modification_model.dart' as _i65;
-import '../models/offer_model/offer_model.dart' as _i62;
-import '../models/order_model/order_model.dart' as _i64;
-import '../models/requests_model/request_model2.dart' as _i61;
-import '../models/user_model/user_model.dart' as _i63;
+import '../models/active_servicemodel/active_service_model.dart' as _i62;
+import '../models/modification_model/modification_model.dart' as _i68;
+import '../models/notification_model/notification_model.dart' as _i67;
+import '../models/offer_model/offer_model.dart' as _i64;
+import '../models/order_model/order_model.dart' as _i66;
+import '../models/requests_model/request_model2.dart' as _i63;
+import '../models/user_model/user_model.dart' as _i65;
 import '../pages/app_entry_pages/app_entry_main_page.dart' as _i4;
 import '../pages/auth_pages/login_page.dart' as _i7;
 import '../pages/auth_pages/sigup_page/email_signup_page.dart' as _i9;
@@ -25,8 +26,8 @@ import '../pages/basic_verification_pages/phone_number_verification_page.dart'
     as _i11;
 import '../pages/basic_verification_pages/resend_email_verification_link_page.dart'
     as _i5;
-import '../pages/dashboard_pages/dashboard_page.dart' as _i54;
-import '../pages/dashboard_pages/pages/create_request_page.dart' as _i59;
+import '../pages/dashboard_pages/dashboard_page.dart' as _i56;
+import '../pages/dashboard_pages/pages/create_request_page.dart' as _i61;
 import '../pages/dashboard_pages/pages/drawer_pages/dispute_page.dart' as _i30;
 import '../pages/dashboard_pages/pages/drawer_pages/modification_page.dart'
     as _i31;
@@ -77,15 +78,19 @@ import '../pages/dashboard_pages/pages/home_pages/service_pages/byservice_page.d
     as _i48;
 import '../pages/dashboard_pages/pages/home_pages/service_pages/subservice_page.dart'
     as _i27;
-import '../pages/dashboard_pages/pages/homepage.dart' as _i55;
+import '../pages/dashboard_pages/pages/homepage.dart' as _i57;
 import '../pages/dashboard_pages/pages/inbox_pages/inbox_detail_page.dart'
     as _i39;
-import '../pages/dashboard_pages/pages/inboxpage.dart' as _i56;
+import '../pages/dashboard_pages/pages/inboxpage.dart' as _i58;
 import '../pages/dashboard_pages/pages/notification_pages/notification_detail_page.dart'
     as _i38;
-import '../pages/dashboard_pages/pages/notificationpage.dart' as _i57;
+import '../pages/dashboard_pages/pages/notificationpage.dart' as _i59;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_achievement_page/edit_achievement_page.dart'
     as _i52;
+import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_individual_description_page.dart'
+    as _i55;
+import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_organization_description_page.dart'
+    as _i54;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_education_page/edit_education_page.dart'
     as _i53;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_skills_page/edit_skill_page.dart'
@@ -109,7 +114,7 @@ import '../pages/dashboard_pages/pages/request_pages/offer_sent_pages.dart'
     as _i33;
 import '../pages/dashboard_pages/pages/request_pages/send_offer_page.dart'
     as _i32;
-import '../pages/dashboard_pages/pages/requestpage.dart' as _i58;
+import '../pages/dashboard_pages/pages/requestpage.dart' as _i60;
 import '../pages/splash_screen/splash_screen.dart' as _i25;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -320,7 +325,8 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<NotificationDetailRouteArgs>();
-          return _i38.NotificationDetailPage(requestId: args.requestId);
+          return _i38.NotificationDetailPage(
+              notificationModel: args.notificationModel);
         }),
     InboxDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -407,35 +413,47 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return _i53.EditEducationPage();
         }),
+    EditOrganizationDescritionRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (_) {
+              return _i54.EditOrganizationDescritionPage();
+            }),
+    EditIndividualDescriptionRoute.name: (routeData) =>
+        _i1.MaterialPageX<dynamic>(
+            routeData: routeData,
+            builder: (_) {
+              return _i55.EditIndividualDescriptionPage();
+            }),
     DashBoardRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i54.DashBoardPage();
+          return _i56.DashBoardPage();
         }),
     HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i55.HomePage();
+          return _i57.HomePage();
         }),
     InboxRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i56.InboxPage();
+          return _i58.InboxPage();
         }),
     NotificationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i57.NotificationPage();
+          return _i59.NotificationPage();
         }),
     RequestRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i58.RequestPage();
+          return _i60.RequestPage();
         }),
     CreateRequestRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i59.CreateRequestPage();
+          return _i61.CreateRequestPage();
         })
   };
 
@@ -523,6 +541,10 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(EditAchievementRoute.name,
             path: '/edit-achievement-page'),
         _i1.RouteConfig(EditEducationRoute.name, path: '/edit-education-page'),
+        _i1.RouteConfig(EditOrganizationDescritionRoute.name,
+            path: '/edit-organization-descrition-page'),
+        _i1.RouteConfig(EditIndividualDescriptionRoute.name,
+            path: '/edit-individual-description-page'),
         _i1.RouteConfig(DashBoardRoute.name, path: '/dashboard', children: [
           _i1.RouteConfig(HomeRoute.name, path: ''),
           _i1.RouteConfig(InboxRoute.name, path: 'inbox-page'),
@@ -699,7 +721,7 @@ class SplashScreenRoute extends _i1.PageRouteInfo {
 }
 
 class ByServiceDetailRoute extends _i1.PageRouteInfo<ByServiceDetailRouteArgs> {
-  ByServiceDetailRoute({required _i60.ActiveServiceModel serviceModel})
+  ByServiceDetailRoute({required _i62.ActiveServiceModel serviceModel})
       : super(name,
             path: '/by-service-detail-page',
             args: ByServiceDetailRouteArgs(serviceModel: serviceModel));
@@ -710,13 +732,13 @@ class ByServiceDetailRoute extends _i1.PageRouteInfo<ByServiceDetailRouteArgs> {
 class ByServiceDetailRouteArgs {
   const ByServiceDetailRouteArgs({required this.serviceModel});
 
-  final _i60.ActiveServiceModel serviceModel;
+  final _i62.ActiveServiceModel serviceModel;
 }
 
 class SubserviceRoute extends _i1.PageRouteInfo<SubserviceRouteArgs> {
   SubserviceRoute(
       {required String subServiceName,
-      required _i60.ActiveServiceModel activeServiceModel})
+      required _i62.ActiveServiceModel activeServiceModel})
       : super(name,
             path: '/subservice-page',
             args: SubserviceRouteArgs(
@@ -732,7 +754,7 @@ class SubserviceRouteArgs {
 
   final String subServiceName;
 
-  final _i60.ActiveServiceModel activeServiceModel;
+  final _i62.ActiveServiceModel activeServiceModel;
 }
 
 class ProfileRoute extends _i1.PageRouteInfo {
@@ -760,7 +782,7 @@ class ModificationRoute extends _i1.PageRouteInfo {
 }
 
 class SendOfferRoute extends _i1.PageRouteInfo<SendOfferRouteArgs> {
-  SendOfferRoute({required _i61.CreateRequestModel2 createRequestModel2})
+  SendOfferRoute({required _i63.CreateRequestModel2 createRequestModel2})
       : super(name,
             path: '/send-offer-page',
             args: SendOfferRouteArgs(createRequestModel2: createRequestModel2));
@@ -771,7 +793,7 @@ class SendOfferRoute extends _i1.PageRouteInfo<SendOfferRouteArgs> {
 class SendOfferRouteArgs {
   const SendOfferRouteArgs({required this.createRequestModel2});
 
-  final _i61.CreateRequestModel2 createRequestModel2;
+  final _i63.CreateRequestModel2 createRequestModel2;
 }
 
 class OfferSentRoute extends _i1.PageRouteInfo<OfferSentRouteArgs> {
@@ -791,7 +813,7 @@ class OfferSentRouteArgs {
 
 class OfferSentDetailRoute extends _i1.PageRouteInfo<OfferSentDetailRouteArgs> {
   OfferSentDetailRoute(
-      {required _i62.OfferModel offerModel, required _i63.UserModel userModel})
+      {required _i64.OfferModel offerModel, required _i65.UserModel userModel})
       : super(name,
             path: '/offer-sent-detail-page',
             args: OfferSentDetailRouteArgs(
@@ -804,14 +826,14 @@ class OfferSentDetailRouteArgs {
   const OfferSentDetailRouteArgs(
       {required this.offerModel, required this.userModel});
 
-  final _i62.OfferModel offerModel;
+  final _i64.OfferModel offerModel;
 
-  final _i63.UserModel userModel;
+  final _i65.UserModel userModel;
 }
 
 class PendingOrderDetailRoute
     extends _i1.PageRouteInfo<PendingOrderDetailRouteArgs> {
-  PendingOrderDetailRoute({required _i64.OrderModel orderModel})
+  PendingOrderDetailRoute({required _i66.OrderModel orderModel})
       : super(name,
             path: '/pending-order-detail-page',
             args: PendingOrderDetailRouteArgs(orderModel: orderModel));
@@ -822,12 +844,12 @@ class PendingOrderDetailRoute
 class PendingOrderDetailRouteArgs {
   const PendingOrderDetailRouteArgs({required this.orderModel});
 
-  final _i64.OrderModel orderModel;
+  final _i66.OrderModel orderModel;
 }
 
 class OngoingOrderDetailRoute
     extends _i1.PageRouteInfo<OngoingOrderDetailRouteArgs> {
-  OngoingOrderDetailRoute({required _i64.OrderModel orderModel})
+  OngoingOrderDetailRoute({required _i66.OrderModel orderModel})
       : super(name,
             path: '/ongoing-order-detail-page',
             args: OngoingOrderDetailRouteArgs(orderModel: orderModel));
@@ -838,12 +860,12 @@ class OngoingOrderDetailRoute
 class OngoingOrderDetailRouteArgs {
   const OngoingOrderDetailRouteArgs({required this.orderModel});
 
-  final _i64.OrderModel orderModel;
+  final _i66.OrderModel orderModel;
 }
 
 class CompletedOrderDetailRoute
     extends _i1.PageRouteInfo<CompletedOrderDetailRouteArgs> {
-  CompletedOrderDetailRoute({required _i64.OrderModel orderModel})
+  CompletedOrderDetailRoute({required _i66.OrderModel orderModel})
       : super(name,
             path: '/completed-order-detail-page',
             args: CompletedOrderDetailRouteArgs(orderModel: orderModel));
@@ -854,23 +876,24 @@ class CompletedOrderDetailRoute
 class CompletedOrderDetailRouteArgs {
   const CompletedOrderDetailRouteArgs({required this.orderModel});
 
-  final _i64.OrderModel orderModel;
+  final _i66.OrderModel orderModel;
 }
 
 class NotificationDetailRoute
     extends _i1.PageRouteInfo<NotificationDetailRouteArgs> {
-  NotificationDetailRoute({required String requestId})
+  NotificationDetailRoute({required _i67.NotificationModel notificationModel})
       : super(name,
             path: '/notification-detail-page',
-            args: NotificationDetailRouteArgs(requestId: requestId));
+            args: NotificationDetailRouteArgs(
+                notificationModel: notificationModel));
 
   static const String name = 'NotificationDetailRoute';
 }
 
 class NotificationDetailRouteArgs {
-  const NotificationDetailRouteArgs({required this.requestId});
+  const NotificationDetailRouteArgs({required this.notificationModel});
 
-  final String requestId;
+  final _i67.NotificationModel notificationModel;
 }
 
 class InboxDetailRoute extends _i1.PageRouteInfo {
@@ -881,7 +904,7 @@ class InboxDetailRoute extends _i1.PageRouteInfo {
 
 class ModificationBuyerRoute
     extends _i1.PageRouteInfo<ModificationBuyerRouteArgs> {
-  ModificationBuyerRoute({required _i64.OrderModel orderModel})
+  ModificationBuyerRoute({required _i66.OrderModel orderModel})
       : super(name,
             path: '/modification-buyer-page',
             args: ModificationBuyerRouteArgs(orderModel: orderModel));
@@ -892,12 +915,12 @@ class ModificationBuyerRoute
 class ModificationBuyerRouteArgs {
   const ModificationBuyerRouteArgs({required this.orderModel});
 
-  final _i64.OrderModel orderModel;
+  final _i66.OrderModel orderModel;
 }
 
 class ModificationDetailRoute
     extends _i1.PageRouteInfo<ModificationDetailRouteArgs> {
-  ModificationDetailRoute({required _i65.ModificationModel modificationModel})
+  ModificationDetailRoute({required _i68.ModificationModel modificationModel})
       : super(name,
             path: '/modification-detail-page',
             args: ModificationDetailRouteArgs(
@@ -909,7 +932,7 @@ class ModificationDetailRoute
 class ModificationDetailRouteArgs {
   const ModificationDetailRouteArgs({required this.modificationModel});
 
-  final _i65.ModificationModel modificationModel;
+  final _i68.ModificationModel modificationModel;
 }
 
 class EditServiceRoute extends _i1.PageRouteInfo<EditServiceRouteArgs> {
@@ -1026,6 +1049,20 @@ class EditEducationRoute extends _i1.PageRouteInfo {
   const EditEducationRoute() : super(name, path: '/edit-education-page');
 
   static const String name = 'EditEducationRoute';
+}
+
+class EditOrganizationDescritionRoute extends _i1.PageRouteInfo {
+  const EditOrganizationDescritionRoute()
+      : super(name, path: '/edit-organization-descrition-page');
+
+  static const String name = 'EditOrganizationDescritionRoute';
+}
+
+class EditIndividualDescriptionRoute extends _i1.PageRouteInfo {
+  const EditIndividualDescriptionRoute()
+      : super(name, path: '/edit-individual-description-page');
+
+  static const String name = 'EditIndividualDescriptionRoute';
 }
 
 class DashBoardRoute extends _i1.PageRouteInfo {

@@ -62,19 +62,20 @@ late NetworkFailure networkFailure;
                           if(userModelState==null){
                             context.router.navigate(EnterPhoneNumberRoute());
                           }else{
-                            final progress = ProgressHUD.of(context);
-                            progress!.showWithText('Sending phone verification code...');
-                            Either<NetworkFailure,bool> response =  await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
-                            response.fold((l){
-                              progress.dismiss();
-                              isNetworkError.value = true;
-                            }, (r){
-                              if(r){
-                                isNetworkError.value = false;
-                                progress.dismiss();
-                                return context.router.navigate(PhoneVerificationRoute());
-                              }
-                            });
+                            context.router.navigate(PhoneVerificationRoute());
+                            // final progress = ProgressHUD.of(context);
+                            // progress!.showWithText('Sending phone verification code...');
+                            // Either<NetworkFailure,bool> response =  await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
+                            // response.fold((l){
+                            //   progress.dismiss();
+                            //   isNetworkError.value = true;
+                            // }, (r){
+                            //   if(r){
+                            //     isNetworkError.value = false;
+                            //     progress.dismiss();
+                            //     return context.router.navigate(PhoneVerificationRoute());
+                            //   }
+                            // });
                           }
                       }, imageIcon: null,),
                       SizedBox(height: height*0.10,)

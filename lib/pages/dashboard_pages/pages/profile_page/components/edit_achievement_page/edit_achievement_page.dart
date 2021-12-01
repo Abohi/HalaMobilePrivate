@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/models/seller_setup_models/achievement_entry_model/achievement_entry_model.dart';
@@ -99,6 +100,7 @@ class EditAchievementPage extends HookWidget {
                           progress!.showWithText('Updating Achievement...');
                           await context.read(userRepositoryProvider).updateAchievement(achievementEntryListChangeNotifier.achievementEntryModelList);
                           progress.dismiss();
+                          await Fluttertoast.showToast(msg: "Achievement updated successfully",toastLength: Toast.LENGTH_LONG);
                         }, imageIcon: null,),
                       ),
                     ),

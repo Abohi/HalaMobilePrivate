@@ -10,7 +10,7 @@ class NotificationModel with _$NotificationModel{
   name: "createdAt",
   fromJson: dateTimeFromJson,
   toJson: dateTimeToJson,
-  )  DateTime? createdAt,required String title,@Default(false) bool isOpen,String? notificationId})=_NotificationModel;
+  )  DateTime? createdAt,required String title,@Default(false) bool isOpen,String? notificationId,required String body})=_NotificationModel;
   factory NotificationModel.fromJson(Map<String, dynamic> json) => _$NotificationModelFromJson(json);
 }
 DateTime dateTimeFromJson(Timestamp timestamp) {

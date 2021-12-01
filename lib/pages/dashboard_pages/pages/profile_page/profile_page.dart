@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/auth_pages/login_widget/custom_login_divider.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/achievement_section.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/description_section.dart';
@@ -64,20 +66,26 @@ class ProfilePage extends HookWidget{
             builder: (context){
               return CustomScrollView(
                 slivers: [
+                  (userModelState!.userModel.isSeller==false)&&(userModelState.userModel.isDismissCompleteProfile==true)?CompleteSellerProfile(onDismissedClicked: ()async{
+                    final progress = ProgressHUD.of(context);
+                    progress!.showWithText('Dismissing Notification...');
+                    UserModel userModel =userModelState.userModel.copyWith(isDismissCompleteProfile:true);
+                    await context.read(userRepositoryProvider).saveBasicSellerInfo(userModel);
+                    progress.dismiss();
+                    await Fluttertoast.showToast(msg: "Notification dismissed successfully",toastLength: Toast.LENGTH_LONG);
+                  },):SliverToBoxAdapter(child: SizedBox.shrink()),
                   SliverList(
                     delegate: SliverChildListDelegate([
-                      (userModelState!.userModel.isSeller==false)&&(userModelState.userModel.isDismissCompleteProfile==true)?CompleteSellerProfile(onDismissedClicked: ()async{
-
-                      },):SliverToBoxAdapter(child: SizedBox.shrink()),
                       Container(
                         padding: EdgeInsets.only(left: 17,right:17),
                         width: size.width,
                         color: const Color(0xffEBEBFF),
-                        child: ProfilePhotoSection(isProfileView: false, userModel: null, updateProfilePicture: ()async{
+                        child: ProfilePhotoSection(isProfileView: false, userModel: null, updateProfilePicture: (String path)async{
                           final progress = ProgressHUD.of(context);
                           progress!.showWithText('Updating Profile Picture...');
-                          context.read(userRepositoryProvider).updateSellerProfilePicture();
+                          await context.read(userRepositoryProvider).updateSellerProfilePicture(path);
                           progress.dismiss();
+                          await Fluttertoast.showToast(msg: "Profile picture updated successfully",toastLength: Toast.LENGTH_LONG);
                         },),
                       ),
                       Container(
@@ -89,6 +97,7 @@ class ProfilePage extends HookWidget{
                           progress!.showWithText('Updating Visibility...');
                           await context.read(userRepositoryProvider).updateNationalAvailability(userModelState, value);
                           progress.dismiss();
+                          await Fluttertoast.showToast(msg: "Visibility Updated Successfully",toastLength: Toast.LENGTH_LONG);
                         },),
                       )
                     ]),
@@ -114,8 +123,8 @@ class ProfilePage extends HookWidget{
                                   SliverToBoxAdapter(child: const DescriptionSection(isProfileView: false, userModel: null,)),
                                   const ServiceSection(isProfileView: false, userModel: null,),
                                   userModelState.userModel.subServices==null ||userModelState.userModel.subServices!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()):SubServiceSection(userModel: null, isProfileView: false,),
-                                  userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Skills", rightHeaderTitle: "EDIT", voidButtonPressed: (){
-                                    context.router.navigate(EditSkillRoute());
+                                  userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()):CustomSliverHeader(leftHeadTitle: "Skills", rightHeaderTitle: "", voidButtonPressed: (){
+                                    // context.router.navigate(EditSkillRoute());
                                   }),
                                   userModelState.userModel.skills==null ||userModelState.userModel.skills!.isEmpty?SliverToBoxAdapter(child: SizedBox.shrink()): SkillsSection(userModel: null, isProfileView: false,),
                                   userModelState.userModel.isBuyer?SliverToBoxAdapter(child: SizedBox.shrink()): CustomSliverDivider(),
@@ -141,7 +150,13 @@ class ProfilePage extends HookWidget{
                             ),
                             Positioned(
                               top: 0,
-                              child:ToggleAsSeller(isProfileView: false, userModel: null,),
+                              child:userModelState.userModel.isSeller==false && userModelState.userModel.isBuyer==true?SizedBox.shrink():ToggleAsSeller(isProfileView: false, userModel: null, onSellerModeActivated: (bool isSellerActivated) async{
+                                final progress = ProgressHUD.of(context);
+                                progress!.showWithText('Updating User Type...');
+                                await context.read(userRepositoryProvider).updatingUserType(userModelState, isSellerActivated);
+                                await Fluttertoast.showToast(msg: "Seller Type Updated Successfully",toastLength: Toast.LENGTH_LONG);
+                                progress.dismiss();
+                              },),
                             )
                           ],
                         ),

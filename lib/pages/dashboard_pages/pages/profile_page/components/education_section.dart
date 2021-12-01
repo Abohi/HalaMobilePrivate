@@ -14,17 +14,19 @@ class EducationSection extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     if(isProfileView){
+
+
+      return userModel==null?SliverToBoxAdapter(
+        child: Text(""),
+      ):SliverList(delegate: SliverChildListDelegate(
+          userModel!.educationModels!.map((e) => HistoryTile(title:e.schoolName!, description:"${DateFormat.yMMMMd('en_US').format(e.dateAttended!)}-${DateFormat.yMMMMd('en_US').format(e.dateEnded!)}",)).toList()
+      ));
+    }else{
       var userModelState = useProvider(userControllerProvider);
       return userModelState==null?SliverToBoxAdapter(
         child: Text(""),
       ):SliverList(delegate: SliverChildListDelegate(
           userModelState.educationModels!.map((e) => HistoryTile(title:e.schoolName!, description:"${DateFormat.yMMMMd('en_US').format(e.dateAttended!)}-${DateFormat.yMMMMd('en_US').format(e.dateEnded!)}",)).toList()
-      ));
-    }else{
-      return userModel==null?SliverToBoxAdapter(
-        child: Text(""),
-      ):SliverList(delegate: SliverChildListDelegate(
-          userModel!.educationModels!.map((e) => HistoryTile(title:e.schoolName!, description:"${DateFormat.yMMMMd('en_US').format(e.dateAttended!)}-${DateFormat.yMMMMd('en_US').format(e.dateEnded!)}",)).toList()
       ));
     }
   }

@@ -8,12 +8,9 @@ part of 'user_ratings.dart';
 
 _$_UserRatingModel _$_$_UserRatingModelFromJson(Map<String, dynamic> json) {
   return _$_UserRatingModel(
-    communicationRating:
-        (json['communicationRating'] as num?)?.toDouble() ?? 0.0,
-    likelyRecommendRating:
-        (json['likelyRecommendRating'] as num?)?.toDouble() ?? 0.0,
-    serviceOfWorkRatinig:
-        (json['serviceOfWorkRatinig'] as num?)?.toDouble() ?? 0.0,
+    communicationRating: json['communicationRating'] as num? ?? 0.0,
+    likelyRecommendRating: json['likelyRecommendRating'] as num? ?? 0.0,
+    serviceOfWorkRatinig: json['serviceOfWorkRatinig'] as num? ?? 0.0,
   );
 }
 

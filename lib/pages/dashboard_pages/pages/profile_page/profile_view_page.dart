@@ -75,7 +75,7 @@ class ProfileViewPage extends HookWidget {
                     padding: EdgeInsets.only(left: 17,right:17),
                     width: size.width,
                     color: const Color(0xffEBEBFF),
-                    child: ProfilePhotoSection(isProfileView: true, userModel: data.userModel, updateProfilePicture: (){
+                    child: ProfilePhotoSection(isProfileView: true, userModel: data.userModel, updateProfilePicture: (String path){
 
                     },),
                   ),
@@ -124,7 +124,9 @@ class ProfileViewPage extends HookWidget {
                         ),
                         Positioned(
                           top: 0,
-                          child:ToggleAsSeller(userModel: data.userModel, isProfileView: true,),
+                          child:ToggleAsSeller(userModel: data.userModel, isProfileView: true, onSellerModeActivated: (bool isSellerActivated) {
+
+                          },),
                         )
                       ],
                     ),

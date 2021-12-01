@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/user_controller.dart';
@@ -24,6 +26,22 @@ class HomePage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var userModelState = useProvider(userControllerProvider);
+    useEffect((){
+      Future.microtask(()async{
+        FirebaseMessaging _fcm = FirebaseMessaging.instance;
+        if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
+          String? fcmToken = await _fcm.getToken();
+          if(fcmToken!=null){
+            await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
+          }else{
+            String? fcmToken = await _fcm.getToken();
+            await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
+          }
+
+        }
+      });
+      return null;
+    },[]);
     return ProgressHUD(
       backgroundColor:const Color(0xff0000FF),
       indicatorColor: Colors.white,
@@ -40,6 +58,7 @@ class HomePage extends HookWidget {
                   UserModel userModel =userModelState.userModel.copyWith(isDismissCompleteProfile:true);
                   await context.read(userRepositoryProvider).saveBasicSellerInfo(userModel);
                   progress.dismiss();
+                  await Fluttertoast.showToast(msg: "Notification dismissed successfully",toastLength: Toast.LENGTH_LONG);
                 },),
                 SliverToBoxAdapter(
                   child: SizedBox(height: 20,),

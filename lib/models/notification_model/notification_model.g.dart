@@ -14,6 +14,7 @@ _$_NotificationModel _$_$_NotificationModelFromJson(Map<String, dynamic> json) {
     title: json['title'] as String,
     isOpen: json['isOpen'] as bool? ?? false,
     notificationId: json['notificationId'] as String?,
+    body: json['body'] as String,
   );
 }
 
@@ -26,4 +27,5 @@ Map<String, dynamic> _$_$_NotificationModelToJson(
       'title': instance.title,
       'isOpen': instance.isOpen,
       'notificationId': instance.notificationId,
+      'body': instance.body,
     };

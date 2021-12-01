@@ -196,21 +196,28 @@ class PhoneVerificationPage extends HookWidget{
                               return await Fluttertoast.showToast(msg: "Field cannot be empty",toastLength: Toast.LENGTH_LONG);
 
                             final int? sentCode = await PreferenceManager().getPhoneCode();
-                            if(int.parse(_textEditingController.text.toString())==sentCode!){
                               final progress = ProgressHUD.of(context);
                               progress!.showWithText('Verifying phone number...');
-                              //verify buyer
                               UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true,email: context.read(authControllerProvider)!.email);
                               await context.read(authControllerProvider.notifier).verifyAsBuyer(userModel);
                               await context.read(serviceTypeControllerProvider.notifier).saveServicesToCollectionRef();
                               progress.dismiss();
-                              context.router.replaceAll([DashBoardRoute()]);
-
-                            }else if(sentCode==0 || sentCode==null){
-                              await Fluttertoast.showToast(msg: "Verification Code Has Expired",toastLength: Toast.LENGTH_LONG);
-                            }else{
-                              await Fluttertoast.showToast(msg: "Verification Failed",toastLength: Toast.LENGTH_LONG);
-                            }
+                            context.router.replaceAll([DashBoardRoute()]);
+                            // if(int.parse(_textEditingController.text.toString())==sentCode!){
+                            //   final progress = ProgressHUD.of(context);
+                            //   progress!.showWithText('Verifying phone number...');
+                            //   //verify buyer
+                            //   UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true,email: context.read(authControllerProvider)!.email);
+                            //   await context.read(authControllerProvider.notifier).verifyAsBuyer(userModel);
+                            //   await context.read(serviceTypeControllerProvider.notifier).saveServicesToCollectionRef();
+                            //   progress.dismiss();
+                            //   context.router.replaceAll([DashBoardRoute()]);
+                            //
+                            // }else if(sentCode==0 || sentCode==null){
+                            //   await Fluttertoast.showToast(msg: "Verification Code Has Expired",toastLength: Toast.LENGTH_LONG);
+                            // }else{
+                            //   await Fluttertoast.showToast(msg: "Verification Failed",toastLength: Toast.LENGTH_LONG);
+                            // }
                           }, imageIcon: null,),
                         SizedBox(
                           height: height * 0.06,
