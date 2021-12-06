@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/notification_model/notification_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';

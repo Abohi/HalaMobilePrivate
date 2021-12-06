@@ -21,9 +21,9 @@ class _$WalletModelTearOff {
   const _$WalletModelTearOff();
 
   _WalletModel call(
-      {num debitBalance = 0.0,
-      num creditBalance = 0.0,
-      num walletBalance = 0.0}) {
+      {required num? debitBalance,
+      required num? creditBalance,
+      required num? walletBalance}) {
     return _WalletModel(
       debitBalance: debitBalance,
       creditBalance: creditBalance,
@@ -41,9 +41,9 @@ const $WalletModel = _$WalletModelTearOff();
 
 /// @nodoc
 mixin _$WalletModel {
-  num get debitBalance => throw _privateConstructorUsedError;
-  num get creditBalance => throw _privateConstructorUsedError;
-  num get walletBalance => throw _privateConstructorUsedError;
+  num? get debitBalance => throw _privateConstructorUsedError;
+  num? get creditBalance => throw _privateConstructorUsedError;
+  num? get walletBalance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,7 +56,7 @@ abstract class $WalletModelCopyWith<$Res> {
   factory $WalletModelCopyWith(
           WalletModel value, $Res Function(WalletModel) then) =
       _$WalletModelCopyWithImpl<$Res>;
-  $Res call({num debitBalance, num creditBalance, num walletBalance});
+  $Res call({num? debitBalance, num? creditBalance, num? walletBalance});
 }
 
 /// @nodoc
@@ -77,15 +77,15 @@ class _$WalletModelCopyWithImpl<$Res> implements $WalletModelCopyWith<$Res> {
       debitBalance: debitBalance == freezed
           ? _value.debitBalance
           : debitBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       creditBalance: creditBalance == freezed
           ? _value.creditBalance
           : creditBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       walletBalance: walletBalance == freezed
           ? _value.walletBalance
           : walletBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
     ));
   }
 }
@@ -97,7 +97,7 @@ abstract class _$WalletModelCopyWith<$Res>
           _WalletModel value, $Res Function(_WalletModel) then) =
       __$WalletModelCopyWithImpl<$Res>;
   @override
-  $Res call({num debitBalance, num creditBalance, num walletBalance});
+  $Res call({num? debitBalance, num? creditBalance, num? walletBalance});
 }
 
 /// @nodoc
@@ -120,15 +120,15 @@ class __$WalletModelCopyWithImpl<$Res> extends _$WalletModelCopyWithImpl<$Res>
       debitBalance: debitBalance == freezed
           ? _value.debitBalance
           : debitBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       creditBalance: creditBalance == freezed
           ? _value.creditBalance
           : creditBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
       walletBalance: walletBalance == freezed
           ? _value.walletBalance
           : walletBalance // ignore: cast_nullable_to_non_nullable
-              as num,
+              as num?,
     ));
   }
 }
@@ -137,22 +137,19 @@ class __$WalletModelCopyWithImpl<$Res> extends _$WalletModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_WalletModel implements _WalletModel {
   const _$_WalletModel(
-      {this.debitBalance = 0.0,
-      this.creditBalance = 0.0,
-      this.walletBalance = 0.0});
+      {required this.debitBalance,
+      required this.creditBalance,
+      required this.walletBalance});
 
   factory _$_WalletModel.fromJson(Map<String, dynamic> json) =>
       _$_$_WalletModelFromJson(json);
 
-  @JsonKey(defaultValue: 0.0)
   @override
-  final num debitBalance;
-  @JsonKey(defaultValue: 0.0)
+  final num? debitBalance;
   @override
-  final num creditBalance;
-  @JsonKey(defaultValue: 0.0)
+  final num? creditBalance;
   @override
-  final num walletBalance;
+  final num? walletBalance;
 
   @override
   String toString() {
@@ -194,19 +191,19 @@ class _$_WalletModel implements _WalletModel {
 
 abstract class _WalletModel implements WalletModel {
   const factory _WalletModel(
-      {num debitBalance,
-      num creditBalance,
-      num walletBalance}) = _$_WalletModel;
+      {required num? debitBalance,
+      required num? creditBalance,
+      required num? walletBalance}) = _$_WalletModel;
 
   factory _WalletModel.fromJson(Map<String, dynamic> json) =
       _$_WalletModel.fromJson;
 
   @override
-  num get debitBalance => throw _privateConstructorUsedError;
+  num? get debitBalance => throw _privateConstructorUsedError;
   @override
-  num get creditBalance => throw _privateConstructorUsedError;
+  num? get creditBalance => throw _privateConstructorUsedError;
   @override
-  num get walletBalance => throw _privateConstructorUsedError;
+  num? get walletBalance => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$WalletModelCopyWith<_WalletModel> get copyWith =>

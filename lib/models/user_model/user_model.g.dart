@@ -8,10 +8,10 @@ part of 'user_model.dart';
 
 _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
   return _$_UserModel(
-    phoneNumber: json['phoneNumber'] as String,
-    isPhoneNumberVerified: json['isPhoneNumberVerified'] as bool? ?? false,
-    isBuyer: json['isBuyer'] as bool? ?? false,
-    isSeller: json['isSeller'] as bool? ?? false,
+    phoneNumber: json['phoneNumber'] as String?,
+    isPhoneNumberVerified: json['isPhoneNumberVerified'] as bool,
+    isBuyer: json['isBuyer'] as bool,
+    isSeller: json['isSeller'] as bool,
     firstName: json['firstName'] as String?,
     lastName: json['lastName'] as String?,
     optionalNumber: json['optionalNumber'] as String?,
@@ -84,11 +84,11 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'uncompletedOrders': instance.uncompletedOrders,
       'totalOrders': instance.totalOrders,
       'available': instance.available,
-      'ratings': instance.ratings,
+      'ratings': instance.ratings?.toJson(),
       'orgDetailModel': instance.orgDetailModel,
       'fcmtoken': instance.fcmtoken,
       'email': instance.email,
-      'wallet': instance.wallet,
+      'wallet': instance.wallet?.toJson(),
       'documentId': instance.documentId,
       'isDismissCompleteProfile': instance.isDismissCompleteProfile,
       'states': instance.states,

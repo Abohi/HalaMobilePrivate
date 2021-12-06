@@ -8,6 +8,7 @@ import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/widgets/order_tile.dart';
 import 'package:halawork/pages/dashboard_pages/widget/tab_bar_decorator.dart';
+import 'package:halawork/providers/state_providers/order_index_switcher_state.dart';
 import 'package:halawork/repositories/order_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,7 +20,14 @@ class OrderPage extends HookWidget {
   Widget build(BuildContext context) {
     var tabController = useTabController(initialLength: 3);
     var orderState = useProvider(orderControllerProvider);
+    var  orderIndexSwitcherState = useProvider(orderIndexSwitcherStateProvider);
     var size = MediaQuery.of(context).size;
+    useEffect((){
+      if(orderIndexSwitcherState.state!=-1){
+        tabController.animateTo(orderIndexSwitcherState.state);
+      }
+      return null;
+    },[]);
     return SafeArea(child: Scaffold(
     appBar: AppBar(
       elevation: 5,

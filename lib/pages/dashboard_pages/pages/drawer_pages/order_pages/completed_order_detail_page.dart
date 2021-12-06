@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/order_model/order_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/models/rating_model/rating_model.dart';
@@ -246,7 +246,7 @@ class CompletedOrderDetailPage extends HookWidget {
                       Icon(orderModel.isReviewed!?Icons.keyboard_arrow_down_rounded:Icons.keyboard_arrow_up_rounded,color: const Color(0xffACACAC),)
                     ],
                   ),
-                  (context.read(userControllerProvider)!.userModel.isSeller==false)&&(!orderModel.isReviewed!)?ReviewSellersWork(orderModel: orderModel, onButtonPressed: (RatingModel ratingModel) async{
+                  (context.read(userModelExtensionController)!.userModel.isSeller==false)&&(!orderModel.isReviewed!)?ReviewSellersWork(orderModel: orderModel, onButtonPressed: (RatingModel ratingModel) async{
                     final progress = ProgressHUD.of(context);
                     progress!.showWithText('Submitting Review...');
                     await context.read(userRepositoryProvider).submitBuyersRating(requestId: orderModel.requestId, sellerId: orderModel.sellerId, ratingModel:ratingModel, orderModel: orderModel);

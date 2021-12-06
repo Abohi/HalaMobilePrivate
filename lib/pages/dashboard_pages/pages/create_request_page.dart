@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/servicetype_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
@@ -20,6 +20,7 @@ import 'package:halawork/pages/dashboard_pages/widget/custom_drawer.dart';
 import 'package:halawork/pages/dashboard_pages/widget/generic_response_dialog.dart';
 import 'package:halawork/providers/exception_provider/exception_provider.dart';
 import 'package:halawork/providers/state_providers/navigation_provider.dart';
+import 'package:halawork/providers/state_providers/tab_state_provider.dart';
 import 'package:halawork/utils/constants.dart';
 import 'package:halawork/utils/decimal_formatter.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
@@ -37,8 +38,9 @@ class CreateRequestPage extends HookWidget{
 
   @override
   Widget build(BuildContext context) {
-    final userModelState = useProvider(userControllerProvider);
+    final userModelState = useProvider(userModelExtensionController);
     final serviceState = useProvider(serviceTypeControllerProvider);
+    var tabRouteState = useProvider(tabRouteStateProvider);
     var budgetController = useTextEditingController();
     var stateModelState= useProvider(stateModelStateProvider);
     var lgaState = useProvider(lgaStateProvider);
@@ -51,6 +53,7 @@ class CreateRequestPage extends HookWidget{
     final requestTitle = useState<String?>("");
     final requestDescription = useState<String?>("");
     var size = MediaQuery.of(context).size;
+    var navigationProvider = useProvider(navigationStateProvider);
     return ProviderListener(
       provider: exceptionMessageProvider,
       onChange: (BuildContext context, StateController<CustomException?> customException,) {
@@ -194,6 +197,7 @@ class CreateRequestPage extends HookWidget{
                                   DropdownSearch<StateModel>(
                                     mode: Mode.BOTTOM_SHEET,
                                     showSearchBox: true,
+                                    hint: "Select your state",
                                     items: nigeria.map((e) => StateModel.fromJson(e)).toList(),
                                     label: "Select your state",
                                     itemAsString: (StateModel state) => state.state.toString(),
@@ -216,6 +220,7 @@ class CreateRequestPage extends HookWidget{
                                 showSearchBox: true,
                                 items: stateModelState.state!.lgas,
                                 label: "Select your LGA",
+                                hint: "Select your LGA",
                                 itemAsString: (String lga) => lga,
                                 onChanged: (state)=>lgaState.state=state,
                                 selectedItem: lgaState.state==null?"Select your LGA":lgaState.state,
@@ -232,6 +237,7 @@ class CreateRequestPage extends HookWidget{
                                     showSearchBox: true,
                                     items: userModelState!.serviceList,
                                     label: "Select your main service",
+                                    hint: "Select your main service",
                                     itemAsString: (ActiveServiceModel service) => service.service.toString(),
                                     onChanged: (value){
                                       _selectedService.value=value;
@@ -444,33 +450,36 @@ class CreateRequestPage extends HookWidget{
 
                             if(_formKey.currentState!.validate()){
                               _formKey.currentState!.save();
-                              final progress = ProgressHUD.of(context);
-                              progress!.showWithText('Sending Request...');
-                              CreateRequestModel createRequestModel = CreateRequestModel(service: _selectedService.value!.service!, subServices: selectedSubSevices.value!, skills: selectedSkills.value!, serviceId: _selectedService.value!.serviceId!, state: stateModelState.state!.state!, localGovt: lgaState.state!, userId: context.read(authControllerProvider)!.uid, requestStatus: true, title:requestTitle.value! , description: requestDescription.value!, budget: budgetController.text, date: DateTime.now().toString());
-                              await context.read(userControllerProvider.notifier).createRequest(createRequestModel);
-                              if(context.read(exceptionMessageProvider).state!=null){
-                                progress.dismiss();
-                                context.read(exceptionMessageProvider).state=null;
-                                return "";
-                              }
-                              progress.dismiss();
-                              await Fluttertoast.showToast(msg: "Request Sent Successfully",toastLength: Toast.LENGTH_LONG);
-                              // await showGeneralDialog(
-                              //     context: context,
-                              //     barrierDismissible: true,
-                              //     barrierLabel: MaterialLocalizations.of(context)
-                              //         .modalBarrierDismissLabel,
-                              //     barrierColor: Colors.black45,
-                              //     transitionDuration: const Duration(milliseconds: 200),
-                              //     pageBuilder: (BuildContext buildContext,
-                              //         Animation animation,
-                              //         Animation secondaryAnimation) {
-                              //       return GenericResponseDialog(onBottonPressed: (){
-                              //         context.read(navigationStateProvider).state = 3;
-                              //         context.router.replaceAll([DashBoardRoute()]);
-                              //         Navigator.of(context).pop();
-                              //       },text1: "Request posted",text2: "Successfully",btnText: "MANAGE REQUEST",);
-                              //     });
+                             if(context.read(userModelExtensionController)!.userModel.isSeller){
+                               return Fluttertoast.showToast(msg: "To post a request you need to become a Buyer",toastLength: Toast.LENGTH_LONG);
+                             }else{
+                               final progress = ProgressHUD.of(context);
+                               progress!.showWithText('Sending Request...');
+                               CreateRequestModel createRequestModel = CreateRequestModel(service: _selectedService.value!.service!, subServices: selectedSubSevices.value!, skills: selectedSkills.value!, serviceId: _selectedService.value!.serviceId!, state: stateModelState.state!.state!, localGovt: lgaState.state!, userId: context.read(authControllerProvider)!.uid, requestStatus: true, title:requestTitle.value! , description: requestDescription.value!, budget: budgetController.text, date: DateTime.now().toString());
+                               await context.read(userModelExtensionController.notifier).createRequest(createRequestModel);
+                               if(context.read(exceptionMessageProvider).state!=null){
+                                 progress.dismiss();
+                                 context.read(exceptionMessageProvider).state=null;
+                                 return "";
+                               }
+                               progress.dismiss();
+                               await showGeneralDialog(
+                                   context: context,
+                                   barrierDismissible: true,
+                                   barrierLabel: MaterialLocalizations.of(context)
+                                       .modalBarrierDismissLabel,
+                                   barrierColor: Colors.black45,
+                                   transitionDuration: const Duration(milliseconds: 200),
+                                   pageBuilder: (BuildContext buildContext,
+                                       Animation animation,
+                                       Animation secondaryAnimation) {
+                                     return GenericResponseDialog(onBottonPressed: (){
+                                       tabRouteState.state?.setActiveIndex(3);
+                                       navigationProvider.state=3;
+                                       Navigator.of(context).pop();
+                                     },text1: "Request posted",text2: "Successfully",btnText: "MANAGE REQUEST",);
+                                   });
+                             }
                             }
                           }, imageIcon: null,),
                       )

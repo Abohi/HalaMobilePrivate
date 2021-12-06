@@ -9,7 +9,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/servicetype_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/exception_provider/exception_provider.dart';
@@ -24,12 +24,12 @@ class SellerBasicInfoEntryPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final customUserModelState = useProvider(userControllerProvider);
+    final customUserModelState = useProvider(userModelExtensionController);
     final _formKey = useMemoized(() => GlobalKey<FormState>());
     final _optionalNumber = useState<String?>(null);
     final _firstName = useState<String?>("");
     final _lastName = useState<String?>("");
-    String _phoneNo = customUserModelState!.userModel.phoneNumber;
+    String _phoneNo = customUserModelState!.userModel.phoneNumber!;
     final _dateOfBirth = useState<DateTime?>(null);
     return Scaffold(
       body: SafeArea(
@@ -365,7 +365,7 @@ class SellerBasicInfoEntryPage extends HookWidget {
                                       isPhoneNumberVerified:customUserModelState.userModel.isPhoneNumberVerified,
                                       firstName: _firstName.value,lastName: _lastName.value,optionalNumber: _optionalNumber.value==null
                                       ?"":_optionalNumber.value,dateOfBirth: _dateOfBirth.value,sellerType: context.read(sellerSetupStateProvider).state!.sellerType,email: context.read(authControllerProvider)!.email);
-                                      await context.read(userControllerProvider.notifier).saveBasicSellerInfo(userModel);
+                                      await context.read(userModelExtensionController.notifier).saveBasicSellerInfo(userModel);
                                      await context.read(serviceTypeControllerProvider.notifier).retrieveServiceType(isRefreshing:true);
                                       progress.dismiss();
                                       if(context.read(exceptionMessageProvider).state==null){

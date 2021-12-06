@@ -1,4 +1,5 @@
 
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
@@ -11,21 +12,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/servicetype_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
+import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/exception_provider/exception_provider.dart';
 import 'package:halawork/providers/general_providers/phoneVerificationCodeProvider.dart';
 import 'package:halawork/providers/general_providers/user_profile_provider.dart';
+import 'package:halawork/providers/state_providers/enablingTimeStateProvider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/utils/pref_manager.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
+import 'package:halawork/widgets/error_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 class PhoneVerificationPage extends HookWidget{
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *5;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60 *15;
   late CountdownTimerController controller;
   late String? phoneNo =null;
   BoxDecoration get _pinPutDecoration {
@@ -39,7 +43,7 @@ class PhoneVerificationPage extends HookWidget{
 
   @override
   Widget build(BuildContext context) {
-    final userModelState = useProvider(userControllerProvider);
+    final userModelState = useProvider(userModelExtensionController);
 
     final countDownController = useMemoized(() => CountdownTimerController(endTime: endTime, onEnd: ()async{
      PreferenceManager().savePhoneCode(0);
@@ -49,6 +53,13 @@ class PhoneVerificationPage extends HookWidget{
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
    final _textEditingController = useTextEditingController();
+   var phoneEnablingTimeState = useProvider(enablingTimeStateProvider);
+    WidgetsBinding.instance!
+        .addPostFrameCallback((_){
+          if(phoneEnablingTimeState.state==0){
+            phoneEnablingTimeState.state=DateTime.now().millisecondsSinceEpoch + 1000 * 60 *5;
+          }
+    });
 
     return WillPopScope(
       onWillPop: () async {
@@ -126,39 +137,100 @@ class PhoneVerificationPage extends HookWidget{
                         SizedBox(
                           height: height * 0.06,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Spacer(),
-                            GestureDetector(
-                              onTap: ()async{
-                                await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
-                              },
-                              child:  Text.rich(
-                                TextSpan(
-                                  text: "Didn’t get the code?",
-                                  style: GoogleFonts.roboto(
-                                      textStyle: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          color: const Color(0xff29283C))),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: "resend code",
+                        CountdownTimer(
+                          controller: CountdownTimerController(endTime: phoneEnablingTimeState.state, onEnd: ()async{
+
+                          }),
+                          widgetBuilder: (BuildContext context, CurrentRemainingTime? time){
+                            if(time!=null){
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: ()async{
+
+                                    },
+                                    child:  Text.rich(
+                                      TextSpan(
+                                        text: "Didn’t get the code?",
                                         style: GoogleFonts.roboto(
                                             textStyle: TextStyle(
-                                                decoration: TextDecoration.underline,
                                                 fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: const Color(0xff0000FF)))),
-                                    // can add more TextSpans here...
-                                  ],
+                                                fontWeight: FontWeight.normal,
+                                                color: const Color(0xff29283C))),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: "resend code",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      decoration: TextDecoration.underline,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black12))),
+                                          // can add more TextSpans here...
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                ],
+                              );
+                            }
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: ()async{
+                                    final progress = ProgressHUD.of(context);
+                                    progress!.showWithText('Resending Code...');
+                                    Either<NetworkFailure,bool> response = await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userModelExtensionController)!.userModel.phoneNumber!);
+                                    return response.fold((l) {
+                                      progress.dismiss();
+                                      return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
+                                        Either<NetworkFailure,bool> response = await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userModelExtensionController)!.userModel.phoneNumber!);
+                                      });
+                                    }, (r)async{
+                                      progress.dismiss();
+                                      if(r){
+                                        await Fluttertoast.showToast(msg: "Verification code sent successfully",toastLength: Toast.LENGTH_LONG);
+                                        phoneEnablingTimeState.state=DateTime.now().millisecondsSinceEpoch + 1000 * 60 *5;
+                                      }else{
+                                        await Fluttertoast.showToast(msg: "Verification Failed",toastLength: Toast.LENGTH_LONG);
+                                      }
+                                    });
+
+                                  },
+                                  child:  Text.rich(
+                                    TextSpan(
+                                      text: "Didn’t get the code?",
+                                      style: GoogleFonts.roboto(
+                                          textStyle: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                              color: const Color(0xff29283C))),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "resend code",
+                                            style: GoogleFonts.roboto(
+                                                textStyle: TextStyle(
+                                                    decoration: TextDecoration.underline,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: const Color(0xff0000FF)))),
+                                        // can add more TextSpans here...
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Spacer(),
-                          ],
+                                Spacer(),
+                              ],
+                            );
+
+                          },
                         ),
                         SizedBox(
                           height: 20,
@@ -198,7 +270,7 @@ class PhoneVerificationPage extends HookWidget{
                             final int? sentCode = await PreferenceManager().getPhoneCode();
                               final progress = ProgressHUD.of(context);
                               progress!.showWithText('Verifying phone number...');
-                              UserModel userModel = context.read(userControllerProvider)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true,email: context.read(authControllerProvider)!.email);
+                              UserModel userModel = context.read(userModelExtensionController)!.userModel.copyWith(isPhoneNumberVerified: true,isBuyer: true,email: context.read(authControllerProvider)!.email);
                               await context.read(authControllerProvider.notifier).verifyAsBuyer(userModel);
                               await context.read(serviceTypeControllerProvider.notifier).saveServicesToCollectionRef();
                               progress.dismiss();

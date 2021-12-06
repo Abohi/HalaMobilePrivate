@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/widgets/seller_searched_tile.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/custom_chipinput.dart';
@@ -19,7 +19,7 @@ class HomeSearchMainPage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final scafKey = useMemoized(() => GlobalKey<ScaffoldState>());
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     var subservicesListProvider = useProvider(subServicesListProvider);
     final _chipKey = useMemoized(() => GlobalKey<ChipsInputState>());
     var chipsInputNode = useMemoized(()=>FocusNode());
@@ -127,7 +127,7 @@ class HomeSearchMainPage extends HookWidget {
                                 if(selectedSubservices.value==null || selectedSubservices.value!.isEmpty){
                                   await Fluttertoast.showToast(msg: "You have not made any search yet",toastLength: Toast.LENGTH_LONG);
                                 }else{
-                                  context.router.navigate(FilterRoute(subServices: [...{...selectedSubservices.value!}]));
+                                  context.router.navigate(FilterRoute());
                                 }
                               },
                               child: Icon(Icons.filter_list_sharp,color: const Color(0xff0000FF))),

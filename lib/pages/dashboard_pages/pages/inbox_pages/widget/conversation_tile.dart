@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/inbox_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
@@ -22,7 +22,7 @@ class ConversationTile extends HookWidget {
   Widget build(BuildContext context) {
     var size= MediaQuery.of(context).size;
     messageCount = conversationModel.messageCount!-conversationModel.userMessageCount!;
-    bool shouldShowTimeAgo = useProvider(userControllerProvider)!.userModel.email==conversationModel.recieverEmail;
+    bool shouldShowTimeAgo = useProvider(userModelExtensionController)!.userModel.email==conversationModel.recieverEmail;
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
     var  tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     // WidgetsBinding.instance!

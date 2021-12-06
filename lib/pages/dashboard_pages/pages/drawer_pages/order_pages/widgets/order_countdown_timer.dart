@@ -14,7 +14,7 @@ class CountDownTimerPayment extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final countDownController = useMemoized(() => CountdownTimerController(endTime:endTime, onEnd: ()async{
-      await Fluttertoast.showToast(msg: "Order delivery time has expired",toastLength: Toast.LENGTH_LONG);
+
     }));
     print("Time ${endTime}");
     return CountdownTimer(

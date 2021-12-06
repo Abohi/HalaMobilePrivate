@@ -8,9 +8,9 @@ part of 'wallet_model.dart';
 
 _$_WalletModel _$_$_WalletModelFromJson(Map<String, dynamic> json) {
   return _$_WalletModel(
-    debitBalance: json['debitBalance'] as num? ?? 0.0,
-    creditBalance: json['creditBalance'] as num? ?? 0.0,
-    walletBalance: json['walletBalance'] as num? ?? 0.0,
+    debitBalance: json['debitBalance'] as num?,
+    creditBalance: json['creditBalance'] as num?,
+    walletBalance: json['walletBalance'] as num?,
   );
 }
 

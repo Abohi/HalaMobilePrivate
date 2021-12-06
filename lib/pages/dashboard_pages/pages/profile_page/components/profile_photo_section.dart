@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -127,7 +127,7 @@ class ProfilePhotoSection extends HookWidget {
         ],
       );
     }else{
-      var userModelState = useProvider(userControllerProvider);
+      var userModelState = useProvider(userModelExtensionController);
       var size = MediaQuery.of(context).size;
       var _picker =   useMemoized(()=>ImagePicker());
       var profilePhotoState = useProvider(profilePictureStateProvider);

@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/modification_model/modification_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/widgets/order_countdown_timer.dart';
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';
@@ -86,7 +86,7 @@ class ModificationDetailPage extends HookWidget{
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                modificationModel.amountString==null?"0":"${LocaleCurrencyUtils.getCurrencySymbol(context)}${modificationModel.amountString!}",
+                                "0",
                                 style: GoogleFonts.roboto(
                                     textStyle: TextStyle(
                                         color: const Color(0xff555555),
@@ -158,7 +158,7 @@ class ModificationDetailPage extends HookWidget{
                       SizedBox(height: 10,),
                       CountDownTimerPayment(endTime:  modificationModel.decisionTime!.millisecondsSinceEpoch,),
                       SizedBox(height: 21,),
-                      context.read(userControllerProvider)!.userModel.isSeller?Row(
+                      context.read(userModelExtensionController)!.userModel.isSeller?Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -167,14 +167,14 @@ class ModificationDetailPage extends HookWidget{
                               onButtonPressed: ()async{
                                 final progress = ProgressHUD.of(context);
                                 progress!.showWithText('Accepting Modification Offer');
-                                await context.read(userControllerProvider.notifier).sendOrderModel({
+                                await context.read(userModelExtensionController.notifier).sendOrderModel({
                                   "orderDeliveryTimeExpires":false,
                                   "orderDeliveryTime":modificationModel.time,
                                   "actionType":"None",
                                   "orderState":"activated",
                                   "orderStatus":"ongoing",
                                   "requestId":modificationModel.modificationId,
-                                  "amount":FieldValue.increment(modificationModel.amount?.toDouble()??0)
+                                  "amount":0,
                                 });
                                 progress.dismiss();
                                 await Fluttertoast.showToast(msg: "Modification Offer Accepted Successfully",toastLength: Toast.LENGTH_LONG);

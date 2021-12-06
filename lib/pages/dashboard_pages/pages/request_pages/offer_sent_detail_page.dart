@@ -8,8 +8,9 @@ import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
@@ -21,6 +22,7 @@ import 'package:halawork/pages/dashboard_pages/pages/request_pages/offers_sent_d
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/offers_sent_detailpage_component/offer_top_section.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/pages/dashboard_pages/pages/request_pages/widgets/payment_dialog.dart';
+import 'package:halawork/providers/state_providers/order_index_switcher_state.dart';
 import 'package:halawork/repositories/user_repository.dart';
 import 'package:halawork/utils/random_number_generator.dart';
 import 'package:halawork/widgets/error_widget.dart';
@@ -40,7 +42,8 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
+    var  orderIndexSwitcherState = useProvider(orderIndexSwitcherStateProvider);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -106,9 +109,9 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                       DateTime twoDaysTime = DateTime(now.year, now.month, now.day, t.hour+48, t.minute);
 
                       if(paymentPromptDialogResult!){
-                       UserModel usermodel =  context.read(userControllerProvider)!.userModel;
+                       UserModel usermodel =  context.read(userModelExtensionController)!.userModel;
                        if(usermodel.wallet!=null){
-                         num balance = usermodel.wallet!.creditBalance-usermodel.wallet!.debitBalance;
+                         num balance = usermodel.wallet!.creditBalance!-usermodel.wallet!.debitBalance!;
                          if(balance.toDouble()>amount!){
                            final paymentProgress = ProgressHUD.of(context);
                            paymentProgress!.showWithText('Creating Order For Request...');
@@ -126,7 +129,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
 
                            OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: widget.offerModel.requestId!, sellerId:widget.offerModel.sellerId!, orderId: orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment: paidAt, amountPaid:amount.toString(), paymentReference: reference);
                            await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, widget.offerModel.requestId!);
-                           await context.read(userControllerProvider.notifier).sendOrderModel({
+                           await context.read(userModelExtensionController.notifier).sendOrderModel({
                              "orderStatus":"ongoing",
                              "orderState":"activated",
                              "buyerId":context.read(authControllerProvider)!.uid,
@@ -145,6 +148,8 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                            });
                            paymentProgress.dismiss();
                            await Fluttertoast.showToast(msg: "Order created successfully");
+                           orderIndexSwitcherState.state=1;
+                           context.router.navigate(const OrderRoute());
                          }else{
 
                            final verifyingPaymentProgress = ProgressHUD.of(context);
@@ -177,7 +182,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                  await Fluttertoast.showToast(msg: "Payment Verified Successfully");
                                  final progress = ProgressHUD.of(context);
                                  progress!.showWithText('Creating Order For Request...');
-                                 await context.read(userControllerProvider.notifier).sendOrderModel({
+                                 await context.read(userModelExtensionController.notifier).sendOrderModel({
                                    "orderStatus":"ongoing",
                                    "orderState":"activated",
                                    "buyerId":context.read(authControllerProvider)!.uid,
@@ -196,6 +201,8 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                  });
                                  progress.dismiss();
                                  await Fluttertoast.showToast(msg: "Order created successfully");
+                                 orderIndexSwitcherState.state=1;
+                                 context.router.navigate(const OrderRoute());
                                }else{
                                  verifyingPaymentProgress.dismiss();
                                  await Fluttertoast.showToast(msg: "Verification was not successfull");
@@ -238,7 +245,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                await Fluttertoast.showToast(msg: "Payment Verified Successfully");
                                final progress = ProgressHUD.of(context);
                                progress!.showWithText('Creating Order For Request...');
-                               await context.read(userControllerProvider.notifier).sendOrderModel({
+                               await context.read(userModelExtensionController.notifier).sendOrderModel({
                                  "orderStatus":"ongoing",
                                  "orderState":"activated",
                                  "buyerId":context.read(authControllerProvider)!.uid,
@@ -257,6 +264,8 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                                });
                                progress.dismiss();
                                await Fluttertoast.showToast(msg: "Order created successfully");
+                               orderIndexSwitcherState.state=1;
+                               context.router.navigate(const OrderRoute());
                              }else{
                                verifyingPaymentProgress.dismiss();
                                await Fluttertoast.showToast(msg: "Verification was not successfull");
@@ -270,7 +279,7 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                       }else{
                         final progress = ProgressHUD.of(context);
                         progress!.showWithText('Creating Order For Request...');
-                        await context.read(userControllerProvider.notifier).sendOrderModel({
+                        await context.read(userModelExtensionController.notifier).sendOrderModel({
                           "orderStatus":"pending",
                           "orderState":"activated",
                           "buyerId":context.read(authControllerProvider)!.uid,
@@ -288,6 +297,8 @@ class _OfferSentDetailPageState extends State<OfferSentDetailPage>{
                         });
                         progress.dismiss();
                         await Fluttertoast.showToast(msg: "Order created successfully");
+                        orderIndexSwitcherState.state=2;
+                        context.router.navigate(const OrderRoute());
                       }
 
                     },),

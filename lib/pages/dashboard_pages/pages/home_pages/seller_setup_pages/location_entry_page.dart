@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/location_model/location_model.dart';
 import 'package:halawork/models/states_model/states_model.dart';
@@ -236,7 +236,7 @@ class LocationEntryPage extends HookWidget {
                             context.read(sellerSetupStateProvider).state = context.read(sellerSetupStateProvider).state!.copyWith(locationModel: [LocationModel(localGovt: context.read(lgaStateProvider).state!, streetAddress: context.read(streetAddressStateProvider).state!,
                                 state: context.read(stateModelStateProvider).state!.state!)]);
 
-                            await context.read(userControllerProvider.notifier).completeSellerProfileSetup(context.read(sellerSetupStateProvider).state!);
+                            await context.read(userModelExtensionController.notifier).completeSellerProfileSetup(context.read(sellerSetupStateProvider).state!);
                             progress.dismiss();
                             if(context.read(exceptionMessageProvider).state==null){
                               await Fluttertoast.showToast(msg: "Seller Information saved successfully",toastLength: Toast.LENGTH_LONG);

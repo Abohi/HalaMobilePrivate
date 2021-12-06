@@ -16,13 +16,10 @@ final profilePictureStateProvider = StateProvider<XFile?>((ref){
 
 class ProfilePictureEntryPage extends HookWidget {
   ProfilePictureEntryPage();
-  late ImagePicker _picker;
+
   @override
   Widget build(BuildContext context) {
-    useEffect((){
-      _picker =   ImagePicker();
-      return null;
-    },[]);
+    var _picker= useMemoized(()=>ImagePicker());
     var profilePictureState = useProvider(profilePictureStateProvider);
     var size = MediaQuery.of(context).size;
     return SafeArea(child: Scaffold(

@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
@@ -39,7 +39,7 @@ class PendingOrderDetailPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
     var tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     return Scaffold(
@@ -285,7 +285,7 @@ class PendingOrderDetailPage extends HookWidget {
                                     onButtonPressed: () async{
                                       OfferModel? offerModel =  await context.read(userRepositoryProvider).getOffer(orderModel.buyerId, orderModel.sellerId, orderModel.requestId);
                                       if(userModelState.userModel.wallet!=null){
-                                        num balance = userModelState.userModel.wallet!.creditBalance-userModelState.userModel.wallet!.debitBalance;
+                                        num balance = userModelState.userModel.wallet!.creditBalance!-userModelState.userModel.wallet!.debitBalance!;
                                         if(balance.toDouble()>orderModel.amount!.toDouble()){
                                           final paymentProgress = ProgressHUD.of(context);
                                           paymentProgress!.showWithText('Creating Order For Request...');
@@ -303,7 +303,7 @@ class PendingOrderDetailPage extends HookWidget {
 
                                           OrderPaymentModel orderPaymentModel = OrderPaymentModel(requestId: orderModel.requestId, sellerId:orderModel.sellerId, orderId: orderModel.orderId, buyerId: context.read(authControllerProvider)!.uid, dateOfPayment: paidAt, amountPaid:orderModel.amount.toString(), paymentReference: reference);
                                           await context.read(userRepositoryProvider).addOrderPayment(orderPaymentModel, orderModel.requestId);
-                                          await context.read(userControllerProvider.notifier).sendOrderModel({
+                                          await context.read(userModelExtensionController.notifier).sendOrderModel({
                                             "orderStatus":"ongoing",
                                             "orderState":"activated",
                                             "buyerId":context.read(authControllerProvider)!.uid,
@@ -353,7 +353,7 @@ class PendingOrderDetailPage extends HookWidget {
                                                 await Fluttertoast.showToast(msg: "Payment Verified Successfully");
                                                 final progress = ProgressHUD.of(context);
                                                 progress!.showWithText('Creating Order For Request...');
-                                                await context.read(userControllerProvider.notifier).sendOrderModel({
+                                                await context.read(userModelExtensionController.notifier).sendOrderModel({
                                                   "orderStatus":"ongoing",
                                                   "orderState":"activated",
                                                   "buyerId":context.read(authControllerProvider)!.uid,
@@ -415,7 +415,7 @@ class PendingOrderDetailPage extends HookWidget {
                                               final progress = ProgressHUD.of(context);
                                               progress!.showWithText('Creating Order For Request...');
                                               OfferModel? offerModel =  await context.read(userRepositoryProvider).getOffer(orderModel.buyerId, orderModel.sellerId, orderModel.requestId);
-                                              await context.read(userControllerProvider.notifier).sendOrderModel({
+                                              await context.read(userModelExtensionController.notifier).sendOrderModel({
                                                 "orderStatus":"ongoing",
                                                 "orderState":"activated",
                                                 "buyerId":context.read(authControllerProvider)!.uid,

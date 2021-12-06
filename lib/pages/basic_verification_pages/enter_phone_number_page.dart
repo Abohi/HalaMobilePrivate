@@ -6,8 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
+import 'package:halawork/providers/state_providers/isPhoneNumberVerified.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
@@ -88,7 +89,7 @@ class EnterPhoneNumberPage extends HookWidget {
                         }
                         final progress = ProgressHUD.of(context);
                         progress!.showWithText('Updating User Info...');
-                        UserModel userModel = UserModel(phoneNumber: _textEditingController.text.toString(),email:context.read(authControllerProvider)!.email);
+                        UserModel userModel = UserModel(phoneNumber: _textEditingController.text.toString(),email:context.read(authControllerProvider)!.email,isPhoneNumberVerified:false,isBuyer:false,isSeller:false);
                         await context.read(authControllerProvider.notifier).updateUserModel(context.read(authControllerProvider)!.uid,userModel);
                         progress.dismiss();
                         context.router.navigate(AppEntryRoute());

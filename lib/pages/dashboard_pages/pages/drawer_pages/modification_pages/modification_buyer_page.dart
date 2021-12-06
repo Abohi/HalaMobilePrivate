@@ -25,7 +25,6 @@ class ModificationBuyerPage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var modifiationTextController = useTextEditingController();
-    var budgetController = useTextEditingController();
     var durationDate = useState<DateTime?>(null);
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +64,7 @@ class ModificationBuyerPage extends HookWidget {
               child: ListView(
                 children: [
                   SizedBox(height: 15,),
-                  Text("For all modification raised, a one day interval is given for the Seller, to either raise a dispute regarding modification, or accept the modification",style:
+                  Text("For all modification raised, a Three days interval is given for the Seller, to either raise a dispute regarding modification, or accept the modification",style:
                   GoogleFonts.roboto(
                       textStyle: TextStyle(
                           color: const Color(0xff29283C),
@@ -119,58 +118,6 @@ class ModificationBuyerPage extends HookWidget {
                         children: <Widget>[
                           Spacer(),
                           Text("maximum of 250-300 words",
-                              style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                      color: const Color(0xff29283C),
-                                      fontSize: 10))),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Theme(
-                        data:
-                        Theme.of(context).copyWith(splashColor: Colors.transparent),
-                        child: TextField(
-                          controller: budgetController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [DecimalFormatter()],
-                          style: GoogleFonts.roboto(
-                              textStyle: TextStyle(
-                                  color: const Color(0xff29283C), fontSize: 10)),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            labelText: "Enter Tip or Added Amount",
-                            labelStyle: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: const Color(0xff29283C), fontSize: 14)),
-                            contentPadding: const EdgeInsets.only(
-                                left: 14.0, bottom: 8.0, top: 8.0),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: const Color(0xff0000FF), width: 1),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                              BorderSide(color: const Color(0xffACACAC), width: 1),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Spacer(),
-                          Text("An Additional Amount/Tip for Seller (Optional)",
                               style: GoogleFonts.roboto(
                                   textStyle: TextStyle(
                                       color: const Color(0xff29283C),
@@ -267,10 +214,6 @@ class ModificationBuyerPage extends HookWidget {
                       }
                       final progress = ProgressHUD.of(context);
                       progress!.showWithText('Marking Order As Needing Modification...');
-                      double? amount;
-                      if(budgetController.text.isNotEmpty){
-                        amount = double.tryParse(budgetController.text.toString().replaceAll(RegExp(r'[^0-9\.]'), ''));
-                      }
                       int mintues=0;
                       if(durationDate.value!.minute.isEven){
                         mintues = durationDate.value!.minute;
@@ -278,20 +221,18 @@ class ModificationBuyerPage extends HookWidget {
                         mintues = durationDate.value!.minute+1;
                       }
                       DateTime nowTime = DateTime.now();
-                      DateTime decisionTime = DateTime(nowTime.year, nowTime.month, nowTime.day+2, nowTime.hour,mintues);
-                      DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day+2, durationDate.value!.hour,mintues);
+                      DateTime decisionTime = DateTime(nowTime.year, nowTime.month, nowTime.day+3, nowTime.hour,mintues);
+                      DateTime dateOfDelivery = DateTime(durationDate.value!.year, durationDate.value!.month, durationDate.value!.day+3, durationDate.value!.hour,mintues);
                       await context.read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel.requestId).set({
                         "actionType":"modification",
                         "orderState":"deactivated",
-                        "orderStatus":"None",
+                        "orderStatus":"ongoing",
                       },SetOptions(merge: true));
                      CreateRequestModel? createRequestModel =  await context.read(userRepositoryProvider).getRequest(orderModel.requestId);
                       Map<String,dynamic> modificationPayload = {
                         "time":dateOfDelivery,
                         "decisionTime":decisionTime,
                         "reason":modifiationTextController.text.toString(),
-                        "amount":amount,
-                        "amountString":budgetController.text.isEmpty?"":budgetController.text.toString(),
                         "buyerId":orderModel.buyerId,
                         "sellerId":orderModel.sellerId,
                         "requestTitle":createRequestModel!.title,

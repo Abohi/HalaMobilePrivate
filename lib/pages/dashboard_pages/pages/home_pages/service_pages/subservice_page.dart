@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/user_tile.dart';

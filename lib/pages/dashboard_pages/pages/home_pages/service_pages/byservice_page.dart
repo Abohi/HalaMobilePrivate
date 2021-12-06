@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/expandable_service_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,7 +11,7 @@ class ByServicePage extends HookWidget{
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     return Scaffold(
       appBar:AppBar(
         centerTitle: true,

@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/pages/dashboard_pages/widget/offer_item_card.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,7 +44,7 @@ class OfferSentPage extends HookWidget {
           padding: EdgeInsets.symmetric(horizontal: 17),
           margin: EdgeInsets.only(top: 20),
           child:StreamBuilder<List<OfferModel>>(
-            stream: context.read(userControllerProvider.notifier).getOffers(context.read(authControllerProvider)!.uid, requestId),
+            stream: context.read(userModelExtensionController.notifier).getOffers(context.read(authControllerProvider)!.uid, requestId),
             builder: (context,snapshot){
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Column(

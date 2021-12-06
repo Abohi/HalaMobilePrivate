@@ -5,7 +5,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/auth_pages/login_widget/custom_login_divider.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/achievement_section.dart';
@@ -31,7 +31,7 @@ class ProfilePage extends HookWidget{
 
   @override
   Widget build(BuildContext context) {
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(

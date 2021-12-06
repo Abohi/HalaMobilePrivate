@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "25433255361-ad6uultt829jnr9jpeirmo4brdd590cm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halawork.com.halawork",
+            "certificate_hash": "a966514cbcd464b39df88bf5b72e1ecd601b7508"
+          }
+        },
+        {
           "client_id": "25433255361-srul6475fouc1hlc36h8dqr53og0fqle.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

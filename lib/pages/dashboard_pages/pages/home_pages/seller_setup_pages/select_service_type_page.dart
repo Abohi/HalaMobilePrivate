@@ -359,7 +359,7 @@ class GridItem extends HookWidget{
       child: Container(
         width: size.width,
         height: size.height * 0.5,
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,

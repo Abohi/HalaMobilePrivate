@@ -37,12 +37,16 @@ _$_UserModelExtension _$_$_UserModelExtensionFromJson(
 Map<String, dynamic> _$_$_UserModelExtensionToJson(
         _$_UserModelExtension instance) =>
     <String, dynamic>{
-      'userModel': instance.userModel,
-      'portfolios': instance.portfolios,
-      'achievementModels': instance.achievementModels,
-      'educationModels': instance.educationModels,
-      'workEntrieModels': instance.workEntrieModels,
-      'locationModel': instance.locationModel,
-      'serviceList': instance.serviceList,
-      'notificationModels': instance.notificationModels,
+      'userModel': instance.userModel.toJson(),
+      'portfolios': instance.portfolios?.map((e) => e.toJson()).toList(),
+      'achievementModels':
+          instance.achievementModels?.map((e) => e.toJson()).toList(),
+      'educationModels':
+          instance.educationModels?.map((e) => e.toJson()).toList(),
+      'workEntrieModels':
+          instance.workEntrieModels?.map((e) => e.toJson()).toList(),
+      'locationModel': instance.locationModel?.map((e) => e.toJson()).toList(),
+      'serviceList': instance.serviceList?.map((e) => e.toJson()).toList(),
+      'notificationModels':
+          instance.notificationModels?.map((e) => e.toJson()).toList(),
     };

@@ -6,7 +6,7 @@ part 'modification_model.g.dart';
 
 @freezed
 class ModificationModel with _$ModificationModel{
-  const factory ModificationModel({required String reason,num? amount,String? amountString,required String buyerId,required String sellerId,
+  const factory ModificationModel({required String reason,required String buyerId,required String sellerId,
     @JsonKey(
   name: "createdDate",
   fromJson: dateTimeFromJson,

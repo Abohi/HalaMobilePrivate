@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 class CompleteSellerProfile extends HookWidget {
@@ -13,7 +13,7 @@ class CompleteSellerProfile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     return SliverAppBar(
       titleSpacing: 0,
       elevation: 0,

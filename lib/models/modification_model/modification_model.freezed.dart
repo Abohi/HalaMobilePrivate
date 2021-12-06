@@ -22,8 +22,6 @@ class _$ModificationModelTearOff {
 
   _ModificationModel call(
       {required String reason,
-      num? amount,
-      String? amountString,
       required String buyerId,
       required String sellerId,
       @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
@@ -36,8 +34,6 @@ class _$ModificationModelTearOff {
       String? modificationId}) {
     return _ModificationModel(
       reason: reason,
-      amount: amount,
-      amountString: amountString,
       buyerId: buyerId,
       sellerId: sellerId,
       createdDate: createdDate,
@@ -59,8 +55,6 @@ const $ModificationModel = _$ModificationModelTearOff();
 /// @nodoc
 mixin _$ModificationModel {
   String get reason => throw _privateConstructorUsedError;
-  num? get amount => throw _privateConstructorUsedError;
-  String? get amountString => throw _privateConstructorUsedError;
   String get buyerId => throw _privateConstructorUsedError;
   String get sellerId => throw _privateConstructorUsedError;
   @JsonKey(
@@ -87,8 +81,6 @@ abstract class $ModificationModelCopyWith<$Res> {
       _$ModificationModelCopyWithImpl<$Res>;
   $Res call(
       {String reason,
-      num? amount,
-      String? amountString,
       String buyerId,
       String sellerId,
       @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
@@ -113,8 +105,6 @@ class _$ModificationModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? reason = freezed,
-    Object? amount = freezed,
-    Object? amountString = freezed,
     Object? buyerId = freezed,
     Object? sellerId = freezed,
     Object? createdDate = freezed,
@@ -128,14 +118,6 @@ class _$ModificationModelCopyWithImpl<$Res>
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as String,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as num?,
-      amountString: amountString == freezed
-          ? _value.amountString
-          : amountString // ignore: cast_nullable_to_non_nullable
-              as String?,
       buyerId: buyerId == freezed
           ? _value.buyerId
           : buyerId // ignore: cast_nullable_to_non_nullable
@@ -177,8 +159,6 @@ abstract class _$ModificationModelCopyWith<$Res>
   @override
   $Res call(
       {String reason,
-      num? amount,
-      String? amountString,
       String buyerId,
       String sellerId,
       @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
@@ -205,8 +185,6 @@ class __$ModificationModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? reason = freezed,
-    Object? amount = freezed,
-    Object? amountString = freezed,
     Object? buyerId = freezed,
     Object? sellerId = freezed,
     Object? createdDate = freezed,
@@ -220,14 +198,6 @@ class __$ModificationModelCopyWithImpl<$Res>
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
               as String,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as num?,
-      amountString: amountString == freezed
-          ? _value.amountString
-          : amountString // ignore: cast_nullable_to_non_nullable
-              as String?,
       buyerId: buyerId == freezed
           ? _value.buyerId
           : buyerId // ignore: cast_nullable_to_non_nullable
@@ -265,8 +235,6 @@ class __$ModificationModelCopyWithImpl<$Res>
 class _$_ModificationModel implements _ModificationModel {
   const _$_ModificationModel(
       {required this.reason,
-      this.amount,
-      this.amountString,
       required this.buyerId,
       required this.sellerId,
       @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
@@ -283,10 +251,6 @@ class _$_ModificationModel implements _ModificationModel {
 
   @override
   final String reason;
-  @override
-  final num? amount;
-  @override
-  final String? amountString;
   @override
   final String buyerId;
   @override
@@ -309,7 +273,7 @@ class _$_ModificationModel implements _ModificationModel {
 
   @override
   String toString() {
-    return 'ModificationModel(reason: $reason, amount: $amount, amountString: $amountString, buyerId: $buyerId, sellerId: $sellerId, createdDate: $createdDate, requestTitle: $requestTitle, time: $time, decisionTime: $decisionTime, modificationId: $modificationId)';
+    return 'ModificationModel(reason: $reason, buyerId: $buyerId, sellerId: $sellerId, createdDate: $createdDate, requestTitle: $requestTitle, time: $time, decisionTime: $decisionTime, modificationId: $modificationId)';
   }
 
   @override
@@ -318,11 +282,6 @@ class _$_ModificationModel implements _ModificationModel {
         (other is _ModificationModel &&
             (identical(other.reason, reason) ||
                 const DeepCollectionEquality().equals(other.reason, reason)) &&
-            (identical(other.amount, amount) ||
-                const DeepCollectionEquality().equals(other.amount, amount)) &&
-            (identical(other.amountString, amountString) ||
-                const DeepCollectionEquality()
-                    .equals(other.amountString, amountString)) &&
             (identical(other.buyerId, buyerId) ||
                 const DeepCollectionEquality()
                     .equals(other.buyerId, buyerId)) &&
@@ -349,8 +308,6 @@ class _$_ModificationModel implements _ModificationModel {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(reason) ^
-      const DeepCollectionEquality().hash(amount) ^
-      const DeepCollectionEquality().hash(amountString) ^
       const DeepCollectionEquality().hash(buyerId) ^
       const DeepCollectionEquality().hash(sellerId) ^
       const DeepCollectionEquality().hash(createdDate) ^
@@ -373,8 +330,6 @@ class _$_ModificationModel implements _ModificationModel {
 abstract class _ModificationModel implements ModificationModel {
   const factory _ModificationModel(
       {required String reason,
-      num? amount,
-      String? amountString,
       required String buyerId,
       required String sellerId,
       @JsonKey(name: "createdDate", fromJson: dateTimeFromJson, toJson: dateTimeToJson)
@@ -391,10 +346,6 @@ abstract class _ModificationModel implements ModificationModel {
 
   @override
   String get reason => throw _privateConstructorUsedError;
-  @override
-  num? get amount => throw _privateConstructorUsedError;
-  @override
-  String? get amountString => throw _privateConstructorUsedError;
   @override
   String get buyerId => throw _privateConstructorUsedError;
   @override

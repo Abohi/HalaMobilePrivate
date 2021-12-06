@@ -11,24 +11,20 @@ import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pag
 import 'package:halawork/providers/state_providers/searchedUsersProviders.dart';
 import 'package:halawork/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-final subserviceProvider = StateProvider<String?>((ref){
-  return  null;
-});
+
 class FilterPage extends HookWidget {
-  final List<String>subServices;
-  const FilterPage({required this.subServices});
+  const FilterPage();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var subServiceState = useProvider(subserviceProvider);
     var stateModelState = useProvider(stateModelStateProvider);
     var searchedUserState = useProvider(searchedUsersProvider);
-    var selectedRadioRating=useState<int>(0);
-    var selectedUserTypeRadio=useState<int>(0);
+    var selectedRadioRating = useState<int>(0);
+    var selectedUserTypeRadio = useState<int>(0);
     return SafeArea(
       child: Scaffold(
-        appBar:  AppBar(
+        appBar: AppBar(
           elevation: 0,
           title: Text(
             "Filters",
@@ -58,66 +54,54 @@ class FilterPage extends HookWidget {
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child:  Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("By Location", style: GoogleFonts.roboto(textStyle: TextStyle(
-                        color: const Color(0xFF29283C),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
-                    ))),
-                    const SizedBox(height: 15,),
+                    Text("By Location",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: const Color(0xFF29283C),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16))),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     DropdownSearch<StateModel>(
                       mode: Mode.BOTTOM_SHEET,
                       showSearchBox: true,
-                      items: nigeria.map((e) => StateModel.fromJson(e)).toList(),
+                      items:
+                          nigeria.map((e) => StateModel.fromJson(e)).toList(),
                       label: "Select your state",
-                      itemAsString: (StateModel state) => state.state.toString(),
-                      onChanged: (state)=>stateModelState.state=state,
-                      selectedItem: stateModelState.state==null?StateModel(state: "Select your state", lgas: []):context.read(stateModelStateProvider).state,
+                      itemAsString: (StateModel state) =>
+                          state.state.toString(),
+                      onChanged: (state) => stateModelState.state = state,
+                      selectedItem: stateModelState.state == null
+                          ? StateModel(state: "Select your state", lgas: [])
+                          : context.read(stateModelStateProvider).state,
                     ),
                   ],
                 ),
               ),
               SliverToBoxAdapter(
-                child: const SizedBox(height: 20,),
-              ),
-              SliverToBoxAdapter(
-                child:  Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("By Category", style: GoogleFonts.roboto(textStyle: TextStyle(
-                        color: const Color(0xFF29283C),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
-                    ))),
-                    const SizedBox(height: 15,),
-                    DropdownSearch<String>(
-                      mode: Mode.BOTTOM_SHEET,
-                      showSearchBox: true,
-                      items: subServices,
-                      label: "Select Category",
-                      itemAsString: (String item) => item,
-                      onChanged: (state)=>subServiceState.state=state,
-                      selectedItem: subServiceState.state==null?"Select Category":subServiceState.state,
-                    ),
-                  ],
+                child: const SizedBox(
+                  height: 20,
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 20,)),
               SliverToBoxAdapter(
-                child:  Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("By Rating", style:  GoogleFonts.roboto(textStyle: TextStyle(
-                        color: Color(0xFF29283C),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
-                    ))),
-                    const SizedBox(height: 15,),
+                    Text("By Rating",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: Color(0xFF29283C),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16))),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,7 +109,7 @@ class FilterPage extends HookWidget {
                         Radio(
                           value: 1,
                           groupValue: selectedRadioRating.value,
-                          onChanged: (int? val){
+                          onChanged: (int? val) {
                             selectedRadioRating.value = val!;
                           },
                           autofocus: true,
@@ -142,9 +126,8 @@ class FilterPage extends HookWidget {
                           itemBuilder: (context, _) => Icon(
                             Icons.star,
                             color: Colors.amber,
-                          ), onRatingUpdate: (double value) {
-
-                        },
+                          ),
+                          onRatingUpdate: (double value) {},
                         ),
                       ],
                     ),
@@ -155,7 +138,7 @@ class FilterPage extends HookWidget {
                         Radio(
                           value: 2,
                           groupValue: selectedRadioRating.value,
-                          onChanged: (int? val){
+                          onChanged: (int? val) {
                             selectedRadioRating.value = val!;
                           },
                           autofocus: true,
@@ -172,9 +155,8 @@ class FilterPage extends HookWidget {
                           itemBuilder: (context, _) => Icon(
                             Icons.star,
                             color: Colors.amber,
-                          ), onRatingUpdate: (double value) {
-
-                        },
+                          ),
+                          onRatingUpdate: (double value) {},
                         ),
                       ],
                     ),
@@ -202,9 +184,8 @@ class FilterPage extends HookWidget {
                           itemBuilder: (context, _) => Icon(
                             Icons.star,
                             color: Colors.amber,
-                          ), onRatingUpdate: (double value) {
-
-                        },
+                          ),
+                          onRatingUpdate: (double value) {},
                         ),
                       ],
                     ),
@@ -219,7 +200,7 @@ class FilterPage extends HookWidget {
                             selectedRadioRating.value = val!;
                           },
                           autofocus: true,
-                           activeColor: Color(0xff0000FF),
+                          activeColor: Color(0xff0000FF),
                         ),
                         RatingBar.builder(
                           initialRating: 2,
@@ -232,9 +213,8 @@ class FilterPage extends HookWidget {
                           itemBuilder: (context, _) => Icon(
                             Icons.star,
                             color: Colors.amber,
-                          ), onRatingUpdate: (double value) {
-
-                        },
+                          ),
+                          onRatingUpdate: (double value) {},
                         ),
                       ],
                     ),
@@ -249,7 +229,7 @@ class FilterPage extends HookWidget {
                             selectedRadioRating.value = val!;
                           },
                           autofocus: true,
-                        activeColor: Color(0xff0000FF),
+                          activeColor: Color(0xff0000FF),
                         ),
                         RatingBar.builder(
                           initialRating: 1,
@@ -263,26 +243,29 @@ class FilterPage extends HookWidget {
                           itemBuilder: (context, _) => Icon(
                             Icons.star,
                             color: Colors.amber,
-                          ), onRatingUpdate: (double value) {
-
-                        },
+                          ),
+                          onRatingUpdate: (double value) {},
                         ),
                       ],
                     )
                   ],
                 ),
               ),
-              SliverToBoxAdapter(child: SizedBox(height: 20,)),
+              SliverToBoxAdapter(
+                  child: SizedBox(
+                height: 20,
+              )),
               SliverToBoxAdapter(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("By Freelancer Type", style: GoogleFonts.roboto(textStyle: TextStyle(
-                        color: Color(0xFF29283C),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16
-                    ))),
+                    Text("By Freelancer Type",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                color: Color(0xFF29283C),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16))),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,11 +278,12 @@ class FilterPage extends HookWidget {
                           },
                           activeColor: Color(0xff0000FF),
                         ),
-                        Text("Individual", style: GoogleFonts.roboto(textStyle: TextStyle(
-                            color: Color(0xFF29283C),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14
-                        ))),
+                        Text("Individual",
+                            style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF29283C),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14))),
                       ],
                     ),
                     Row(
@@ -314,18 +298,21 @@ class FilterPage extends HookWidget {
                           },
                           activeColor: Color(0xff0000FF),
                         ),
-                        Text("Company", style: GoogleFonts.roboto(textStyle: TextStyle(
-                            color: Color(0xFF29283C),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14
-                        ))),
+                        Text("Company",
+                            style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                                    color: Color(0xFF29283C),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14))),
                       ],
                     )
                   ],
                 ),
               ),
               SliverToBoxAdapter(
-                child:  SizedBox(height: size.height*0.1,),
+                child: SizedBox(
+                  height: size.height * 0.1,
+                ),
               ),
               SliverToBoxAdapter(
                 child: Row(
@@ -333,70 +320,83 @@ class FilterPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: CustomButtonOutLine(buttonLabel: "CLEAR",onButtonPressed: (){
-                        stateModelState.state = null;
-                        selectedUserTypeRadio.value=0;
-                        selectedRadioRating.value=0;
-                        subServiceState.state=null;
-                      },),
+                      child: CustomButtonOutLine(
+                        buttonLabel: "CLEAR",
+                        onButtonPressed: () async {
+                          stateModelState.state = null;
+                          selectedUserTypeRadio.value = 0;
+                          selectedRadioRating.value = 0;
+                          await Fluttertoast.showToast(
+                              msg: "Cleared Successfully",
+                              toastLength: Toast.LENGTH_LONG);
+                        },
+                      ),
                     ),
-                    SizedBox(width: 24,),
+                    SizedBox(
+                      width: 24,
+                    ),
                     Expanded(
-                      child: CustomButtonFilled(buttonLabel: "APPLY",onButtonPressed: ()async{
-                        if(selectedRadioRating.value==0){
-                          await Fluttertoast.showToast(msg: "Please pick a rating for the seller",toastLength: Toast.LENGTH_LONG);
-                          return;
-                        }
+                      child: CustomButtonFilled(
+                          buttonLabel: "APPLY",
+                          onButtonPressed: () async {
+                            int userRating =
+                                filteredRating(selectedRadioRating.value);
+                            int userType = selectedUserTypeRadio.value;
+                            String sellerType = "";
+                            if (userType == 0) {
+                              sellerType = "Organization";
+                            } else {
+                              sellerType = "Individual";
+                            }
+                            String? sellerState = stateModelState.state!.state;
+                            List<UserModel> filteredUser = [];
 
-                        if(selectedUserTypeRadio.value==0){
-                          await Fluttertoast.showToast(msg: "Please pick a seller type",toastLength: Toast.LENGTH_LONG);
-                          return;
-                        }
-                        if(subServiceState.state==null){
-                          await Fluttertoast.showToast(msg: "Please pick a service type",toastLength: Toast.LENGTH_LONG);
-                          return;
-                        }
-                          int userRating= filteredRating(selectedRadioRating.value);
-                          int userType=selectedUserTypeRadio.value;
-                          String sellerType = "";
-                          if(userType==0){
-                            sellerType="Organization";
-                          }else{
-                            sellerType="Individual";
-                          }
-                          String subservice = subServiceState.state!;
-                          String? sellerState = stateModelState.state!.state;
-                          List<UserModel> filteredUser=[];
-
-                          for(int i=0;i<searchedUserState.state.length;i++){
-                            if((searchedUserState.state[i].ratings!.serviceOfWorkRatinig.toInt()==userRating)
-                                &&
-                                (searchedUserState.state[i].subServices!.contains(subservice)) &&
-                                searchedUserState.state[i].sellerType==sellerType){
-                              if(sellerState==null){
-                                filteredUser.add(searchedUserState.state[i]);
-                              }else{
-                                if(searchedUserState.state[i].states!.contains(sellerState)){
+                            for (int i = 0;
+                                i < searchedUserState.state.length;
+                                i++) {
+                              if (sellerState == null) {
+                                if ((searchedUserState.state[i].ratings!
+                                            .serviceOfWorkRatinig
+                                            .toInt() ==
+                                        userRating) ||
+                                    searchedUserState.state[i].sellerType ==
+                                        sellerType) {
+                                  filteredUser.add(searchedUserState.state[i]);
+                                }
+                              } else {
+                                if (searchedUserState.state[i].states!
+                                        .contains(sellerState) ||
+                                    (searchedUserState.state[i].ratings!
+                                            .serviceOfWorkRatinig
+                                            .toInt() ==
+                                        userRating) ||
+                                    searchedUserState.state[i].sellerType ==
+                                        sellerType) {
                                   filteredUser.add(searchedUserState.state[i]);
                                 }
                               }
                             }
-                          }
-                          searchedUserState.state=filteredUser;
-                          if(searchedUserState.state.isEmpty){
-                            await Fluttertoast.showToast(msg: "No search found for query made,reverting to default search",toastLength: Toast.LENGTH_LONG);
-                          }else{
-                            await Fluttertoast.showToast(msg: "Filters Applied Successfully",toastLength: Toast.LENGTH_LONG);
-                          }
-                        context.popRoute();
-
-                      }),
+                            searchedUserState.state = filteredUser;
+                            if (searchedUserState.state.isEmpty) {
+                              await Fluttertoast.showToast(
+                                  msg:
+                                      "No search found for query made,reverting to default search",
+                                  toastLength: Toast.LENGTH_LONG);
+                            } else {
+                              await Fluttertoast.showToast(
+                                  msg: "Filters Applied Successfully",
+                                  toastLength: Toast.LENGTH_LONG);
+                            }
+                            context.popRoute();
+                          }),
                     )
                   ],
                 ),
               ),
               SliverToBoxAdapter(
-                child:  SizedBox(height: 15,),
+                child: SizedBox(
+                  height: 15,
+                ),
               ),
             ],
           ),
@@ -404,16 +404,17 @@ class FilterPage extends HookWidget {
       ),
     );
   }
-  int filteredRating(int value){
-    if(value==1){
+
+  int filteredRating(int value) {
+    if (value == 1) {
       return 5;
-    }else if(value==2){
+    } else if (value == 2) {
       return 4;
-    }else if(value==3){
+    } else if (value == 3) {
       return 3;
-    }else if(value==4){
+    } else if (value == 4) {
       return 2;
-    }else{
+    } else {
       return 1;
     }
   }
@@ -423,20 +424,22 @@ class FilterPage extends HookWidget {
 class CustomButtonOutLine extends StatelessWidget {
   final Function onButtonPressed;
   final String buttonLabel;
-  const CustomButtonOutLine({required this.onButtonPressed,required this.buttonLabel});
+
+  const CustomButtonOutLine(
+      {required this.onButtonPressed, required this.buttonLabel});
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-        .of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         onButtonPressed();
       },
       child: Container(
-        width: size.width*0.43,
+        width: size.width * 0.43,
         height: size.height * 0.08,
-        decoration: BoxDecoration(color: Colors.white,
+        decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.circular(4),
             border: Border.all(color: const Color(0xff0000FF))),
         child: Center(
@@ -452,34 +455,36 @@ class CustomButtonOutLine extends StatelessWidget {
       ),
     );
   }
-
 }
 
 //offer seller the work button
 class CustomButtonFilled extends StatelessWidget {
   final Function onButtonPressed;
   final String buttonLabel;
-  const CustomButtonFilled({required this.onButtonPressed,required this.buttonLabel});
+
+  const CustomButtonFilled(
+      {required this.onButtonPressed, required this.buttonLabel});
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-        .of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         onButtonPressed();
       },
       child: Container(
-        width: size.width*0.43,
+        width: size.width * 0.43,
         height: size.height * 0.08,
-        decoration: BoxDecoration(color: Color(0xff0000FF),
-          borderRadius: BorderRadius.circular(4),),
+        decoration: BoxDecoration(
+          color: Color(0xff0000FF),
+          borderRadius: BorderRadius.circular(4),
+        ),
         child: Center(
           child: Text(
             buttonLabel,
             style: GoogleFonts.roboto(
                 textStyle: TextStyle(
-                    color:Colors.white,
+                    color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w700)),
           ),
@@ -488,6 +493,3 @@ class CustomButtonFilled extends StatelessWidget {
     );
   }
 }
-
-
-

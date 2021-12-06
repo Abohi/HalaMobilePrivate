@@ -9,7 +9,7 @@ part 'user_model.g.dart';
 
 @freezed
 class UserModel with _$UserModel{
-  const factory UserModel({ required String phoneNumber,@Default(false)  bool isPhoneNumberVerified,@Default(false)  bool isBuyer,@Default(false)  bool isSeller,
+  const factory UserModel({ String? phoneNumber,required bool isPhoneNumberVerified, required bool isBuyer,  required bool isSeller,
   String? firstName,String? lastName,String? optionalNumber,DateTime? dateOfBirth,
     String? sellerType,List<String>?skills,String? serviceId,
     String?service,String? serviceIcon,bool? isServiceDefault,List<String>?subServices,

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/providers/state_providers/navigation_provider.dart';
 import 'package:halawork/providers/state_providers/notification_state_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,11 +14,13 @@ class BottomNav extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var navigationProvider = useProvider(navigationStateProvider);
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     var notificationState = useProvider(notificationStateProvider);
     WidgetsBinding.instance!
         .addPostFrameCallback((_){
-          notificationState.state = userModelState!.notificationModels!.where((element) => !element.isOpen).map((e) => e).toList().length;
+          if(userModelState?.notificationModels!=null){
+            notificationState.state = userModelState!.notificationModels!.where((element) => !element.isOpen).map((e) => e).toList().length;
+          }
     });
     return BottomNavigationBar(
       items:  [
@@ -26,7 +28,7 @@ class BottomNav extends HookWidget {
             icon: SizedBox(
                 height: 20.0,
                 width: 30.0,
-                child: tabsRouter.activeIndex==0
+                child: navigationProvider.state==0
                     ? Icon(Icons.home,color: const Color(0xff0000FF),)
                     : Icon(Icons.home,color: const Color(0xff7C7C7C),)),
             label:"Home"),
@@ -34,7 +36,7 @@ class BottomNav extends HookWidget {
             icon: SizedBox(
                 height: 20.0,
                 width: 30.0,
-                child: tabsRouter.activeIndex==1
+                child: navigationProvider.state==1
                     ? Icon(Icons.markunread,color: const Color(0xff0000FF),)
                     : Icon(Icons.markunread,color: const Color(0xff7C7C7C),)),
             label: "Inbox"),
@@ -66,15 +68,15 @@ class BottomNav extends HookWidget {
             icon: SizedBox(
                 height: 20.0,
                 width: 30.0,
-                child: tabsRouter.activeIndex==3
+                child: navigationProvider.state==3
                     ? Icon(Icons.archive,color: const Color(0xff0000FF),)
                     : Icon(Icons.archive,color: const Color(0xff7C7C7C),)),
-            label:userModelState!.userModel.isSeller?"Requests":"Offers"),
+            label:userModelState==null?"Request":userModelState.userModel.isSeller?"Requests":"Offers"),
         BottomNavigationBarItem(
           icon: SizedBox(
               height: 20.0,
               width: 30.0,
-              child: tabsRouter.activeIndex==4
+              child: navigationProvider.state==4
                   ? Stack(clipBehavior: Clip.none,
                   children: [
                 Icon(Icons.notifications,color: const Color(0xff0000FF)),
@@ -91,7 +93,8 @@ class BottomNav extends HookWidget {
                       child: Center(child: Text("${notificationState.state}",style: GoogleFonts.roboto(
                           textStyle: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold)
                       ),))),)
-              ]): Stack(clipBehavior: Clip.none,
+              ]):
+              Stack(clipBehavior: Clip.none,
                   children: [
                 Icon(Icons.notifications,color: const Color(0xff7C7C7C)),
                 notificationState.state==0?SizedBox.shrink():Positioned(

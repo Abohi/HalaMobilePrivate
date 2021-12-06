@@ -162,16 +162,18 @@ class OrderRepository implements BaseOrderRepository {
     await _read(firebaseFirestoreProvider).modificationMapDocumentRef(requestId).set({
     "time":modificationPayload["time"],
     "reason":modificationPayload["reason"],
-    "amount":modificationPayload["amount"]??"",
       "buyerId":modificationPayload["buyerId"],
       "sellerId":modificationPayload["sellerId"],
       "requestTitle":modificationPayload["requestTitle"],
       "decisionTime":modificationPayload["decisionTime"],
-      "amountString":modificationPayload["amountString"],
       "createdDate":modificationPayload["createdDate"]
     },SetOptions(merge: true));
   }
   Stream<List<ModificationModel>>getModifications(){
     return _read(firebaseFirestoreProvider).modificationCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data().copyWith(modificationId: e.id)).toList());
+  }
+
+  Stream<ModificationModel>getModification(String requestId){
+    return _read(firebaseFirestoreProvider).modificationCollectionRef().doc(requestId).snapshots().map((event) => event.data()!);
   }
 }

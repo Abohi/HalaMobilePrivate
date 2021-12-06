@@ -54,12 +54,15 @@ Map<String, dynamic> _$_$_SellerSetupModelToJson(
       'saveServiceType': instance.saveServiceType,
       'saveIcon': instance.saveIcon,
       'saveExpertiseType': instance.saveExpertiseType,
-      'saveEducationEntryModel': instance.saveEducationEntryModel,
-      'saveWorkEntryModel': instance.saveWorkEntryModel,
-      'saveAchievementList': instance.saveAchievementList,
-      'saveProfileDescModel': instance.saveProfileDescModel,
+      'saveEducationEntryModel':
+          instance.saveEducationEntryModel?.map((e) => e.toJson()).toList(),
+      'saveWorkEntryModel':
+          instance.saveWorkEntryModel?.map((e) => e.toJson()).toList(),
+      'saveAchievementList':
+          instance.saveAchievementList?.map((e) => e.toJson()).toList(),
+      'saveProfileDescModel': instance.saveProfileDescModel?.toJson(),
       'saveProfilePhoto': instance.saveProfilePhoto,
       'serviceId': instance.serviceId,
-      'orgDetailModel': instance.orgDetailModel,
-      'locationModel': instance.locationModel,
+      'orgDetailModel': instance.orgDetailModel?.toJson(),
+      'locationModel': instance.locationModel?.map((e) => e.toJson()).toList(),
     };

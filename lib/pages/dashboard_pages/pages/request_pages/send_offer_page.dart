@@ -5,7 +5,7 @@ import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/requests_model/request_model2.dart';
@@ -246,7 +246,7 @@ class SendOfferPage extends HookWidget {
                           buttonFontColor: Colors.white,
                           onButtonPressed: () async{
                               if(descriptionController.text.isNotEmpty && amtController.text.isNotEmpty && durationDate.value!=null){
-                                if(context.read(userControllerProvider)!.userModel.toggleNationWideVisibility!){
+                                if(context.read(userModelExtensionController)!.userModel.toggleNationWideVisibility!){
                                   final progress = ProgressHUD.of(context);
                                   progress!.showWithText('Sending Offer...');
                                   int mintues=0;
@@ -261,7 +261,7 @@ class SendOfferPage extends HookWidget {
                                   String sellerId = context.read(authControllerProvider)!.uid;
                                   final differenceSeconds = dateOfDelivery.difference(DateTime.now());
                                   OfferModel offerModel = OfferModel(description: descriptionController.text, amount: amtController.text, selectedDuration: differenceSeconds.inSeconds.toString(), selectedDurationInWords: dateOfDelivery.month.toString(),dateOfDelivery: dateOfDelivery);
-                                  await context.read(userControllerProvider.notifier).sendOffer(sellerId, requestId, buyerId, offerModel);
+                                  await context.read(userModelExtensionController.notifier).sendOffer(sellerId, requestId, buyerId, offerModel);
                                   progress.dismiss();
                                   await Fluttertoast.showToast(msg: "Offer sent successfully",toastLength: Toast.LENGTH_LONG);
                                   context.popRoute();

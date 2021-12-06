@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/achievement_section.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/description_section.dart';

@@ -9,16 +9,16 @@ import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/wi
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 
-final isShowArrowUpStateProvider = StateProvider<bool>((ref){
-  return  false;
-});
+// final isShowArrowUpStateProvider = StateProvider<bool>((ref){
+//   return  false;
+// });
 class ExpandableServiceTile extends HookWidget {
    final ActiveServiceModel activeServiceModel;
   const ExpandableServiceTile({required this.activeServiceModel});
 
   @override
   Widget build(BuildContext context) {
-    var isShowArrowUpState = useProvider(isShowArrowUpStateProvider);
+    var isShowArrowUpState = useState<bool>(false);
     var size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.only(top: 10),
@@ -31,7 +31,7 @@ class ExpandableServiceTile extends HookWidget {
           children: [
             GestureDetector(
               onTap: (){
-                isShowArrowUpState.state=!isShowArrowUpState.state;
+                isShowArrowUpState.value=!isShowArrowUpState.value;
               },
               child: Container(
                 color: const Color(0xffF8F8F8),
@@ -52,14 +52,14 @@ class ExpandableServiceTile extends HookWidget {
                             child: SvgPicture.asset(activeServiceModel.icon!)))),
                     Text(activeServiceModel.service!, style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,color: const Color(0xff555555),fontWeight: FontWeight.w700))),
                     Offstage(child: Icon(Icons.keyboard_arrow_up, color:const Color(0xff0000FF),
-                      size: 24,),offstage:  context.read(isShowArrowUpStateProvider).state,),
+                      size: 24,),offstage: isShowArrowUpState.value,),
                     Offstage(child: Icon(Icons.keyboard_arrow_down, color:const Color(0xff0000FF),
-                      size: 24,),offstage: !context.read(isShowArrowUpStateProvider).state,),
+                      size: 24,),offstage: !isShowArrowUpState.value,),
                   ],
                 ),
               ),
             ),
-            isShowArrowUpState.state?ConstrainedBox(
+            isShowArrowUpState.value?ConstrainedBox(
               constraints: BoxConstraints(maxWidth: size.width,maxHeight:size.height*0.25 ),
               child: ListView.builder(
                 shrinkWrap: true,

@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/providers/general_providers/phoneVerificationCodeProvider.dart';
 import 'package:halawork/providers/general_providers/user_profile_provider.dart';
@@ -75,7 +75,8 @@ class AuthRepository implements BaseAuthRepository {
       UserCredential userCredential = await _read.read(firebaseAuthProvider).createUserWithEmailAndPassword(email: payload["email"]!, password:payload["password"]! );
       if(userCredential.user!=null){
         await userCredential.user!.sendEmailVerification();
-        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]!),SetOptions(
+
+        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]!, isPhoneNumberVerified: false, isSeller: false, isBuyer: false,),SetOptions(
           merge: true
         ));
       }

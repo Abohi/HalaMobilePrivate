@@ -2,11 +2,12 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/requests_model/request_model2.dart';
 import 'package:halawork/pages/dashboard_pages/widget/request_card.dart';
 import 'package:halawork/providers/state_providers/navigation_provider.dart';
+import 'package:halawork/providers/state_providers/tab_state_provider.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
@@ -23,14 +24,15 @@ class _RequestPageState extends State<RequestPage>{
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
+    var tabRouteState = useProvider(tabRouteStateProvider);
+    var navigationProvider = useProvider(navigationStateProvider);
     return Container(
       width: size.width,
       height: size.height,
       color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 17),
-      child: userModelState!.userModel.isSeller?
-      FutureBuilder<HttpsCallableResult<List<dynamic>>>(
+      child: userModelState!.userModel.isSeller?FutureBuilder<HttpsCallableResult<List<dynamic>>>(
         builder: (context,snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Column(
@@ -68,8 +70,9 @@ class _RequestPageState extends State<RequestPage>{
         },
           future: callable.call()
       ):
+
       StreamBuilder<List<CreateRequestModel>>(
-        stream: context.read(userControllerProvider.notifier).getRequests(),
+        stream: context.read(userModelExtensionController.notifier).getRequests(),
         builder: (context,snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Column(
@@ -101,8 +104,8 @@ class _RequestPageState extends State<RequestPage>{
                       buttonTitle: "CREATE A REQUEST",
                       buttonFontColor: Colors.white,
                       onButtonPressed: () {
-                        context.read(navigationStateProvider).state = 2;
-                        context.router.replaceAll([DashBoardRoute()]);
+                        tabRouteState.state?.setActiveIndex(2);
+                        navigationProvider.state=2;
                       }, imageIcon: null,),
                   ),
                 ),

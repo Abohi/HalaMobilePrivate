@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/requests_model/request_model2.dart';
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';
@@ -203,7 +204,7 @@ class BuyerRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
+    return createRequestModel.userId==context.read(authControllerProvider)!.uid? Container(
       width: size.width,
       margin: isLast?EdgeInsets.only(bottom: 45):EdgeInsets.only(bottom: 20),
       padding: EdgeInsets.symmetric(horizontal: 12),
@@ -375,7 +376,7 @@ class BuyerRequestCard extends StatelessWidget {
           )
         ],
       ),
-    );
+    ):SizedBox.shrink();
   }
 }
 // class BuyerRequestCard extends StatelessWidget {

@@ -394,9 +394,8 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     FilterRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (data) {
-          final args = data.argsAs<FilterRouteArgs>();
-          return _i50.FilterPage(subServices: args.subServices);
+        builder: (_) {
+          return _i50.FilterPage();
         }),
     EditWorkHistoryRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -1018,19 +1017,10 @@ class HomeSearchMainRoute extends _i1.PageRouteInfo {
   static const String name = 'HomeSearchMainRoute';
 }
 
-class FilterRoute extends _i1.PageRouteInfo<FilterRouteArgs> {
-  FilterRoute({required List<String> subServices})
-      : super(name,
-            path: '/filter-page',
-            args: FilterRouteArgs(subServices: subServices));
+class FilterRoute extends _i1.PageRouteInfo {
+  const FilterRoute() : super(name, path: '/filter-page');
 
   static const String name = 'FilterRoute';
-}
-
-class FilterRouteArgs {
-  const FilterRouteArgs({required this.subServices});
-
-  final List<String> subServices;
 }
 
 class EditWorkHistoryRoute extends _i1.PageRouteInfo {

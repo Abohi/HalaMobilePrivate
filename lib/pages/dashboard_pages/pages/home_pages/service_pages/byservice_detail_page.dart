@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/service_pages/widget/expandable_service_tile.dart';
@@ -16,7 +16,7 @@ class ByServiceDetailPage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final scafKey = useMemoized(() => GlobalKey<ScaffoldState>());
-    var userModelState = useProvider(userControllerProvider);
+    var userModelState = useProvider(userModelExtensionController);
     return SafeArea(
       child: Scaffold(
         key: scafKey,

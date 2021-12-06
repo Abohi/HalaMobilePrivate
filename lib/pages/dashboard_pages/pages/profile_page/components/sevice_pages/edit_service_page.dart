@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/servicetype_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
@@ -303,7 +303,7 @@ class EditServicePage extends HookWidget {
                                   final progress = ProgressHUD.of(context);
                                   progress!.showWithText('Updating Service...');
                                   var firestoreReference = context.read(firebaseFirestoreProvider);
-                                  UserModel userModel =  context.read(userControllerProvider)!.userModel;
+                                  UserModel userModel =  context.read(userModelExtensionController)!.userModel;
                                   String previousOfferedServiceId = userModel.serviceId!;
                                   List<String> previousOfferedSubServices = userModel.subServices!;
                                   DocumentReference previousOfferedServiceRef = firestoreReference.collection(activeServiceCollection).doc(previousOfferedServiceId);

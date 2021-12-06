@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/inbox_controller.dart';
 import 'package:halawork/controllers/order_message_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/pages/dashboard_pages/widget/tab_bar_decorator.dart';
@@ -26,7 +26,6 @@ class InboxDetailPage extends HookWidget{
   Widget build(BuildContext context) {
      var _tabController = useTabController(initialLength: 2);
      var  tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
-     _tabController.animateTo(tabIndexSwitcherState.state);
      var _textEditingController = useTextEditingController();
      var inboxModelState = useProvider(inboxControllerProvider);
      var orderMessageModelState = useProvider(orderMessageControllerProvider);
@@ -34,6 +33,12 @@ class InboxDetailPage extends HookWidget{
      final String buyerId= buyerSellerIdState.state![0];
      final String sellerId = buyerSellerIdState.state![1];
      var receiverId = useState<String>("");
+     useEffect((){
+       if(tabIndexSwitcherState.state!=-1){
+         _tabController.animateTo(tabIndexSwitcherState.state);
+       }
+       return null;
+     },[]);
      if(buyerId!=context.read(authControllerProvider)!.uid){
        receiverId.value = buyerId;
      }else{
@@ -213,9 +218,9 @@ class InboxDetailPage extends HookWidget{
                   FocusScope.of(context).unfocus();
                   if(_textEditingController.text.isNotEmpty){
                     if(_tabController.index==0){
-                      await context.read(userControllerProvider.notifier).uploadMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+                      await context.read(userModelExtensionController.notifier).uploadMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
                     }else{
-                      await context.read(userControllerProvider.notifier).uploadOrderMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
+                      await context.read(userModelExtensionController.notifier).uploadOrderMessage(_textEditingController.text,sellerId: sellerId,buyerId: buyerId,receiverId: receiverId);
                     }
                   }else{
                     await Fluttertoast.showToast(msg: "Field cannot be empty",toastLength: Toast.LENGTH_LONG);

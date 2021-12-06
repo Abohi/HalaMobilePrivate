@@ -20,6 +20,6 @@ _$_ServiceTypeModel _$_$_ServiceTypeModelFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_ServiceTypeModelToJson(
         _$_ServiceTypeModel instance) =>
     <String, dynamic>{
-      'serviceModel': instance.serviceModel,
-      'skillModel': instance.skillModel,
+      'serviceModel': instance.serviceModel?.map((e) => e.toJson()).toList(),
+      'skillModel': instance.skillModel?.toJson(),
     };

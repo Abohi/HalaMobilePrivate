@@ -10,12 +10,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/servicetype_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/pages/auth_pages/login_widget/custom_login_divider.dart';
 import 'package:halawork/providers/exception_provider/exception_provider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
+import 'package:halawork/utils/passwordValidationStructure.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
@@ -124,7 +125,7 @@ class LoginPage extends HookWidget {
                                       if(result!){
                                         if(context.read(authControllerProvider)!=null){
                                           FirebaseMessaging _fcm = FirebaseMessaging.instance;
-                                          if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
+                                          if(context.read(userModelExtensionController)?.userModel.fcmtoken==null){
                                             String? fcmToken = await _fcm.getToken();
                                             if(fcmToken!=null){
                                               await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
@@ -164,20 +165,14 @@ class LoginPage extends HookWidget {
                                         if(userCredential.user!=null){
                                           if(context.read(authControllerProvider)!=null){
                                             FirebaseMessaging _fcm = FirebaseMessaging.instance;
-                                            if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
-                                              String? fcmToken = await _fcm.getToken();
-                                              if(fcmToken!=null){
-                                                await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
-                                                progress.dismiss();
-                                                context.router.navigate(AppEntryRoute());
-                                              }else{
-                                                String? fcmToken = await _fcm.getToken();
-                                                await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
-                                                progress.dismiss();
-                                                context.router.navigate(AppEntryRoute());
-                                              }
-
+                                            String? fcmToken = await _fcm.getToken();
+                                            if(fcmToken!=null){
+                                              await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
+                                              progress.dismiss();
+                                              context.router.navigate(AppEntryRoute());
                                             }else{
+                                              String? fcmToken = await _fcm.getToken();
+                                              await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
                                               progress.dismiss();
                                               context.router.navigate(AppEntryRoute());
                                             }
@@ -309,7 +304,7 @@ class LoginPage extends HookWidget {
                                     context.read(exceptionMessageProvider).state=null;
                                   }
                                   if(context.read(authControllerProvider)!=null){
-                                    if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
+                                    if(context.read(userModelExtensionController)?.userModel.fcmtoken==null){
                                       String? fcmToken = await _fcm.getToken();
                                       if(fcmToken!=null){
                                         await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);

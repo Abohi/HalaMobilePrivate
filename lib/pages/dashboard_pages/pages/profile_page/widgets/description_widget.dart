@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final firstHalfStateProvider = StateProvider<String>((ref){
   String text="";
-  var userModelState = ref.watch(userControllerProvider);
+  var userModelState = ref.watch(userModelExtensionController);
   var secondHalfState = ref.watch(secondHalfStateProvider).state;
   if(userModelState?.userModel.profileDescription!=null){
     if(userModelState!.userModel.profileDescription!.length>200){

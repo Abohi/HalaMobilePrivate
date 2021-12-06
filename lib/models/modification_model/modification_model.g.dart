@@ -9,8 +9,6 @@ part of 'modification_model.dart';
 _$_ModificationModel _$_$_ModificationModelFromJson(Map<String, dynamic> json) {
   return _$_ModificationModel(
     reason: json['reason'] as String,
-    amount: json['amount'] as num?,
-    amountString: json['amountString'] as String?,
     buyerId: json['buyerId'] as String,
     sellerId: json['sellerId'] as String,
     createdDate: dateTimeFromJson(json['createdDate'] as Timestamp?),
@@ -25,8 +23,6 @@ Map<String, dynamic> _$_$_ModificationModelToJson(
         _$_ModificationModel instance) =>
     <String, dynamic>{
       'reason': instance.reason,
-      'amount': instance.amount,
-      'amountString': instance.amountString,
       'buyerId': instance.buyerId,
       'sellerId': instance.sellerId,
       'createdDate': dateTimeToJson(instance.createdDate),

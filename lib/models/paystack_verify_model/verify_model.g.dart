@@ -18,5 +18,5 @@ Map<String, dynamic> _$_$_VerifyModelToJson(_$_VerifyModel instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'data': instance.data,
+      'data': instance.data.toJson(),
     };

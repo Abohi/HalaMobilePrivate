@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
@@ -52,7 +52,7 @@ class ServiceSection extends HookWidget{
         ]),
       );
     }else{
-      var userModelState = useProvider(userControllerProvider);
+      var userModelState = useProvider(userModelExtensionController);
       var size = MediaQuery.of(context).size;
       return userModelState==null?Text(""):SliverList(
         delegate: SliverChildListDelegate([

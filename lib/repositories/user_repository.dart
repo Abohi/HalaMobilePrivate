@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
@@ -18,6 +18,7 @@ import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/order_model/order_model.dart';
 import 'package:halawork/models/orderpayment/order_payment.dart';
 import 'package:halawork/models/paystack_verify_model/verify_model.dart';
+import 'package:halawork/models/phonenumber_model/phonenumber_model.dart';
 import 'package:halawork/models/profile_models/portfolio_model.dart';
 import 'package:halawork/models/rating_model/rating_model.dart';
 import 'package:halawork/models/recently_visited_model/recently_visited_model.dart';
@@ -32,6 +33,7 @@ import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
 import 'package:halawork/models/user_model/rating_model/user_ratings.dart';
 import 'package:halawork/models/user_model/user_model.dart';
+import 'package:halawork/models/user_model/wallet_model/wallet_model.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/profile_picture_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
@@ -90,12 +92,20 @@ class UserRepository implements BaseUserRepository {
   @override
   Stream<UserModel> getUserModel(String userId) {
     try {
-      return  _read(firebaseFirestoreProvider).userDocumentRef(userId).snapshots().map((event) => event.data()!);
+      return  _read(firebaseFirestoreProvider).userDocumentRef(userId).snapshots().map((event) =>
+      event.data()!);
     } on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
   }
-
+  Stream<PhoneNumberModel> getPhoneNumberStream(String userId) {
+    try {
+      return  _read(firebaseFirestoreProvider).userMapDocumentRef(userId).snapshots().map((event) =>
+      PhoneNumberModel.fromJson(event.data()!));
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
   Future<UserModel>getUserModelFuture(String userId)async{
     try {
       return  (await _read(firebaseFirestoreProvider).userDocumentRef(userId).get()).data()!;
@@ -229,7 +239,7 @@ class UserRepository implements BaseUserRepository {
 
   Future<void>updateNationalAvailability(UserModelExtension userModelExtension,bool visibility)async{
     final firestoreReference =   await _read(firebaseFirestoreProvider);
-    UserModel userModel = _read(userControllerProvider)!.userModel.copyWith(toggleNationWideVisibility:visibility);
+    UserModel userModel = _read(userModelExtensionController)!.userModel.copyWith(toggleNationWideVisibility:visibility);
     await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
     DocumentReference documentReference =firestoreReference.collection(activeServiceCollection).doc(userModelExtension.userModel.serviceId);
     for(int i=0;i<userModelExtension.userModel.subServices!.length;i++){
@@ -240,8 +250,8 @@ class UserRepository implements BaseUserRepository {
   }
 
   Future<void>updatingUserType(UserModelExtension userModelExtension,bool isSeller)async{
-    final firestoreReference =   await _read(firebaseFirestoreProvider);
-    UserModel userModel = _read(userControllerProvider)!.userModel.copyWith(isSeller:isSeller);
+    final firestoreReference =    _read(firebaseFirestoreProvider);
+    UserModel userModel = _read(userModelExtensionController)!.userModel.copyWith(isSeller:isSeller);
     await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
   }
   Future<void>updateWorkHistory(List<WorkEntryModel> workEntryModelList)async{
@@ -262,9 +272,9 @@ class UserRepository implements BaseUserRepository {
   Future<void>updateUserDescription(OrgDetailModel? orgDetailModel,ProfileDescEntryModel? profileDescription,bool isOrganization)async{
     final firestoreReference =   await _read(firebaseFirestoreProvider);
     if(isOrganization){
-      await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(_read(userControllerProvider)!.userModel.copyWith(orgDetailModel: orgDetailModel?.toJson()),SetOptions(merge: true));
+      await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(_read(userModelExtensionController)!.userModel.copyWith(orgDetailModel: orgDetailModel?.toJson()),SetOptions(merge: true));
     }else{
-      await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(_read(userControllerProvider)!.userModel.copyWith(profileDescriptionTitle: profileDescription?.title,profileDescription: profileDescription?.description),SetOptions(merge: true));
+      await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(_read(userModelExtensionController)!.userModel.copyWith(profileDescriptionTitle: profileDescription?.title,profileDescription: profileDescription?.description),SetOptions(merge: true));
     }
   }
   Future<void>updateSellerProfilePicture(String path)async{
@@ -280,7 +290,7 @@ class UserRepository implements BaseUserRepository {
         .putFile(File(path));
 
     String photoUrl = await (await storageUploadTask).ref.getDownloadURL();
-    UserModel userModel = _read(userControllerProvider)!.userModel.copyWith(profilePictureUrl: photoUrl);
+    UserModel userModel = _read(userModelExtensionController)!.userModel.copyWith(profilePictureUrl: photoUrl);
     await firestoreReference.userDocumentRef(_read(authControllerProvider)!.uid).set(userModel,SetOptions(merge: true));
   }
   @override
@@ -301,8 +311,8 @@ class UserRepository implements BaseUserRepository {
       photoUrl = await (await storageUploadTask).ref.getDownloadURL();
      }
      UserModel? userModel = null;
-    if(_read(userControllerProvider)?.userModel.profilePictureUrl==null){
-      userModel = _read(userControllerProvider)!.userModel.copyWith(
+    if(_read(userModelExtensionController)?.userModel.profilePictureUrl==null){
+      userModel = _read(userModelExtensionController)!.userModel.copyWith(
           profilePictureUrl: photoUrl,sellerType: sellerSetupModel.sellerType,service: sellerSetupModel.saveService,
           isServiceDefault:sellerSetupModel.saveServiceType,skills: sellerSetupModel.saveSkills,
           serviceIcon: sellerSetupModel.saveIcon,subServices: sellerSetupModel.saveSubService,
@@ -312,7 +322,7 @@ class UserRepository implements BaseUserRepository {
           isSeller:true,orgDetailModel:sellerSetupModel.orgDetailModel==null?null: sellerSetupModel.orgDetailModel?.toJson(),states:sellerSetupModel.locationModel?.map((e) => e.state).toList(),isActiveService:true,isDismissCompleteProfile:true,toggleNationWideVisibility:true,
           ratings:UserRatingModel(serviceOfWorkRatinig: 0,communicationRating: 0,likelyRecommendRating: 0) );
     }else{
-      userModel = _read(userControllerProvider)!.userModel.copyWith(
+      userModel = _read(userModelExtensionController)!.userModel.copyWith(
           sellerType: sellerSetupModel.sellerType,service: sellerSetupModel.saveService,
           isServiceDefault:sellerSetupModel.saveServiceType,skills: sellerSetupModel.saveSkills,
           serviceIcon: sellerSetupModel.saveIcon,subServices: sellerSetupModel.saveSubService,
@@ -441,7 +451,9 @@ class UserRepository implements BaseUserRepository {
   @override
   Stream<List<CreateRequestModel>> getRequests() {
     try{
-      return _read(firebaseFirestoreProvider).createRequestCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data()).toList());
+      return _read(firebaseFirestoreProvider).createRequestCollectionRef().snapshots().map((event) =>
+          event.docs.map((e) =>
+              e.data()).toList());
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }

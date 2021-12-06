@@ -21,10 +21,10 @@ class _$UserModelTearOff {
   const _$UserModelTearOff();
 
   _UserModel call(
-      {required String phoneNumber,
-      bool isPhoneNumberVerified = false,
-      bool isBuyer = false,
-      bool isSeller = false,
+      {String? phoneNumber,
+      required bool isPhoneNumberVerified,
+      required bool isBuyer,
+      required bool isSeller,
       String? firstName,
       String? lastName,
       String? optionalNumber,
@@ -103,7 +103,7 @@ const $UserModel = _$UserModelTearOff();
 
 /// @nodoc
 mixin _$UserModel {
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
   bool get isPhoneNumberVerified => throw _privateConstructorUsedError;
   bool get isBuyer => throw _privateConstructorUsedError;
   bool get isSeller => throw _privateConstructorUsedError;
@@ -150,7 +150,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res>;
   $Res call(
-      {String phoneNumber,
+      {String? phoneNumber,
       bool isPhoneNumberVerified,
       bool isBuyer,
       bool isSeller,
@@ -238,7 +238,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       phoneNumber: phoneNumber == freezed
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isPhoneNumberVerified: isPhoneNumberVerified == freezed
           ? _value.isPhoneNumberVerified
           : isPhoneNumberVerified // ignore: cast_nullable_to_non_nullable
@@ -404,7 +404,7 @@ abstract class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       __$UserModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String phoneNumber,
+      {String? phoneNumber,
       bool isPhoneNumberVerified,
       bool isBuyer,
       bool isSeller,
@@ -495,7 +495,7 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
       phoneNumber: phoneNumber == freezed
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isPhoneNumberVerified: isPhoneNumberVerified == freezed
           ? _value.isPhoneNumberVerified
           : isPhoneNumberVerified // ignore: cast_nullable_to_non_nullable
@@ -636,10 +636,10 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
-      {required this.phoneNumber,
-      this.isPhoneNumberVerified = false,
-      this.isBuyer = false,
-      this.isSeller = false,
+      {this.phoneNumber,
+      required this.isPhoneNumberVerified,
+      required this.isBuyer,
+      required this.isSeller,
       this.firstName,
       this.lastName,
       this.optionalNumber,
@@ -675,14 +675,11 @@ class _$_UserModel implements _UserModel {
       _$_$_UserModelFromJson(json);
 
   @override
-  final String phoneNumber;
-  @JsonKey(defaultValue: false)
+  final String? phoneNumber;
   @override
   final bool isPhoneNumberVerified;
-  @JsonKey(defaultValue: false)
   @override
   final bool isBuyer;
-  @JsonKey(defaultValue: false)
   @override
   final bool isSeller;
   @override
@@ -889,10 +886,10 @@ class _$_UserModel implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required String phoneNumber,
-      bool isPhoneNumberVerified,
-      bool isBuyer,
-      bool isSeller,
+      {String? phoneNumber,
+      required bool isPhoneNumberVerified,
+      required bool isBuyer,
+      required bool isSeller,
       String? firstName,
       String? lastName,
       String? optionalNumber,
@@ -928,7 +925,7 @@ abstract class _UserModel implements UserModel {
       _$_UserModel.fromJson;
 
   @override
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
   @override
   bool get isPhoneNumberVerified => throw _privateConstructorUsedError;
   @override

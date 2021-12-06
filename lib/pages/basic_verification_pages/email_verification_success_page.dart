@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/providers/general_providers/phoneVerificationCodeProvider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
@@ -21,7 +21,7 @@ late NetworkFailure networkFailure;
     var isNetworkError=useState(false);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    final userModelState = useProvider(userControllerProvider);
+    final userModelState = useProvider(userModelExtensionController);
     return WillPopScope(
       onWillPop: () async{
        return false;
@@ -56,7 +56,7 @@ late NetworkFailure networkFailure;
                       isNetworkError.value?ErrorWidgetControl(
                         networkFailure: networkFailure,
                         retryHandler: ()async{
-                          await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userControllerProvider)!.userModel.phoneNumber);
+                          await context.read(authRepositoryProvider).sendPhoneValidationCode(context.read(userModelExtensionController)!.userModel.phoneNumber!);
                         },
                       ):CustomButtonSignup(buttonBg: Colors.white, buttonTitle: "Continue", buttonFontColor: const Color(0xff0000FF), onButtonPressed: ()async{
                           if(userModelState==null){

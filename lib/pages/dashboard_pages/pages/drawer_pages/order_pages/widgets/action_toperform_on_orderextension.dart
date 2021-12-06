@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
-import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/pages/dashboard_pages/pages/dialogs/extend_ordertime_dialog.dart';
 import 'package:halawork/pages/dashboard_pages/widget/message_btn.dart';
 import 'package:halawork/pages/dashboard_pages/widget/offer_btn.dart';
@@ -22,7 +22,7 @@ class ActionToPerformOnExtendOrder extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var userModel = useProvider(userControllerProvider);
+    var userModel = useProvider(userModelExtensionController);
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
     return Container(
       width: size.width,

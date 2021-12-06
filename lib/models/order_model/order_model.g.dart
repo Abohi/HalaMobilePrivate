@@ -53,7 +53,7 @@ Map<String, dynamic> _$_$_OrderModelToJson(_$_OrderModel instance) =>
       'releaseFundTime': dateTimeToJson(instance.releaseFundTime),
       'amount': instance.amount,
       'orderDeliveryTimeExpires': instance.orderDeliveryTimeExpires,
-      'fileTypeModel': instance.fileTypeModel,
+      'fileTypeModel': instance.fileTypeModel?.toJson(),
       'orderNote': instance.orderNote,
       'actionType': instance.actionType,
     };

@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_controller.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/pages/auth_pages/login_widget/custom_login_divider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/repositories/user_repository.dart';
@@ -92,26 +93,17 @@ class SignupPage extends HookWidget {
                            if(result!){
                              if(context.read(authControllerProvider)!=null){
                                FirebaseMessaging _fcm = FirebaseMessaging.instance;
-                               if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
-                                 String? fcmToken = await _fcm.getToken();
-                                 if(fcmToken!=null){
-                                   await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
-                                   await context.read(authControllerProvider)!.sendEmailVerification();
-                                   await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
-                                   context.read(authControllerProvider.notifier).signOut();
-                                   progress.dismiss();
-                                   context.router.navigate(AppEntryRoute());
-                                 }else{
-                                   String? fcmToken = await _fcm.getToken();
-                                   await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
-                                   await context.read(authControllerProvider)!.sendEmailVerification();
-                                   await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
-                                   context.read(authControllerProvider.notifier).signOut();
-                                   progress.dismiss();
-                                   context.router.navigate(AppEntryRoute());
-                                 }
-
+                               String? fcmToken = await _fcm.getToken();
+                               if(fcmToken!=null){
+                                 await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
+                                 await context.read(authControllerProvider)!.sendEmailVerification();
+                                 await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
+                                 context.read(authControllerProvider.notifier).signOut();
+                                 progress.dismiss();
+                                 context.router.navigate(AppEntryRoute());
                                }else{
+                                 String? fcmToken = await _fcm.getToken();
+                                 await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
                                  await context.read(authControllerProvider)!.sendEmailVerification();
                                  await Fluttertoast.showToast(msg: "Verification Email Sent Successfully",toastLength: Toast.LENGTH_LONG);
                                  context.read(authControllerProvider.notifier).signOut();
@@ -134,25 +126,13 @@ class SignupPage extends HookWidget {
                               if(userCredential.user!=null){
                                 if(context.read(authControllerProvider)!=null){
                                   FirebaseMessaging _fcm = FirebaseMessaging.instance;
-                                  if(context.read(userControllerProvider)?.userModel.fcmtoken==null){
-                                    String? fcmToken = await _fcm.getToken();
-                                    if(fcmToken!=null){
-                                      await context.read(userRepositoryProvider).saveDeviceToken(fcmToken);
-                                      progress.dismiss();
-                                      context.router.navigate(EnterPhoneNumberRoute());
-                                    }else{
-                                      String? fcmToken = await _fcm.getToken();
-                                      await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
-                                      progress.dismiss();
-                                      context.router.navigate(EnterPhoneNumberRoute());
-                                    }
-
-                                  }else{
-                                    progress.dismiss();
-                                    context.router.navigate(EnterPhoneNumberRoute());
-                                  }
+                                  String? fcmToken = await _fcm.getToken();
+                                  await context.read(userRepositoryProvider).saveDeviceToken(fcmToken!);
+                                  progress.dismiss();
+                                  context.router.navigate(EnterPhoneNumberRoute());
                                 }else{
                                   progress.dismiss();
+                                  await Fluttertoast.showToast(msg: "Authentication failed, try again",toastLength: Toast.LENGTH_LONG);
                                 }
                               }
                             }
