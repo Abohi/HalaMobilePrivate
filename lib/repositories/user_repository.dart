@@ -9,7 +9,9 @@ import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
+import 'package:halawork/models/account_info_model/account_info_model.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
+import 'package:halawork/models/bank_model/bank_model.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/inbox_model/inbox_model.dart';
 import 'package:halawork/models/location_model/location_model.dart';
@@ -38,6 +40,7 @@ import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/profile_picture_entry_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart';
 import 'package:halawork/providers/general_providers/general_providers.dart';
+import 'package:halawork/providers/state_providers/bankDataModelProvider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/utils/constants.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -635,6 +638,59 @@ class UserRepository implements BaseUserRepository {
       await _read(firebaseFirestoreProvider).orderDocumentMapRef(orderModel["requestId"]).set(orderModel,SetOptions(merge: true));
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
+    }
+  }
+
+  @override
+  Future<Either<NetworkFailure,BankModel>> getBanks()async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json'
+      };
+       const baseUrl = "https://api.paystack.co/";
+    String url =
+          baseUrl+'bank?country=nigeria';
+
+      return http.get(Uri.parse(url), headers: headers).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(BankModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<NetworkFailure,AccountInfoModel?>> resolveAccountInfo()async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
+      };
+      String accountNumber = _read(bankDataModelProvider).state?.accountNumber??"";
+      String bankCode= _read(bankDataModelProvider).state?.code??"";
+      const baseUrl = "https://api.paystack.co/";
+      String url =
+          baseUrl+'bank/resolve?account_number=$accountNumber&bank_code=$bankCode';
+      if(_read(bankDataModelProvider).state==null){
+        return right(null);
+      }
+      return http.get(Uri.parse(url), headers: headers).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(AccountInfoModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
     }
   }
 
