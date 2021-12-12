@@ -1,0 +1,103 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/exception_handlers/network_failure_exception.dart';
+import 'package:halawork/models/account_info_model/account_info_data_model.dart';
+import 'package:halawork/models/account_info_model/account_info_model.dart';
+import 'package:halawork/providers/future_providers/account_info_future_provider.dart';
+import 'package:halawork/providers/state_providers/bankDataModelProvider.dart';
+import 'package:halawork/repositories/user_repository.dart';
+import 'package:halawork/widgets/CustomButtonSignup.dart';
+import 'package:halawork/widgets/error_widget.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:auto_route/auto_route.dart';
+import 'add_account_component/bank_account_details.dart';
+
+class AddAccountDetailPage extends HookWidget {
+  const AddAccountDetailPage();
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    var bankInfoState = useProvider(bankDataModelProvider);
+    AsyncValue<Either<NetworkFailure,AccountInfoModel?>> accountInfoState= useProvider(accountInfoFutureProvider);
+    return   SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 5,
+          title: Text(
+            "Account Details",
+            style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                    color: const Color(0xff3E3E3E),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700)),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: const Color(0xff0000FF),
+              size: 24,
+            ),
+            onPressed: () {
+              context.popRoute();
+            },
+          ),
+        ),
+        backgroundColor: Colors.white,
+        body: accountInfoState.when(data: (accountInfoData){
+          return accountInfoData.fold((l){
+            return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
+              await context.read(userRepositoryProvider).resolveAccountInfo();
+            });
+          }, (r){
+            return Container(
+              width: size.width,
+              height: size.height,
+              child: ProgressHUD(
+                backgroundColor:const Color(0xff0000FF),
+                indicatorColor: Colors.white,
+                child: Builder(
+                  builder: (context){
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BankAccountDetails(accountNumber: r?.data.account_number, accountName: r?.data.account_name),
+                        CustomButtonSignup(buttonBg: const Color(0xff0000FF),
+                          buttonTitle: "ADD ACCOUNT",
+                          buttonFontColor: Colors.white,
+                          onButtonPressed: () async{
+                            final progress = ProgressHUD.of(context);
+                            progress!.showWithText('Adding Account...');
+                            AccountInfoDataModel accountInfoDataModel = AccountInfoDataModel(account_number: r!.data.account_number,
+                                account_name: r.data.account_name,bankCode: bankInfoState.state!.code);
+                            await context.read(userRepositoryProvider).addBankAccount(accountInfoDataModel);
+                            progress.dismiss();
+                          }, imageIcon: null,)
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
+          });
+        }, loading: (){
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(child: CircularProgressIndicator(backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff0000FF)),)),
+            ],
+          );
+        }, error: (object,stacktrace){
+          return Text(stacktrace.toString());
+        }),
+      ),
+    );
+  }
+}

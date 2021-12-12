@@ -18,6 +18,9 @@ import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/modification_p
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/completed_order_detail_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/ongoin_order_detailpage.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/order_pages/pending_order_detail_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_detail_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/payment_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/filter_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/home_search_main_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/seller_setup_pages/achievement_entry_page.dart';
@@ -101,6 +104,9 @@ import '../main.dart';
     const AutoRoute(page: OrderPage),
     const AutoRoute(page: DisputePage),
     const AutoRoute(page: ModificationPage),
+    const AutoRoute(page: AddAccountDetailPage),
+    const AutoRoute(page: AddAccountPage),
+    const AutoRoute(page: PaymentPage),
     //End of drawer pages
 
     //Request pages

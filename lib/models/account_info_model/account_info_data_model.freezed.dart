@@ -21,10 +21,15 @@ class _$AccountInfoDataModelTearOff {
   const _$AccountInfoDataModelTearOff();
 
   _AccountInfoDataModel call(
-      {required String account_number, required String account_name}) {
+      {required String account_number,
+      required String account_name,
+      String? bankCode,
+      String? documentId}) {
     return _AccountInfoDataModel(
       account_number: account_number,
       account_name: account_name,
+      bankCode: bankCode,
+      documentId: documentId,
     );
   }
 
@@ -40,6 +45,8 @@ const $AccountInfoDataModel = _$AccountInfoDataModelTearOff();
 mixin _$AccountInfoDataModel {
   String get account_number => throw _privateConstructorUsedError;
   String get account_name => throw _privateConstructorUsedError;
+  String? get bankCode => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,7 +59,11 @@ abstract class $AccountInfoDataModelCopyWith<$Res> {
   factory $AccountInfoDataModelCopyWith(AccountInfoDataModel value,
           $Res Function(AccountInfoDataModel) then) =
       _$AccountInfoDataModelCopyWithImpl<$Res>;
-  $Res call({String account_number, String account_name});
+  $Res call(
+      {String account_number,
+      String account_name,
+      String? bankCode,
+      String? documentId});
 }
 
 /// @nodoc
@@ -68,6 +79,8 @@ class _$AccountInfoDataModelCopyWithImpl<$Res>
   $Res call({
     Object? account_number = freezed,
     Object? account_name = freezed,
+    Object? bankCode = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_value.copyWith(
       account_number: account_number == freezed
@@ -78,6 +91,14 @@ class _$AccountInfoDataModelCopyWithImpl<$Res>
           ? _value.account_name
           : account_name // ignore: cast_nullable_to_non_nullable
               as String,
+      bankCode: bankCode == freezed
+          ? _value.bankCode
+          : bankCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -89,7 +110,11 @@ abstract class _$AccountInfoDataModelCopyWith<$Res>
           $Res Function(_AccountInfoDataModel) then) =
       __$AccountInfoDataModelCopyWithImpl<$Res>;
   @override
-  $Res call({String account_number, String account_name});
+  $Res call(
+      {String account_number,
+      String account_name,
+      String? bankCode,
+      String? documentId});
 }
 
 /// @nodoc
@@ -107,6 +132,8 @@ class __$AccountInfoDataModelCopyWithImpl<$Res>
   $Res call({
     Object? account_number = freezed,
     Object? account_name = freezed,
+    Object? bankCode = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_AccountInfoDataModel(
       account_number: account_number == freezed
@@ -117,6 +144,14 @@ class __$AccountInfoDataModelCopyWithImpl<$Res>
           ? _value.account_name
           : account_name // ignore: cast_nullable_to_non_nullable
               as String,
+      bankCode: bankCode == freezed
+          ? _value.bankCode
+          : bankCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -125,7 +160,10 @@ class __$AccountInfoDataModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AccountInfoDataModel implements _AccountInfoDataModel {
   const _$_AccountInfoDataModel(
-      {required this.account_number, required this.account_name});
+      {required this.account_number,
+      required this.account_name,
+      this.bankCode,
+      this.documentId});
 
   factory _$_AccountInfoDataModel.fromJson(Map<String, dynamic> json) =>
       _$_$_AccountInfoDataModelFromJson(json);
@@ -134,10 +172,14 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
   final String account_number;
   @override
   final String account_name;
+  @override
+  final String? bankCode;
+  @override
+  final String? documentId;
 
   @override
   String toString() {
-    return 'AccountInfoDataModel(account_number: $account_number, account_name: $account_name)';
+    return 'AccountInfoDataModel(account_number: $account_number, account_name: $account_name, bankCode: $bankCode, documentId: $documentId)';
   }
 
   @override
@@ -149,14 +191,22 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
                     .equals(other.account_number, account_number)) &&
             (identical(other.account_name, account_name) ||
                 const DeepCollectionEquality()
-                    .equals(other.account_name, account_name)));
+                    .equals(other.account_name, account_name)) &&
+            (identical(other.bankCode, bankCode) ||
+                const DeepCollectionEquality()
+                    .equals(other.bankCode, bankCode)) &&
+            (identical(other.documentId, documentId) ||
+                const DeepCollectionEquality()
+                    .equals(other.documentId, documentId)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(account_number) ^
-      const DeepCollectionEquality().hash(account_name);
+      const DeepCollectionEquality().hash(account_name) ^
+      const DeepCollectionEquality().hash(bankCode) ^
+      const DeepCollectionEquality().hash(documentId);
 
   @JsonKey(ignore: true)
   @override
@@ -173,7 +223,9 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
 abstract class _AccountInfoDataModel implements AccountInfoDataModel {
   const factory _AccountInfoDataModel(
       {required String account_number,
-      required String account_name}) = _$_AccountInfoDataModel;
+      required String account_name,
+      String? bankCode,
+      String? documentId}) = _$_AccountInfoDataModel;
 
   factory _AccountInfoDataModel.fromJson(Map<String, dynamic> json) =
       _$_AccountInfoDataModel.fromJson;
@@ -182,6 +234,10 @@ abstract class _AccountInfoDataModel implements AccountInfoDataModel {
   String get account_number => throw _privateConstructorUsedError;
   @override
   String get account_name => throw _privateConstructorUsedError;
+  @override
+  String? get bankCode => throw _privateConstructorUsedError;
+  @override
+  String? get documentId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AccountInfoDataModelCopyWith<_AccountInfoDataModel> get copyWith =>

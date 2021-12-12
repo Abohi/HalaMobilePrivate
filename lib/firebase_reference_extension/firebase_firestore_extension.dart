@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:halawork/models/account_info_model/account_info_data_model.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/conversation_model/conversation_model.dart';
 import 'package:halawork/models/dispute_model/dispute_model.dart';
@@ -122,6 +123,9 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
       collection(orderCollection).withConverter<OrderModel>(fromFirestore: (snapshots,_)=>OrderModel.fromJson(snapshots.data()!),
           toFirestore: (orderModel,_)=>orderModel.toJson());
 
+  CollectionReference<AccountInfoDataModel> bankAccountCollectionRef()=>
+      collection(bankAccountCollection).withConverter<AccountInfoDataModel>(fromFirestore: (snapshots,_)=>AccountInfoDataModel.fromJson(snapshots.data()!),
+          toFirestore: (bankAccountModel,_)=>bankAccountModel.toJson());
   CollectionReference<ModificationModel> modificationCollectionRef()=>
       collection(modificationCollection).withConverter<ModificationModel>(fromFirestore: (snapshots,_)=>ModificationModel.fromJson(snapshots.data()!), toFirestore: (modificationModel,_)=>modificationModel.toJson());
 
