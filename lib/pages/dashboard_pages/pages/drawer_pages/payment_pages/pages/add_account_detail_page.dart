@@ -2,10 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/account_info_model/account_info_data_model.dart';
 import 'package:halawork/models/account_info_model/account_info_model.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/widgets/add_account_success_dialog.dart';
+import 'package:halawork/pages/dashboard_pages/widget/generic_response_dialog.dart';
 import 'package:halawork/providers/future_providers/account_info_future_provider.dart';
 import 'package:halawork/providers/state_providers/bankDataModelProvider.dart';
 import 'package:halawork/repositories/user_repository.dart';
@@ -55,9 +58,21 @@ class AddAccountDetailPage extends HookWidget {
               await context.read(userRepositoryProvider).resolveAccountInfo();
             });
           }, (r){
+            if(r!.status==false)
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 17),
+                    child: Text(r.message),
+                  )
+                ],
+              );
             return Container(
               width: size.width,
               height: size.height,
+              padding: EdgeInsets.symmetric(horizontal: 17),
               child: ProgressHUD(
                 backgroundColor:const Color(0xff0000FF),
                 indicatorColor: Colors.white,
@@ -67,17 +82,37 @@ class AddAccountDetailPage extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        BankAccountDetails(accountNumber: r?.data.account_number, accountName: r?.data.account_name),
+                        SizedBox(height: 20,),
+                        BankAccountDetails(accountNumber: r.data!.account_number, accountName: r.data!.account_name,bankName:bankInfoState.state!.name),
+                        SizedBox(height: size.height*0.2,),
                         CustomButtonSignup(buttonBg: const Color(0xff0000FF),
                           buttonTitle: "ADD ACCOUNT",
                           buttonFontColor: Colors.white,
                           onButtonPressed: () async{
                             final progress = ProgressHUD.of(context);
                             progress!.showWithText('Adding Account...');
-                            AccountInfoDataModel accountInfoDataModel = AccountInfoDataModel(account_number: r!.data.account_number,
-                                account_name: r.data.account_name,bankCode: bankInfoState.state!.code);
+                            AccountInfoDataModel accountInfoDataModel = AccountInfoDataModel(account_number: r.data!.account_number,
+                                account_name: r.data!.account_name,bankCode: bankInfoState.state!.code,bankName: bankInfoState.state!.name);
                             await context.read(userRepositoryProvider).addBankAccount(accountInfoDataModel);
                             progress.dismiss();
+                            await showGeneralDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                barrierColor: Colors.black45,
+                                transitionDuration: const Duration(milliseconds: 200),
+                                pageBuilder: (BuildContext buildContext, Animation animation,
+                                    Animation secondaryAnimation) {
+                                  return GenericResponseDialog(
+                                    onBottonPressed: () {
+                                      Navigator.pop(context);
+                                     context.popRoute();
+                                    },
+                                    text1: "Successfully added",
+                                    text2: "A bank account", btnText: 'CONTINUE',
+                                  );
+                                });
+
                           }, imageIcon: null,)
                       ],
                     );

@@ -710,7 +710,7 @@ class UserRepository implements BaseUserRepository {
         if (data.statusCode == 200) {
           return right(AccountInfoModel.fromJson(jsonDecode));
         }
-        return right(jsonDecode);
+        return right(AccountInfoModel.fromJson(jsonDecode));
       });
     }on NetworkFailure catch (e) {
       return left(e);

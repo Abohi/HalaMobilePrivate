@@ -23,11 +23,13 @@ class _$AccountInfoDataModelTearOff {
   _AccountInfoDataModel call(
       {required String account_number,
       required String account_name,
+      String? bankName,
       String? bankCode,
       String? documentId}) {
     return _AccountInfoDataModel(
       account_number: account_number,
       account_name: account_name,
+      bankName: bankName,
       bankCode: bankCode,
       documentId: documentId,
     );
@@ -45,6 +47,7 @@ const $AccountInfoDataModel = _$AccountInfoDataModelTearOff();
 mixin _$AccountInfoDataModel {
   String get account_number => throw _privateConstructorUsedError;
   String get account_name => throw _privateConstructorUsedError;
+  String? get bankName => throw _privateConstructorUsedError;
   String? get bankCode => throw _privateConstructorUsedError;
   String? get documentId => throw _privateConstructorUsedError;
 
@@ -62,6 +65,7 @@ abstract class $AccountInfoDataModelCopyWith<$Res> {
   $Res call(
       {String account_number,
       String account_name,
+      String? bankName,
       String? bankCode,
       String? documentId});
 }
@@ -79,6 +83,7 @@ class _$AccountInfoDataModelCopyWithImpl<$Res>
   $Res call({
     Object? account_number = freezed,
     Object? account_name = freezed,
+    Object? bankName = freezed,
     Object? bankCode = freezed,
     Object? documentId = freezed,
   }) {
@@ -91,6 +96,10 @@ class _$AccountInfoDataModelCopyWithImpl<$Res>
           ? _value.account_name
           : account_name // ignore: cast_nullable_to_non_nullable
               as String,
+      bankName: bankName == freezed
+          ? _value.bankName
+          : bankName // ignore: cast_nullable_to_non_nullable
+              as String?,
       bankCode: bankCode == freezed
           ? _value.bankCode
           : bankCode // ignore: cast_nullable_to_non_nullable
@@ -113,6 +122,7 @@ abstract class _$AccountInfoDataModelCopyWith<$Res>
   $Res call(
       {String account_number,
       String account_name,
+      String? bankName,
       String? bankCode,
       String? documentId});
 }
@@ -132,6 +142,7 @@ class __$AccountInfoDataModelCopyWithImpl<$Res>
   $Res call({
     Object? account_number = freezed,
     Object? account_name = freezed,
+    Object? bankName = freezed,
     Object? bankCode = freezed,
     Object? documentId = freezed,
   }) {
@@ -144,6 +155,10 @@ class __$AccountInfoDataModelCopyWithImpl<$Res>
           ? _value.account_name
           : account_name // ignore: cast_nullable_to_non_nullable
               as String,
+      bankName: bankName == freezed
+          ? _value.bankName
+          : bankName // ignore: cast_nullable_to_non_nullable
+              as String?,
       bankCode: bankCode == freezed
           ? _value.bankCode
           : bankCode // ignore: cast_nullable_to_non_nullable
@@ -162,6 +177,7 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
   const _$_AccountInfoDataModel(
       {required this.account_number,
       required this.account_name,
+      this.bankName,
       this.bankCode,
       this.documentId});
 
@@ -173,13 +189,15 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
   @override
   final String account_name;
   @override
+  final String? bankName;
+  @override
   final String? bankCode;
   @override
   final String? documentId;
 
   @override
   String toString() {
-    return 'AccountInfoDataModel(account_number: $account_number, account_name: $account_name, bankCode: $bankCode, documentId: $documentId)';
+    return 'AccountInfoDataModel(account_number: $account_number, account_name: $account_name, bankName: $bankName, bankCode: $bankCode, documentId: $documentId)';
   }
 
   @override
@@ -192,6 +210,9 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
             (identical(other.account_name, account_name) ||
                 const DeepCollectionEquality()
                     .equals(other.account_name, account_name)) &&
+            (identical(other.bankName, bankName) ||
+                const DeepCollectionEquality()
+                    .equals(other.bankName, bankName)) &&
             (identical(other.bankCode, bankCode) ||
                 const DeepCollectionEquality()
                     .equals(other.bankCode, bankCode)) &&
@@ -205,6 +226,7 @@ class _$_AccountInfoDataModel implements _AccountInfoDataModel {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(account_number) ^
       const DeepCollectionEquality().hash(account_name) ^
+      const DeepCollectionEquality().hash(bankName) ^
       const DeepCollectionEquality().hash(bankCode) ^
       const DeepCollectionEquality().hash(documentId);
 
@@ -224,6 +246,7 @@ abstract class _AccountInfoDataModel implements AccountInfoDataModel {
   const factory _AccountInfoDataModel(
       {required String account_number,
       required String account_name,
+      String? bankName,
       String? bankCode,
       String? documentId}) = _$_AccountInfoDataModel;
 
@@ -234,6 +257,8 @@ abstract class _AccountInfoDataModel implements AccountInfoDataModel {
   String get account_number => throw _privateConstructorUsedError;
   @override
   String get account_name => throw _privateConstructorUsedError;
+  @override
+  String? get bankName => throw _privateConstructorUsedError;
   @override
   String? get bankCode => throw _privateConstructorUsedError;
   @override

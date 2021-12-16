@@ -53,6 +53,7 @@ dependencies:
   hooks_riverpod: ^0.14.0+4
   lottie: ^1.0.1
   flutter_progress_hud: ^2.0.0
+  pin_code_fields: ^7.3.0
   auto_route: ^2.2.0
   dropdown_search: ^0.6.1
   flutter_chips_input: ^1.10.0

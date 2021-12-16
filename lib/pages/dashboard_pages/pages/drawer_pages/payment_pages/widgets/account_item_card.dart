@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:auto_route/auto_route.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/models/account_info_model/account_info_data_model.dart';
 class AccountItems extends StatelessWidget {
   final bool isLastCard;
-  const AccountItems({required this.isLastCard});
+  final AccountInfoDataModel accountInfoDataModel;
+  const AccountItems({required this.isLastCard,required this.accountInfoDataModel});
 
   @override
   Widget build(BuildContext context) {
@@ -12,41 +15,6 @@ class AccountItems extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: (){
-
-          },
-          child: Center(
-            child: Container(
-              width: size.width * 0.3,
-              height: 34,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: const Color(0xff0000FF)),
-                  borderRadius: BorderRadius.circular(25)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: const Color(0xff0000FF),
-                    size: 15,
-                  ),
-                  Text(
-                    "ADD",
-                    style: GoogleFonts.roboto(
-                        textStyle: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff0000FF))),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 20,),
         Container(
           height: 55,
           width: size.width,
@@ -61,7 +29,7 @@ class AccountItems extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "UBA **** 7960",
+                  "${accountInfoDataModel.bankName} ${accountInfoDataModel.account_number.replaceRange(0, accountInfoDataModel.account_number.length-4, "******")}",
                   style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                           fontSize: 14,
@@ -106,7 +74,42 @@ class AccountItems extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
+        SizedBox(height: 20,),
+        GestureDetector(
+          onTap: (){
+            context.router.navigate(const AddAccountRoute());
+          },
+          child: Center(
+            child: Container(
+              width: size.width * 0.3,
+              height: 34,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: const Color(0xff0000FF)),
+                  borderRadius: BorderRadius.circular(25)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: const Color(0xff0000FF),
+                    size: 15,
+                  ),
+                  Text(
+                    "ADD",
+                    style: GoogleFonts.roboto(
+                        textStyle: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xff0000FF))),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     ):Container(
       height: 55,
@@ -122,7 +125,7 @@ class AccountItems extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "UBA **** 7960",
+              "${accountInfoDataModel.bankName} ${accountInfoDataModel.account_number.replaceRange(0, accountInfoDataModel.account_number.length-4, "******")}",
               style: GoogleFonts.roboto(
                   textStyle: TextStyle(
                       fontSize: 14,

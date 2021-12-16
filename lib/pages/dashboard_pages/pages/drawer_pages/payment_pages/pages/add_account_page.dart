@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/account_info_model/account_info_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_component/back_names_dropdown.dart';
@@ -121,6 +122,7 @@ class AddAccountPage extends HookWidget {
                           return await Fluttertoast.showToast(msg: "Fields cannot be empty",toastLength: Toast.LENGTH_LONG);
                         }else{
                           bankInfoState.state=bankInfoState.state?.copyWith(accountNumber: _textEditingController.text.toString());
+                          context.router.navigate(const AddAccountDetailRoute());
 
                         }
                       }, imageIcon: null,)

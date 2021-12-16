@@ -11,6 +11,7 @@ _$_AccountInfoDataModel _$_$_AccountInfoDataModelFromJson(
   return _$_AccountInfoDataModel(
     account_number: json['account_number'] as String,
     account_name: json['account_name'] as String,
+    bankName: json['bankName'] as String?,
     bankCode: json['bankCode'] as String?,
     documentId: json['documentId'] as String?,
   );
@@ -21,6 +22,7 @@ Map<String, dynamic> _$_$_AccountInfoDataModelToJson(
     <String, dynamic>{
       'account_number': instance.account_number,
       'account_name': instance.account_name,
+      'bankName': instance.bankName,
       'bankCode': instance.bankCode,
       'documentId': instance.documentId,
     };

@@ -55,6 +55,7 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
         (json['states'] as List<dynamic>?)?.map((e) => e as String).toList(),
     isActiveService: json['isActiveService'] as bool?,
     toggleNationWideVisibility: json['toggleNationWideVisibility'] as bool?,
+    transactionPin: json['transactionPin'] as String?,
   );
 }
 
@@ -94,4 +95,5 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'states': instance.states,
       'isActiveService': instance.isActiveService,
       'toggleNationWideVisibility': instance.toggleNationWideVisibility,
+      'transactionPin': instance.transactionPin,
     };

@@ -5,7 +5,7 @@ part 'account_info_model.g.dart';
 
 @freezed
 class AccountInfoModel with _$AccountInfoModel{
-  const factory AccountInfoModel({required bool status,required String message,required AccountInfoDataModel data})=_AccountInfoModel;
+  const factory AccountInfoModel({required bool status,required String message,AccountInfoDataModel? data})=_AccountInfoModel;
   factory AccountInfoModel.fromJson(Map<String, dynamic> json) => _$AccountInfoModelFromJson(json);
 
 }

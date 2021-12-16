@@ -3,8 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/models/account_info_model/account_info_data_model.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/withdraw_funds_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/payment_component/payment_top_section.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/widgets/account_item_card.dart';
+import 'package:halawork/repositories/user_repository.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 // class Payment extends StatefulWidget {
 //   const Payment();
 //
@@ -205,6 +210,8 @@ import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/
 //   }
 // }
 //
+
+
 class AccountList extends StatelessWidget {
   const AccountList();
 
@@ -214,11 +221,45 @@ class AccountList extends StatelessWidget {
     return SizedBox(
       width: size.width,
       height: size.height * 0.25,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return AccountItems(isLastCard: true);
+      child: StreamBuilder<List<AccountInfoDataModel>>(
+        stream: context.read(userRepositoryProvider).getBankAccounts(),
+        builder: (context,snapshot){
+          if(snapshot.hasData){
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                if((index+1)==snapshot.data!.length)
+                  return GestureDetector(
+                    onTap: (){
+                      context.router.navigate(WithDrawFundsRoute());
+                    },
+                      child: AccountItems(isLastCard: true, accountInfoDataModel:snapshot.data![index] ));
+                return GestureDetector(
+
+                  onTap: (){
+                    context.router.navigate(WithDrawFundsRoute());
+                  },
+                    child: AccountItems(isLastCard: false, accountInfoDataModel: snapshot.data![index],));
+              },
+              itemCount: snapshot.data!.length,
+            );
+          }  if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(child: CircularProgressIndicator(backgroundColor: Colors.white,valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff0000FF)),)),
+              ],
+            );
+          }else{
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("No Available Request")
+              ],
+            );
+          }
         },
-        itemCount: 3,
       ),
     );
   }

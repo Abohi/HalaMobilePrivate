@@ -23,7 +23,7 @@ class _$AccountInfoModelTearOff {
   _AccountInfoModel call(
       {required bool status,
       required String message,
-      required AccountInfoDataModel data}) {
+      AccountInfoDataModel? data}) {
     return _AccountInfoModel(
       status: status,
       message: message,
@@ -43,7 +43,7 @@ const $AccountInfoModel = _$AccountInfoModelTearOff();
 mixin _$AccountInfoModel {
   bool get status => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  AccountInfoDataModel get data => throw _privateConstructorUsedError;
+  AccountInfoDataModel? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,9 +56,9 @@ abstract class $AccountInfoModelCopyWith<$Res> {
   factory $AccountInfoModelCopyWith(
           AccountInfoModel value, $Res Function(AccountInfoModel) then) =
       _$AccountInfoModelCopyWithImpl<$Res>;
-  $Res call({bool status, String message, AccountInfoDataModel data});
+  $Res call({bool status, String message, AccountInfoDataModel? data});
 
-  $AccountInfoDataModelCopyWith<$Res> get data;
+  $AccountInfoDataModelCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -88,13 +88,17 @@ class _$AccountInfoModelCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AccountInfoDataModel,
+              as AccountInfoDataModel?,
     ));
   }
 
   @override
-  $AccountInfoDataModelCopyWith<$Res> get data {
-    return $AccountInfoDataModelCopyWith<$Res>(_value.data, (value) {
+  $AccountInfoDataModelCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $AccountInfoDataModelCopyWith<$Res>(_value.data!, (value) {
       return _then(_value.copyWith(data: value));
     });
   }
@@ -107,10 +111,10 @@ abstract class _$AccountInfoModelCopyWith<$Res>
           _AccountInfoModel value, $Res Function(_AccountInfoModel) then) =
       __$AccountInfoModelCopyWithImpl<$Res>;
   @override
-  $Res call({bool status, String message, AccountInfoDataModel data});
+  $Res call({bool status, String message, AccountInfoDataModel? data});
 
   @override
-  $AccountInfoDataModelCopyWith<$Res> get data;
+  $AccountInfoDataModelCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -142,7 +146,7 @@ class __$AccountInfoModelCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AccountInfoDataModel,
+              as AccountInfoDataModel?,
     ));
   }
 }
@@ -151,7 +155,7 @@ class __$AccountInfoModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AccountInfoModel implements _AccountInfoModel {
   const _$_AccountInfoModel(
-      {required this.status, required this.message, required this.data});
+      {required this.status, required this.message, this.data});
 
   factory _$_AccountInfoModel.fromJson(Map<String, dynamic> json) =>
       _$_$_AccountInfoModelFromJson(json);
@@ -161,7 +165,7 @@ class _$_AccountInfoModel implements _AccountInfoModel {
   @override
   final String message;
   @override
-  final AccountInfoDataModel data;
+  final AccountInfoDataModel? data;
 
   @override
   String toString() {
@@ -203,7 +207,7 @@ abstract class _AccountInfoModel implements AccountInfoModel {
   const factory _AccountInfoModel(
       {required bool status,
       required String message,
-      required AccountInfoDataModel data}) = _$_AccountInfoModel;
+      AccountInfoDataModel? data}) = _$_AccountInfoModel;
 
   factory _AccountInfoModel.fromJson(Map<String, dynamic> json) =
       _$_AccountInfoModel.fromJson;
@@ -213,7 +217,7 @@ abstract class _AccountInfoModel implements AccountInfoModel {
   @override
   String get message => throw _privateConstructorUsedError;
   @override
-  AccountInfoDataModel get data => throw _privateConstructorUsedError;
+  AccountInfoDataModel? get data => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$AccountInfoModelCopyWith<_AccountInfoModel> get copyWith =>

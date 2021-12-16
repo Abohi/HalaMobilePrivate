@@ -10,7 +10,9 @@ _$_AccountInfoModel _$_$_AccountInfoModelFromJson(Map<String, dynamic> json) {
   return _$_AccountInfoModel(
     status: json['status'] as bool,
     message: json['message'] as String,
-    data: AccountInfoDataModel.fromJson(json['data'] as Map<String, dynamic>),
+    data: json['data'] == null
+        ? null
+        : AccountInfoDataModel.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 
@@ -19,5 +21,5 @@ Map<String, dynamic> _$_$_AccountInfoModelToJson(
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'data': instance.data.toJson(),
+      'data': instance.data?.toJson(),
     };
