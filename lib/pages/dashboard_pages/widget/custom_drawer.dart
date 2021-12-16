@@ -116,7 +116,7 @@ class CustomDrawer extends HookWidget {
                     drawerIcon: Icons.payment,
                     drawerItemTitle: "Payment",
                     onTap: () {
-
+                      context.router.navigate(const PaymentRoute());
                     },
                   ),
                   DrawerItems(
@@ -144,7 +144,7 @@ class CustomDrawer extends HookWidget {
                     drawerIcon: Icons.settings,
                     drawerItemTitle: "Settings",
                     onTap: () {
-
+                      context.router.navigate(SettingsRoute());
                     },
                   ),
                   Padding(

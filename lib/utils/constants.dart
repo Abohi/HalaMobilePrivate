@@ -19,6 +19,7 @@ final String inboxCollection="inbox";
 final String orderInboxCollection="order_inbox";
 final String messageCollection="message";
 final String orderCollection="order";
+final String bankAccountCollection="bank_account_collection";
 final String disputeCollection = "dispute";
 final String userDisputeCollection = "user_dispute";
 final String modificationCollection="modification";

@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-part of 'account_info_model.dart';
+part of 'transfer_response_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,63 +12,64 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-AccountInfoModel _$AccountInfoModelFromJson(Map<String, dynamic> json) {
-  return _AccountInfoModel.fromJson(json);
+TransferResponseModel _$TransferResponseModelFromJson(
+    Map<String, dynamic> json) {
+  return _TransferResponseModel.fromJson(json);
 }
 
 /// @nodoc
-class _$AccountInfoModelTearOff {
-  const _$AccountInfoModelTearOff();
+class _$TransferResponseModelTearOff {
+  const _$TransferResponseModelTearOff();
 
-  _AccountInfoModel call(
+  _TransferResponseModel call(
       {required bool status,
       required String message,
-      AccountInfoDataModel? data}) {
-    return _AccountInfoModel(
+      required TransferResponseDataModel data}) {
+    return _TransferResponseModel(
       status: status,
       message: message,
       data: data,
     );
   }
 
-  AccountInfoModel fromJson(Map<String, Object> json) {
-    return AccountInfoModel.fromJson(json);
+  TransferResponseModel fromJson(Map<String, Object> json) {
+    return TransferResponseModel.fromJson(json);
   }
 }
 
 /// @nodoc
-const $AccountInfoModel = _$AccountInfoModelTearOff();
+const $TransferResponseModel = _$TransferResponseModelTearOff();
 
 /// @nodoc
-mixin _$AccountInfoModel {
+mixin _$TransferResponseModel {
   bool get status => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
-  AccountInfoDataModel? get data => throw _privateConstructorUsedError;
+  TransferResponseDataModel get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $AccountInfoModelCopyWith<AccountInfoModel> get copyWith =>
+  $TransferResponseModelCopyWith<TransferResponseModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AccountInfoModelCopyWith<$Res> {
-  factory $AccountInfoModelCopyWith(
-          AccountInfoModel value, $Res Function(AccountInfoModel) then) =
-      _$AccountInfoModelCopyWithImpl<$Res>;
-  $Res call({bool status, String message, AccountInfoDataModel? data});
+abstract class $TransferResponseModelCopyWith<$Res> {
+  factory $TransferResponseModelCopyWith(TransferResponseModel value,
+          $Res Function(TransferResponseModel) then) =
+      _$TransferResponseModelCopyWithImpl<$Res>;
+  $Res call({bool status, String message, TransferResponseDataModel data});
 
-  $AccountInfoDataModelCopyWith<$Res>? get data;
+  $TransferResponseDataModelCopyWith<$Res> get data;
 }
 
 /// @nodoc
-class _$AccountInfoModelCopyWithImpl<$Res>
-    implements $AccountInfoModelCopyWith<$Res> {
-  _$AccountInfoModelCopyWithImpl(this._value, this._then);
+class _$TransferResponseModelCopyWithImpl<$Res>
+    implements $TransferResponseModelCopyWith<$Res> {
+  _$TransferResponseModelCopyWithImpl(this._value, this._then);
 
-  final AccountInfoModel _value;
+  final TransferResponseModel _value;
   // ignore: unused_field
-  final $Res Function(AccountInfoModel) _then;
+  final $Res Function(TransferResponseModel) _then;
 
   @override
   $Res call({
@@ -88,45 +89,41 @@ class _$AccountInfoModelCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AccountInfoDataModel?,
+              as TransferResponseDataModel,
     ));
   }
 
   @override
-  $AccountInfoDataModelCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $AccountInfoDataModelCopyWith<$Res>(_value.data!, (value) {
+  $TransferResponseDataModelCopyWith<$Res> get data {
+    return $TransferResponseDataModelCopyWith<$Res>(_value.data, (value) {
       return _then(_value.copyWith(data: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$AccountInfoModelCopyWith<$Res>
-    implements $AccountInfoModelCopyWith<$Res> {
-  factory _$AccountInfoModelCopyWith(
-          _AccountInfoModel value, $Res Function(_AccountInfoModel) then) =
-      __$AccountInfoModelCopyWithImpl<$Res>;
+abstract class _$TransferResponseModelCopyWith<$Res>
+    implements $TransferResponseModelCopyWith<$Res> {
+  factory _$TransferResponseModelCopyWith(_TransferResponseModel value,
+          $Res Function(_TransferResponseModel) then) =
+      __$TransferResponseModelCopyWithImpl<$Res>;
   @override
-  $Res call({bool status, String message, AccountInfoDataModel? data});
+  $Res call({bool status, String message, TransferResponseDataModel data});
 
   @override
-  $AccountInfoDataModelCopyWith<$Res>? get data;
+  $TransferResponseDataModelCopyWith<$Res> get data;
 }
 
 /// @nodoc
-class __$AccountInfoModelCopyWithImpl<$Res>
-    extends _$AccountInfoModelCopyWithImpl<$Res>
-    implements _$AccountInfoModelCopyWith<$Res> {
-  __$AccountInfoModelCopyWithImpl(
-      _AccountInfoModel _value, $Res Function(_AccountInfoModel) _then)
-      : super(_value, (v) => _then(v as _AccountInfoModel));
+class __$TransferResponseModelCopyWithImpl<$Res>
+    extends _$TransferResponseModelCopyWithImpl<$Res>
+    implements _$TransferResponseModelCopyWith<$Res> {
+  __$TransferResponseModelCopyWithImpl(_TransferResponseModel _value,
+      $Res Function(_TransferResponseModel) _then)
+      : super(_value, (v) => _then(v as _TransferResponseModel));
 
   @override
-  _AccountInfoModel get _value => super._value as _AccountInfoModel;
+  _TransferResponseModel get _value => super._value as _TransferResponseModel;
 
   @override
   $Res call({
@@ -134,7 +131,7 @@ class __$AccountInfoModelCopyWithImpl<$Res>
     Object? message = freezed,
     Object? data = freezed,
   }) {
-    return _then(_AccountInfoModel(
+    return _then(_TransferResponseModel(
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -146,36 +143,36 @@ class __$AccountInfoModelCopyWithImpl<$Res>
       data: data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AccountInfoDataModel?,
+              as TransferResponseDataModel,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_AccountInfoModel implements _AccountInfoModel {
-  const _$_AccountInfoModel(
-      {required this.status, required this.message, this.data});
+class _$_TransferResponseModel implements _TransferResponseModel {
+  const _$_TransferResponseModel(
+      {required this.status, required this.message, required this.data});
 
-  factory _$_AccountInfoModel.fromJson(Map<String, dynamic> json) =>
-      _$_$_AccountInfoModelFromJson(json);
+  factory _$_TransferResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$_$_TransferResponseModelFromJson(json);
 
   @override
   final bool status;
   @override
   final String message;
   @override
-  final AccountInfoDataModel? data;
+  final TransferResponseDataModel data;
 
   @override
   String toString() {
-    return 'AccountInfoModel(status: $status, message: $message, data: $data)';
+    return 'TransferResponseModel(status: $status, message: $message, data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _AccountInfoModel &&
+        (other is _TransferResponseModel &&
             (identical(other.status, status) ||
                 const DeepCollectionEquality().equals(other.status, status)) &&
             (identical(other.message, message) ||
@@ -194,32 +191,33 @@ class _$_AccountInfoModel implements _AccountInfoModel {
 
   @JsonKey(ignore: true)
   @override
-  _$AccountInfoModelCopyWith<_AccountInfoModel> get copyWith =>
-      __$AccountInfoModelCopyWithImpl<_AccountInfoModel>(this, _$identity);
+  _$TransferResponseModelCopyWith<_TransferResponseModel> get copyWith =>
+      __$TransferResponseModelCopyWithImpl<_TransferResponseModel>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_AccountInfoModelToJson(this);
+    return _$_$_TransferResponseModelToJson(this);
   }
 }
 
-abstract class _AccountInfoModel implements AccountInfoModel {
-  const factory _AccountInfoModel(
+abstract class _TransferResponseModel implements TransferResponseModel {
+  const factory _TransferResponseModel(
       {required bool status,
       required String message,
-      AccountInfoDataModel? data}) = _$_AccountInfoModel;
+      required TransferResponseDataModel data}) = _$_TransferResponseModel;
 
-  factory _AccountInfoModel.fromJson(Map<String, dynamic> json) =
-      _$_AccountInfoModel.fromJson;
+  factory _TransferResponseModel.fromJson(Map<String, dynamic> json) =
+      _$_TransferResponseModel.fromJson;
 
   @override
   bool get status => throw _privateConstructorUsedError;
   @override
   String get message => throw _privateConstructorUsedError;
   @override
-  AccountInfoDataModel? get data => throw _privateConstructorUsedError;
+  TransferResponseDataModel get data => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$AccountInfoModelCopyWith<_AccountInfoModel> get copyWith =>
+  _$TransferResponseModelCopyWith<_TransferResponseModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

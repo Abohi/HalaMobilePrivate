@@ -54,7 +54,8 @@ class _$UserModelTearOff {
       bool isDismissCompleteProfile = false,
       List<String>? states,
       bool? isActiveService,
-      bool? toggleNationWideVisibility}) {
+      bool? toggleNationWideVisibility,
+      String? transactionPin}) {
     return _UserModel(
       phoneNumber: phoneNumber,
       isPhoneNumberVerified: isPhoneNumberVerified,
@@ -90,6 +91,7 @@ class _$UserModelTearOff {
       states: states,
       isActiveService: isActiveService,
       toggleNationWideVisibility: toggleNationWideVisibility,
+      transactionPin: transactionPin,
     );
   }
 
@@ -138,6 +140,7 @@ mixin _$UserModel {
   List<String>? get states => throw _privateConstructorUsedError;
   bool? get isActiveService => throw _privateConstructorUsedError;
   bool? get toggleNationWideVisibility => throw _privateConstructorUsedError;
+  String? get transactionPin => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -183,7 +186,8 @@ abstract class $UserModelCopyWith<$Res> {
       bool isDismissCompleteProfile,
       List<String>? states,
       bool? isActiveService,
-      bool? toggleNationWideVisibility});
+      bool? toggleNationWideVisibility,
+      String? transactionPin});
 
   $UserRatingModelCopyWith<$Res>? get ratings;
   $WalletModelCopyWith<$Res>? get wallet;
@@ -233,6 +237,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? states = freezed,
     Object? isActiveService = freezed,
     Object? toggleNationWideVisibility = freezed,
+    Object? transactionPin = freezed,
   }) {
     return _then(_value.copyWith(
       phoneNumber: phoneNumber == freezed
@@ -371,6 +376,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.toggleNationWideVisibility
           : toggleNationWideVisibility // ignore: cast_nullable_to_non_nullable
               as bool?,
+      transactionPin: transactionPin == freezed
+          ? _value.transactionPin
+          : transactionPin // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -437,7 +446,8 @@ abstract class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       bool isDismissCompleteProfile,
       List<String>? states,
       bool? isActiveService,
-      bool? toggleNationWideVisibility});
+      bool? toggleNationWideVisibility,
+      String? transactionPin});
 
   @override
   $UserRatingModelCopyWith<$Res>? get ratings;
@@ -490,6 +500,7 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? states = freezed,
     Object? isActiveService = freezed,
     Object? toggleNationWideVisibility = freezed,
+    Object? transactionPin = freezed,
   }) {
     return _then(_UserModel(
       phoneNumber: phoneNumber == freezed
@@ -628,6 +639,10 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.toggleNationWideVisibility
           : toggleNationWideVisibility // ignore: cast_nullable_to_non_nullable
               as bool?,
+      transactionPin: transactionPin == freezed
+          ? _value.transactionPin
+          : transactionPin // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -669,7 +684,8 @@ class _$_UserModel implements _UserModel {
       this.isDismissCompleteProfile = false,
       this.states,
       this.isActiveService,
-      this.toggleNationWideVisibility});
+      this.toggleNationWideVisibility,
+      this.transactionPin});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$_$_UserModelFromJson(json);
@@ -747,10 +763,12 @@ class _$_UserModel implements _UserModel {
   final bool? isActiveService;
   @override
   final bool? toggleNationWideVisibility;
+  @override
+  final String? transactionPin;
 
   @override
   String toString() {
-    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet, documentId: $documentId, isDismissCompleteProfile: $isDismissCompleteProfile, states: $states, isActiveService: $isActiveService, toggleNationWideVisibility: $toggleNationWideVisibility)';
+    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet, documentId: $documentId, isDismissCompleteProfile: $isDismissCompleteProfile, states: $states, isActiveService: $isActiveService, toggleNationWideVisibility: $toggleNationWideVisibility, transactionPin: $transactionPin)';
   }
 
   @override
@@ -832,7 +850,8 @@ class _$_UserModel implements _UserModel {
             (identical(other.isDismissCompleteProfile, isDismissCompleteProfile) || const DeepCollectionEquality().equals(other.isDismissCompleteProfile, isDismissCompleteProfile)) &&
             (identical(other.states, states) || const DeepCollectionEquality().equals(other.states, states)) &&
             (identical(other.isActiveService, isActiveService) || const DeepCollectionEquality().equals(other.isActiveService, isActiveService)) &&
-            (identical(other.toggleNationWideVisibility, toggleNationWideVisibility) || const DeepCollectionEquality().equals(other.toggleNationWideVisibility, toggleNationWideVisibility)));
+            (identical(other.toggleNationWideVisibility, toggleNationWideVisibility) || const DeepCollectionEquality().equals(other.toggleNationWideVisibility, toggleNationWideVisibility)) &&
+            (identical(other.transactionPin, transactionPin) || const DeepCollectionEquality().equals(other.transactionPin, transactionPin)));
   }
 
   @override
@@ -871,7 +890,8 @@ class _$_UserModel implements _UserModel {
       const DeepCollectionEquality().hash(isDismissCompleteProfile) ^
       const DeepCollectionEquality().hash(states) ^
       const DeepCollectionEquality().hash(isActiveService) ^
-      const DeepCollectionEquality().hash(toggleNationWideVisibility);
+      const DeepCollectionEquality().hash(toggleNationWideVisibility) ^
+      const DeepCollectionEquality().hash(transactionPin);
 
   @JsonKey(ignore: true)
   @override
@@ -919,7 +939,8 @@ abstract class _UserModel implements UserModel {
       bool isDismissCompleteProfile,
       List<String>? states,
       bool? isActiveService,
-      bool? toggleNationWideVisibility}) = _$_UserModel;
+      bool? toggleNationWideVisibility,
+      String? transactionPin}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -993,6 +1014,8 @@ abstract class _UserModel implements UserModel {
   bool? get isActiveService => throw _privateConstructorUsedError;
   @override
   bool? get toggleNationWideVisibility => throw _privateConstructorUsedError;
+  @override
+  String? get transactionPin => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserModelCopyWith<_UserModel> get copyWith =>

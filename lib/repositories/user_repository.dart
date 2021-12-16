@@ -9,6 +9,7 @@ import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
+import 'package:halawork/models/account_info_model/account_info_data_model.dart';
 import 'package:halawork/models/account_info_model/account_info_model.dart';
 import 'package:halawork/models/active_servicemodel/active_service_model.dart';
 import 'package:halawork/models/bank_model/bank_model.dart';
@@ -33,6 +34,10 @@ import 'package:halawork/models/seller_setup_models/profile_description_entry_mo
 import 'package:halawork/models/seller_setup_models/work_entry_model/work_entry_model.dart';
 import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
+import 'package:halawork/models/transfer_model/transfer_model.dart';
+import 'package:halawork/models/transfer_model/transfer_response_model.dart';
+import 'package:halawork/models/transfer_recipient_model/transfer_recipient_model.dart';
+import 'package:halawork/models/transfer_recipient_model/transfer_recipient_request_model.dart';
 import 'package:halawork/models/user_model/rating_model/user_ratings.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/models/user_model/wallet_model/wallet_model.dart';
@@ -84,6 +89,7 @@ abstract class BaseUserRepository {
   Future<void>updateAchievement(List<AchievementEntryModel> achievementEntryModelList);
   Future<void>updateEducation(List<EducationEntryModel> educationEntryModelList);
   Future<void>updatingUserType(UserModelExtension userModelExtension,bool isSeller);
+  Future<void>addBankAccount(AccountInfoDataModel accountInfoDataModel);
 }
 final userRepositoryProvider =
 Provider<UserRepository>((ref) => UserRepository(ref.read));
@@ -546,6 +552,23 @@ class UserRepository implements BaseUserRepository {
       throw CustomException(message: e.message);
     }
   }
+  Stream<List<AccountInfoDataModel>> getBankAccounts(){
+    try{
+      return _read(firebaseFirestoreProvider).bankAccountCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data().copyWith(documentId: e.id)).toList());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  Future<void>addBankAccount(AccountInfoDataModel accountInfoDataModel)async{
+    try{
+      await _read(firebaseFirestoreProvider).bankAccountCollectionRef().doc(accountInfoDataModel.account_number).set(accountInfoDataModel,SetOptions(
+          merge: true
+      ));
+    }on FirebaseAuthException catch(e){
+      throw CustomException(message: e.message);
+    }
+  }
   @override
   Future<void> uploadMessage(String message,{String? sellerId,String? buyerId,String? receiverId}) async {
     final user = _read(authControllerProvider);
@@ -641,58 +664,6 @@ class UserRepository implements BaseUserRepository {
     }
   }
 
-  @override
-  Future<Either<NetworkFailure,BankModel>> getBanks()async{
-    try{
-      var headers = {
-        'Content-Type': 'application/json'
-      };
-       const baseUrl = "https://api.paystack.co/";
-    String url =
-          baseUrl+'bank?country=nigeria';
-
-      return http.get(Uri.parse(url), headers: headers).then((data) {
-        var jsonDecode = json.decode(data.body);
-        if (data.statusCode == 200) {
-          return right(BankModel.fromJson(jsonDecode));
-        }
-        return right(jsonDecode);
-      });
-    }on NetworkFailure catch (e) {
-      return left(e);
-    } on Exception catch (e) {
-      return left(GeneralException(e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<NetworkFailure,AccountInfoModel?>> resolveAccountInfo()async{
-    try{
-      var headers = {
-        'Content-Type': 'application/json',
-        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
-      };
-      String accountNumber = _read(bankDataModelProvider).state?.accountNumber??"";
-      String bankCode= _read(bankDataModelProvider).state?.code??"";
-      const baseUrl = "https://api.paystack.co/";
-      String url =
-          baseUrl+'bank/resolve?account_number=$accountNumber&bank_code=$bankCode';
-      if(_read(bankDataModelProvider).state==null){
-        return right(null);
-      }
-      return http.get(Uri.parse(url), headers: headers).then((data) {
-        var jsonDecode = json.decode(data.body);
-        if (data.statusCode == 200) {
-          return right(AccountInfoModel.fromJson(jsonDecode));
-        }
-        return right(jsonDecode);
-      });
-    }on NetworkFailure catch (e) {
-      return left(e);
-    } on Exception catch (e) {
-      return left(GeneralException(e.toString()));
-    }
-  }
 
   @override
   Future<Either<NetworkFailure,VerifyModel>> verifyTransactionReference(String transactionReference)async{
@@ -718,6 +689,104 @@ class UserRepository implements BaseUserRepository {
     }
   }
 
+
+  @override
+  Future<Either<NetworkFailure,AccountInfoModel?>> resolveAccountInfo()async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
+      };
+      String accountNumber = _read(bankDataModelProvider).state?.accountNumber??"";
+      String bankCode= _read(bankDataModelProvider).state?.code??"";
+      const baseUrl = "https://api.paystack.co/";
+      String url =
+          baseUrl+'bank/resolve?account_number=$accountNumber&bank_code=$bankCode';
+      if(_read(bankDataModelProvider).state==null){
+        return right(null);
+      }
+      return http.get(Uri.parse(url), headers: headers).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(AccountInfoModel.fromJson(jsonDecode));
+        }
+        return right(AccountInfoModel.fromJson(jsonDecode));
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
+  @override
+  Future<Either<NetworkFailure,BankModel>> getBanks()async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json'
+      };
+      const baseUrl = "https://api.paystack.co/";
+      String url =
+          baseUrl+'bank?country=nigeria';
+
+      return http.get(Uri.parse(url), headers: headers).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(BankModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
+  @override
+  Future<Either<NetworkFailure,TransferRecipientModel>> createTransferRecipient(TransferRecipientRequestModel transferRecipientRequestModel)async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
+      };
+
+      var url ="https://api.paystack.co/transferrecipient";
+      var payLoad = json.encode(transferRecipientRequestModel.toJson());
+      return http.post(Uri.parse(url), headers: headers,body: payLoad).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(TransferRecipientModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
+
+  Future<Either<NetworkFailure,TransferResponseModel>> makeTransfer(TransferModel transferModel)async{
+    try{
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
+      };
+
+      var url ="https://api.paystack.co/transfer";
+      var payLoad = json.encode(transferModel.toJson());
+      return http.post(Uri.parse(url), headers: headers,body: payLoad).then((data) {
+        var jsonDecode = json.decode(data.body);
+        if (data.statusCode == 200) {
+          return right(TransferResponseModel.fromJson(jsonDecode));
+        }
+        return right(jsonDecode);
+      });
+    }on NetworkFailure catch (e) {
+      return left(e);
+    } on Exception catch (e) {
+      return left(GeneralException(e.toString()));
+    }
+  }
   @override
   Future<void> addOrderPayment(OrderPaymentModel orderPaymentModel,String requestId) async{
     try{

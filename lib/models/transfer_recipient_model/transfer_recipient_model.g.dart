@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'account_info_model.dart';
+part of 'transfer_recipient_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_AccountInfoModel _$_$_AccountInfoModelFromJson(Map<String, dynamic> json) {
-  return _$_AccountInfoModel(
+_$_TransferRecipientModel _$_$_TransferRecipientModelFromJson(
+    Map<String, dynamic> json) {
+  return _$_TransferRecipientModel(
     status: json['status'] as bool,
     message: json['message'] as String,
-    data: json['data'] == null
-        ? null
-        : AccountInfoDataModel.fromJson(json['data'] as Map<String, dynamic>),
+    data: TransferDataModel.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$_$_AccountInfoModelToJson(
-        _$_AccountInfoModel instance) =>
+Map<String, dynamic> _$_$_TransferRecipientModelToJson(
+        _$_TransferRecipientModel instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
-      'data': instance.data?.toJson(),
+      'data': instance.data.toJson(),
     };
