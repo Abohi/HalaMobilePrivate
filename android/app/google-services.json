@@ -14,27 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "25433255361-8ha85asakt42n1v2i4lv8j11bnro6rgp.apps.googleusercontent.com",
+          "client_id": "25433255361-4fa13snds30j534bqdqu8uvn7v8177ig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halawork.com.halawork",
+            "certificate_hash": "3f32d0cf4b81ea436eb0dadb5df2469b09bf1999"
+          }
+        },
+        {
+          "client_id": "25433255361-hsc29olk3j14kgto07qcclj7kt3tcm96.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.halawork.com.halawork",
             "certificate_hash": "3bddf8a6ab9a67f31ace8eec0c7c1da107e44b45"
-          }
-        },
-        {
-          "client_id": "25433255361-ad6uultt829jnr9jpeirmo4brdd590cm.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.halawork.com.halawork",
-            "certificate_hash": "a966514cbcd464b39df88bf5b72e1ecd601b7508"
-          }
-        },
-        {
-          "client_id": "25433255361-srul6475fouc1hlc36h8dqr53og0fqle.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.halawork.com.halawork",
-            "certificate_hash": "ed0d23f6b4f6670c9a6516adc2f9fb8bc905071a"
           }
         },
         {
