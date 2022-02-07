@@ -31,7 +31,7 @@ class OrderDownloadTask extends HookWidget {
                 Container(
                   height: size.height*0.24,
                   decoration: BoxDecoration(color: Colors.white),
-                  child: orderModel.fileTypeModel?.fileType=="jpg"?ClipRRect(
+                  child: orderModel.fileTypeModel?.fileType=="jpg" || orderModel.fileTypeModel?.fileType=="png"?ClipRRect(
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(17),topRight: Radius.circular(17)),
                       child: Image.network(orderModel.fileTypeModel!.fileRef,width: size.width,height: size.height,fit: BoxFit.fill,)):Container(
                     color: Colors.white,

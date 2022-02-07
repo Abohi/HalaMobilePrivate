@@ -8,13 +8,13 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import '../main.dart' as _i3;
-import '../models/active_servicemodel/active_service_model.dart' as _i71;
-import '../models/modification_model/modification_model.dart' as _i77;
-import '../models/notification_model/notification_model.dart' as _i76;
-import '../models/offer_model/offer_model.dart' as _i73;
-import '../models/order_model/order_model.dart' as _i75;
-import '../models/requests_model/request_model2.dart' as _i72;
-import '../models/user_model/user_model.dart' as _i74;
+import '../models/active_servicemodel/active_service_model.dart' as _i73;
+import '../models/modification_model/modification_model.dart' as _i79;
+import '../models/notification_model/notification_model.dart' as _i77;
+import '../models/offer_model/offer_model.dart' as _i75;
+import '../models/order_model/order_model.dart' as _i78;
+import '../models/requests_model/request_model2.dart' as _i74;
+import '../models/user_model/user_model.dart' as _i76;
 import '../pages/app_entry_pages/app_entry_main_page.dart' as _i4;
 import '../pages/auth_pages/login_page.dart' as _i7;
 import '../pages/auth_pages/sigup_page/email_signup_page.dart' as _i9;
@@ -26,22 +26,22 @@ import '../pages/basic_verification_pages/phone_number_verification_page.dart'
     as _i11;
 import '../pages/basic_verification_pages/resend_email_verification_link_page.dart'
     as _i5;
-import '../pages/dashboard_pages/dashboard_page.dart' as _i65;
-import '../pages/dashboard_pages/pages/create_request_page.dart' as _i70;
+import '../pages/dashboard_pages/dashboard_page.dart' as _i67;
+import '../pages/dashboard_pages/pages/create_request_page.dart' as _i72;
 import '../pages/dashboard_pages/pages/drawer_pages/dispute_page.dart' as _i30;
 import '../pages/dashboard_pages/pages/drawer_pages/modification_page.dart'
     as _i31;
 import '../pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_buyer_page.dart'
-    as _i49;
+    as _i51;
 import '../pages/dashboard_pages/pages/drawer_pages/modification_pages/modification_detail_page.dart'
-    as _i50;
+    as _i52;
 import '../pages/dashboard_pages/pages/drawer_pages/order_page.dart' as _i29;
 import '../pages/dashboard_pages/pages/drawer_pages/order_pages/completed_order_detail_page.dart'
-    as _i46;
+    as _i48;
 import '../pages/dashboard_pages/pages/drawer_pages/order_pages/ongoin_order_detailpage.dart'
-    as _i45;
+    as _i47;
 import '../pages/dashboard_pages/pages/drawer_pages/order_pages/pending_order_detail_page.dart'
-    as _i44;
+    as _i46;
 import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_detail_page.dart'
     as _i32;
 import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_page.dart'
@@ -50,6 +50,8 @@ import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/amount_w
     as _i39;
 import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/withdraw_funds_page.dart'
     as _i40;
+import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/withdrawfunds_history_page.dart'
+    as _i41;
 import '../pages/dashboard_pages/pages/drawer_pages/payment_pages/payment_page.dart'
     as _i34;
 import '../pages/dashboard_pages/pages/drawer_pages/settings_page.dart' as _i37;
@@ -57,12 +59,14 @@ import '../pages/dashboard_pages/pages/drawer_pages/settings_page/change_pin_pag
     as _i38;
 import '../pages/dashboard_pages/pages/drawer_pages/settings_page/create_pin_page.dart'
     as _i36;
+import '../pages/dashboard_pages/pages/drawer_pages/settings_page/notification_settings_page.dart'
+    as _i42;
 import '../pages/dashboard_pages/pages/drawer_pages/settings_page/security_page.dart'
     as _i35;
 import '../pages/dashboard_pages/pages/home_pages/home_search_pages/filter_page.dart'
-    as _i59;
+    as _i61;
 import '../pages/dashboard_pages/pages/home_pages/home_search_pages/home_search_main_page.dart'
-    as _i58;
+    as _i60;
 import '../pages/dashboard_pages/pages/home_pages/seller_setup_pages/achievement_entry_page.dart'
     as _i18;
 import '../pages/dashboard_pages/pages/home_pages/seller_setup_pages/addlocation_organization_entry_page.dart'
@@ -92,46 +96,46 @@ import '../pages/dashboard_pages/pages/home_pages/seller_setup_pages/work_entry_
 import '../pages/dashboard_pages/pages/home_pages/service_pages/byservice_detail_page.dart'
     as _i26;
 import '../pages/dashboard_pages/pages/home_pages/service_pages/byservice_page.dart'
-    as _i57;
+    as _i59;
 import '../pages/dashboard_pages/pages/home_pages/service_pages/subservice_page.dart'
     as _i27;
-import '../pages/dashboard_pages/pages/homepage.dart' as _i66;
+import '../pages/dashboard_pages/pages/homepage.dart' as _i68;
 import '../pages/dashboard_pages/pages/inbox_pages/inbox_detail_page.dart'
-    as _i48;
-import '../pages/dashboard_pages/pages/inboxpage.dart' as _i67;
+    as _i50;
+import '../pages/dashboard_pages/pages/inboxpage.dart' as _i69;
 import '../pages/dashboard_pages/pages/notification_pages/notification_detail_page.dart'
-    as _i47;
-import '../pages/dashboard_pages/pages/notificationpage.dart' as _i68;
+    as _i49;
+import '../pages/dashboard_pages/pages/notificationpage.dart' as _i70;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_achievement_page/edit_achievement_page.dart'
-    as _i61;
-import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_individual_description_page.dart'
-    as _i64;
-import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_organization_description_page.dart'
     as _i63;
+import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_individual_description_page.dart'
+    as _i66;
+import '../pages/dashboard_pages/pages/profile_page/components/edit_description_page/edit_organization_description_page.dart'
+    as _i65;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_education_page/edit_education_page.dart'
-    as _i62;
+    as _i64;
 import '../pages/dashboard_pages/pages/profile_page/components/edit_skills_page/edit_skill_page.dart'
-    as _i53;
-import '../pages/dashboard_pages/pages/profile_page/components/edit_work_history/edit_work_history.dart'
-    as _i60;
-import '../pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_description.dart'
-    as _i56;
-import '../pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart'
     as _i55;
+import '../pages/dashboard_pages/pages/profile_page/components/edit_work_history/edit_work_history.dart'
+    as _i62;
+import '../pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_description.dart'
+    as _i58;
+import '../pages/dashboard_pages/pages/profile_page/components/portfolio_page/components/add_portfolio_photo.dart'
+    as _i57;
 import '../pages/dashboard_pages/pages/profile_page/components/sevice_pages/edit_service_page.dart'
-    as _i51;
+    as _i53;
 import '../pages/dashboard_pages/pages/profile_page/components/sevice_pages/edit_service_preference_page.dart'
-    as _i52;
+    as _i54;
 import '../pages/dashboard_pages/pages/profile_page/profile_page.dart' as _i28;
 import '../pages/dashboard_pages/pages/profile_page/profile_view_page.dart'
-    as _i54;
+    as _i56;
 import '../pages/dashboard_pages/pages/request_pages/offer_sent_detail_page.dart'
-    as _i43;
+    as _i45;
 import '../pages/dashboard_pages/pages/request_pages/offer_sent_pages.dart'
-    as _i42;
+    as _i44;
 import '../pages/dashboard_pages/pages/request_pages/send_offer_page.dart'
-    as _i41;
-import '../pages/dashboard_pages/pages/requestpage.dart' as _i69;
+    as _i43;
+import '../pages/dashboard_pages/pages/requestpage.dart' as _i71;
 import '../pages/splash_screen/splash_screen.dart' as _i25;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -345,176 +349,186 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return _i40.WithDrawFundsPage();
         }),
+    WithDrawfundHistoryRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i41.WithDrawfundHistoryPage();
+        }),
+    NotificationSettingsRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i42.NotificationSettingsPage();
+        }),
     SendOfferRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<SendOfferRouteArgs>();
-          return _i41.SendOfferPage(
+          return _i43.SendOfferPage(
               createRequestModel2: args.createRequestModel2);
         }),
     OfferSentRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<OfferSentRouteArgs>();
-          return _i42.OfferSentPage(requestId: args.requestId);
+          return _i44.OfferSentPage(requestId: args.requestId);
         }),
     OfferSentDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<OfferSentDetailRouteArgs>();
-          return _i43.OfferSentDetailPage(
+          return _i45.OfferSentDetailPage(
               offerModel: args.offerModel, userModel: args.userModel);
         }),
     PendingOrderDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<PendingOrderDetailRouteArgs>();
-          return _i44.PendingOrderDetailPage(orderModel: args.orderModel);
+          return _i46.PendingOrderDetailPage(requestId: args.requestId);
         }),
     OngoingOrderDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<OngoingOrderDetailRouteArgs>();
-          return _i45.OngoingOrderDetailPage(orderModel: args.orderModel);
+          return _i47.OngoingOrderDetailPage(requestId: args.requestId);
         }),
     CompletedOrderDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<CompletedOrderDetailRouteArgs>();
-          return _i46.CompletedOrderDetailPage(orderModel: args.orderModel);
+          return _i48.CompletedOrderDetailPage(requestId: args.requestId);
         }),
     NotificationDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<NotificationDetailRouteArgs>();
-          return _i47.NotificationDetailPage(
+          return _i49.NotificationDetailPage(
               notificationModel: args.notificationModel);
         }),
     InboxDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i48.InboxDetailPage();
+          return _i50.InboxDetailPage();
         }),
     ModificationBuyerRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<ModificationBuyerRouteArgs>();
-          return _i49.ModificationBuyerPage(orderModel: args.orderModel);
+          return _i51.ModificationBuyerPage(orderModel: args.orderModel);
         }),
     ModificationDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<ModificationDetailRouteArgs>();
-          return _i50.ModificationDetailPage(
+          return _i52.ModificationDetailPage(
               modificationModel: args.modificationModel);
         }),
     EditServiceRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<EditServiceRouteArgs>();
-          return _i51.EditServicePage(preference: args.preference);
+          return _i53.EditServicePage(preference: args.preference);
         }),
     EditServiceRoutePreferenceRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
             routeData: routeData,
             builder: (_) {
-              return _i52.EditServicePagePreferencePage();
+              return _i54.EditServicePagePreferencePage();
             }),
     EditSkillRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i53.EditSkillPage();
+          return _i55.EditSkillPage();
         }),
     ProfileViewRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<ProfileViewRouteArgs>();
-          return _i54.ProfileViewPage(userId: args.userId);
+          return _i56.ProfileViewPage(userId: args.userId);
         }),
     AddPortfolioPhotoRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
           final args = data.argsAs<AddPortfolioPhotoRouteArgs>();
-          return _i55.AddPortfolioPhotoPage(
+          return _i57.AddPortfolioPhotoPage(
               skills: args.skills, projectName: args.projectName);
         }),
     AddPortfolioDescriptionRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
             routeData: routeData,
             builder: (_) {
-              return _i56.AddPortfolioDescriptionPage();
+              return _i58.AddPortfolioDescriptionPage();
             }),
     ByServiceRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i57.ByServicePage();
+          return _i59.ByServicePage();
         }),
     HomeSearchMainRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i58.HomeSearchMainPage();
+          return _i60.HomeSearchMainPage();
         }),
     FilterRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i59.FilterPage();
+          return _i61.FilterPage();
         }),
     EditWorkHistoryRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i60.EditWorkHistoryPage();
+          return _i62.EditWorkHistoryPage();
         }),
     EditAchievementRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i61.EditAchievementPage();
+          return _i63.EditAchievementPage();
         }),
     EditEducationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i62.EditEducationPage();
+          return _i64.EditEducationPage();
         }),
     EditOrganizationDescritionRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
             routeData: routeData,
             builder: (_) {
-              return _i63.EditOrganizationDescritionPage();
+              return _i65.EditOrganizationDescritionPage();
             }),
     EditIndividualDescriptionRoute.name: (routeData) =>
         _i1.MaterialPageX<dynamic>(
             routeData: routeData,
             builder: (_) {
-              return _i64.EditIndividualDescriptionPage();
+              return _i66.EditIndividualDescriptionPage();
             }),
     DashBoardRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i65.DashBoardPage();
+          return _i67.DashBoardPage();
         }),
     HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i66.HomePage();
+          return _i68.HomePage();
         }),
     InboxRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i67.InboxPage();
+          return _i69.InboxPage();
         }),
     NotificationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i68.NotificationPage();
+          return _i70.NotificationPage();
         }),
     RequestRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i69.RequestPage();
+          return _i71.RequestPage();
         }),
     CreateRequestRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i70.CreateRequestPage();
+          return _i72.CreateRequestPage();
         })
   };
 
@@ -578,6 +592,10 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(AmountToWithdrawRoute.name,
             path: '/amount-to-withdraw-page'),
         _i1.RouteConfig(WithDrawFundsRoute.name, path: '/with-draw-funds-page'),
+        _i1.RouteConfig(WithDrawfundHistoryRoute.name,
+            path: '/with-drawfund-history-page'),
+        _i1.RouteConfig(NotificationSettingsRoute.name,
+            path: '/notification-settings-page'),
         _i1.RouteConfig(SendOfferRoute.name, path: '/send-offer-page'),
         _i1.RouteConfig(OfferSentRoute.name, path: '/offer-sent-page'),
         _i1.RouteConfig(OfferSentDetailRoute.name,
@@ -793,7 +811,7 @@ class SplashScreenRoute extends _i1.PageRouteInfo {
 }
 
 class ByServiceDetailRoute extends _i1.PageRouteInfo<ByServiceDetailRouteArgs> {
-  ByServiceDetailRoute({required _i71.ActiveServiceModel serviceModel})
+  ByServiceDetailRoute({required _i73.ActiveServiceModel serviceModel})
       : super(name,
             path: '/by-service-detail-page',
             args: ByServiceDetailRouteArgs(serviceModel: serviceModel));
@@ -804,13 +822,13 @@ class ByServiceDetailRoute extends _i1.PageRouteInfo<ByServiceDetailRouteArgs> {
 class ByServiceDetailRouteArgs {
   const ByServiceDetailRouteArgs({required this.serviceModel});
 
-  final _i71.ActiveServiceModel serviceModel;
+  final _i73.ActiveServiceModel serviceModel;
 }
 
 class SubserviceRoute extends _i1.PageRouteInfo<SubserviceRouteArgs> {
   SubserviceRoute(
       {required String subServiceName,
-      required _i71.ActiveServiceModel activeServiceModel})
+      required _i73.ActiveServiceModel activeServiceModel})
       : super(name,
             path: '/subservice-page',
             args: SubserviceRouteArgs(
@@ -826,7 +844,7 @@ class SubserviceRouteArgs {
 
   final String subServiceName;
 
-  final _i71.ActiveServiceModel activeServiceModel;
+  final _i73.ActiveServiceModel activeServiceModel;
 }
 
 class ProfileRoute extends _i1.PageRouteInfo {
@@ -907,8 +925,22 @@ class WithDrawFundsRoute extends _i1.PageRouteInfo {
   static const String name = 'WithDrawFundsRoute';
 }
 
+class WithDrawfundHistoryRoute extends _i1.PageRouteInfo {
+  const WithDrawfundHistoryRoute()
+      : super(name, path: '/with-drawfund-history-page');
+
+  static const String name = 'WithDrawfundHistoryRoute';
+}
+
+class NotificationSettingsRoute extends _i1.PageRouteInfo {
+  const NotificationSettingsRoute()
+      : super(name, path: '/notification-settings-page');
+
+  static const String name = 'NotificationSettingsRoute';
+}
+
 class SendOfferRoute extends _i1.PageRouteInfo<SendOfferRouteArgs> {
-  SendOfferRoute({required _i72.CreateRequestModel2 createRequestModel2})
+  SendOfferRoute({required _i74.CreateRequestModel2 createRequestModel2})
       : super(name,
             path: '/send-offer-page',
             args: SendOfferRouteArgs(createRequestModel2: createRequestModel2));
@@ -919,7 +951,7 @@ class SendOfferRoute extends _i1.PageRouteInfo<SendOfferRouteArgs> {
 class SendOfferRouteArgs {
   const SendOfferRouteArgs({required this.createRequestModel2});
 
-  final _i72.CreateRequestModel2 createRequestModel2;
+  final _i74.CreateRequestModel2 createRequestModel2;
 }
 
 class OfferSentRoute extends _i1.PageRouteInfo<OfferSentRouteArgs> {
@@ -939,7 +971,7 @@ class OfferSentRouteArgs {
 
 class OfferSentDetailRoute extends _i1.PageRouteInfo<OfferSentDetailRouteArgs> {
   OfferSentDetailRoute(
-      {required _i73.OfferModel offerModel, required _i74.UserModel userModel})
+      {required _i75.OfferModel offerModel, required _i76.UserModel userModel})
       : super(name,
             path: '/offer-sent-detail-page',
             args: OfferSentDetailRouteArgs(
@@ -952,62 +984,62 @@ class OfferSentDetailRouteArgs {
   const OfferSentDetailRouteArgs(
       {required this.offerModel, required this.userModel});
 
-  final _i73.OfferModel offerModel;
+  final _i75.OfferModel offerModel;
 
-  final _i74.UserModel userModel;
+  final _i76.UserModel userModel;
 }
 
 class PendingOrderDetailRoute
     extends _i1.PageRouteInfo<PendingOrderDetailRouteArgs> {
-  PendingOrderDetailRoute({required _i75.OrderModel orderModel})
+  PendingOrderDetailRoute({required String requestId})
       : super(name,
             path: '/pending-order-detail-page',
-            args: PendingOrderDetailRouteArgs(orderModel: orderModel));
+            args: PendingOrderDetailRouteArgs(requestId: requestId));
 
   static const String name = 'PendingOrderDetailRoute';
 }
 
 class PendingOrderDetailRouteArgs {
-  const PendingOrderDetailRouteArgs({required this.orderModel});
+  const PendingOrderDetailRouteArgs({required this.requestId});
 
-  final _i75.OrderModel orderModel;
+  final String requestId;
 }
 
 class OngoingOrderDetailRoute
     extends _i1.PageRouteInfo<OngoingOrderDetailRouteArgs> {
-  OngoingOrderDetailRoute({required _i75.OrderModel orderModel})
+  OngoingOrderDetailRoute({required String requestId})
       : super(name,
             path: '/ongoing-order-detail-page',
-            args: OngoingOrderDetailRouteArgs(orderModel: orderModel));
+            args: OngoingOrderDetailRouteArgs(requestId: requestId));
 
   static const String name = 'OngoingOrderDetailRoute';
 }
 
 class OngoingOrderDetailRouteArgs {
-  const OngoingOrderDetailRouteArgs({required this.orderModel});
+  const OngoingOrderDetailRouteArgs({required this.requestId});
 
-  final _i75.OrderModel orderModel;
+  final String requestId;
 }
 
 class CompletedOrderDetailRoute
     extends _i1.PageRouteInfo<CompletedOrderDetailRouteArgs> {
-  CompletedOrderDetailRoute({required _i75.OrderModel orderModel})
+  CompletedOrderDetailRoute({required String requestId})
       : super(name,
             path: '/completed-order-detail-page',
-            args: CompletedOrderDetailRouteArgs(orderModel: orderModel));
+            args: CompletedOrderDetailRouteArgs(requestId: requestId));
 
   static const String name = 'CompletedOrderDetailRoute';
 }
 
 class CompletedOrderDetailRouteArgs {
-  const CompletedOrderDetailRouteArgs({required this.orderModel});
+  const CompletedOrderDetailRouteArgs({required this.requestId});
 
-  final _i75.OrderModel orderModel;
+  final String requestId;
 }
 
 class NotificationDetailRoute
     extends _i1.PageRouteInfo<NotificationDetailRouteArgs> {
-  NotificationDetailRoute({required _i76.NotificationModel notificationModel})
+  NotificationDetailRoute({required _i77.NotificationModel notificationModel})
       : super(name,
             path: '/notification-detail-page',
             args: NotificationDetailRouteArgs(
@@ -1019,7 +1051,7 @@ class NotificationDetailRoute
 class NotificationDetailRouteArgs {
   const NotificationDetailRouteArgs({required this.notificationModel});
 
-  final _i76.NotificationModel notificationModel;
+  final _i77.NotificationModel notificationModel;
 }
 
 class InboxDetailRoute extends _i1.PageRouteInfo {
@@ -1030,7 +1062,7 @@ class InboxDetailRoute extends _i1.PageRouteInfo {
 
 class ModificationBuyerRoute
     extends _i1.PageRouteInfo<ModificationBuyerRouteArgs> {
-  ModificationBuyerRoute({required _i75.OrderModel orderModel})
+  ModificationBuyerRoute({required _i78.OrderModel orderModel})
       : super(name,
             path: '/modification-buyer-page',
             args: ModificationBuyerRouteArgs(orderModel: orderModel));
@@ -1041,12 +1073,12 @@ class ModificationBuyerRoute
 class ModificationBuyerRouteArgs {
   const ModificationBuyerRouteArgs({required this.orderModel});
 
-  final _i75.OrderModel orderModel;
+  final _i78.OrderModel orderModel;
 }
 
 class ModificationDetailRoute
     extends _i1.PageRouteInfo<ModificationDetailRouteArgs> {
-  ModificationDetailRoute({required _i77.ModificationModel modificationModel})
+  ModificationDetailRoute({required _i79.ModificationModel modificationModel})
       : super(name,
             path: '/modification-detail-page',
             args: ModificationDetailRouteArgs(
@@ -1058,7 +1090,7 @@ class ModificationDetailRoute
 class ModificationDetailRouteArgs {
   const ModificationDetailRouteArgs({required this.modificationModel});
 
-  final _i77.ModificationModel modificationModel;
+  final _i79.ModificationModel modificationModel;
 }
 
 class EditServiceRoute extends _i1.PageRouteInfo<EditServiceRouteArgs> {

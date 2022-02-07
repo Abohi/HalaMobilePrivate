@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/controllers/user_model_extension_controller.dart';
+import 'package:halawork/utils/getUserBalance.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PaymentTopSection extends HookWidget {
 
@@ -9,6 +12,7 @@ class PaymentTopSection extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var userModelState = useProvider(userModelExtensionController);
     // ProgressDialog  _progressDialog = ProgressDialog(context,
     //     type: ProgressDialogType.Normal,
     //     isDismissible: false,
@@ -17,7 +21,6 @@ class PaymentTopSection extends HookWidget {
     //     ));
     return Container(
       width: size.width,
-      height: 232,
       color: const Color(0xffF8F8F8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +49,7 @@ class PaymentTopSection extends HookWidget {
                   height: 10,
                 ),
                 Text(
-                  "0.00NGN",
+                  "${returnAccountBalance(userModelState!.userModel.wallet?.creditBalance??0.0, userModelState.userModel.wallet?.creditBalance??0.0)} NGN",
                   style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                           fontSize: 20,

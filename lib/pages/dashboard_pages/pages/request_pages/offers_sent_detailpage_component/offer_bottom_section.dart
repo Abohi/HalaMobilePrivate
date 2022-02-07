@@ -16,6 +16,7 @@ import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.d
 import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:halawork/utils/random_number_generator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:halawork/datetime_extension/time_of_day.dart';
 class OfferBottomSection extends HookWidget {
   final OfferModel offerModel;
@@ -66,7 +67,7 @@ class OfferBottomSection extends HookWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    offerModel.selectedDurationInWords,
+                    DateFormat.yMMMd().format(offerModel.dateOfDelivery),
                     style: GoogleFonts.roboto(
                         textStyle: TextStyle(
                             color: const Color(0xff29283C),

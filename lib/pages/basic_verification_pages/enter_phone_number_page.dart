@@ -89,7 +89,7 @@ class EnterPhoneNumberPage extends HookWidget {
                         }
                         final progress = ProgressHUD.of(context);
                         progress!.showWithText('Updating User Info...');
-                        UserModel userModel = UserModel(phoneNumber: _textEditingController.text.toString(),email:context.read(authControllerProvider)!.email,isPhoneNumberVerified:false,isBuyer:false,isSeller:false);
+                        UserModel userModel = UserModel(phoneNumber: _textEditingController.text.toString(),email:context.read(authControllerProvider)!.email,isPhoneNumberVerified:false,isBuyer:false,isSeller:false, buyerNotification: true, inboxNotification: true, orderNotification: true,);
                         await context.read(authControllerProvider.notifier).updateUserModel(context.read(authControllerProvider)!.uid,userModel);
                         progress.dismiss();
                         context.router.navigate(AppEntryRoute());

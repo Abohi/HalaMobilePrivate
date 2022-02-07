@@ -42,9 +42,9 @@ final serviceWorkRatingProvider = StateProvider<double?>((ref) {
 });
 
 class OngoingOrderDetailPage extends StatelessWidget {
-  final OrderModel orderModel;
+  final String requestId;
 
-  const OngoingOrderDetailPage({required this.orderModel});
+  const OngoingOrderDetailPage({required this.requestId});
 
   @override
   Widget build(BuildContext context) {
@@ -79,394 +79,410 @@ class OngoingOrderDetailPage extends StatelessWidget {
           indicatorColor: Colors.white,
           child: Builder(
             builder: (context) {
-              return Container(
-                width: size.width,
-                height: size.height,
-                padding: EdgeInsets.symmetric(horizontal: 17),
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: StreamBuilder<CreateRequestModel?>(
-                        stream: context
-                            .read(userRepositoryProvider)
-                            .getRequestStream(orderModel.requestId),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Column(
-                              children: [
-                                orderModel.requireExtension
-                                    ? ActionToPerformOnExtendOrder(
-                                        buyerId: orderModel.buyerId,
-                                        sellerId: orderModel.sellerId,
-                                        extendTimeOfDelivery:
-                                            (dateOfDelivery, isAccepted) async {
-                                          if (isAccepted) {
-                                            final progress =
-                                                ProgressHUD.of(context);
-                                            progress!.showWithText(
-                                                'Extending Delivery Date');
-                                            await context
-                                                .read(userModelExtensionController
-                                                    .notifier)
-                                                .sendOrderModel({
-                                              "requireExtension": false,
-                                              "isExtended": true,
-                                              "orderDeliveryTimeExpires": false,
-                                              "orderDeliveryTime":
-                                                  dateOfDelivery
-                                            });
-                                            progress.dismiss();
-                                            await Fluttertoast.showToast(
-                                                msg:
-                                                    "Delivery date extended successfully",
-                                                toastLength: Toast.LENGTH_LONG);
-                                          } else {
-                                            final progress =
-                                                ProgressHUD.of(context);
-                                            progress!.showWithText(
-                                                'Declining Extension Offer');
-                                            await context
-                                                .read(userModelExtensionController
-                                                    .notifier)
-                                                .sendOrderModel({
-                                              "requireExtension": false,
-                                              "isExtended": false,
-                                            });
-                                            progress.dismiss();
-                                            await Fluttertoast.showToast(
-                                                msg:
-                                                    "SuccessFully Decline extension Offer",
-                                                toastLength: Toast.LENGTH_LONG);
-                                          }
-                                        },
-                                      )
-                                    : Text(""),
-                                Container(
-                                  width: size.width,
-                                  height: size.height * 0.25,
-                                  margin: EdgeInsets.only(bottom: 20),
-                                  padding: EdgeInsets.symmetric(horizontal: 12),
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xffF8F8F8),
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        snapshot.data!.title,
-                                        style: GoogleFonts.roboto(
-                                            textStyle: TextStyle(
-                                                color: const Color(0xff555555),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700)),
-                                      ),
-                                      SizedBox(
-                                        height: 16,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
+              return StreamBuilder<OrderModel?>(
+                stream: context.read(orderRepositoryProvider).getOrder(requestId),
+                builder: (context,snapshot){
+                  if(snapshot.hasData){
+                    if(snapshot.data==null)
+                      return SizedBox.shrink();
+                    if(snapshot.data?.orderStatus=="ongoing"){
+                      OrderModel orderModel = snapshot.data!;
+                      return Container(
+                        width: size.width,
+                        height: size.height,
+                        padding: EdgeInsets.symmetric(horizontal: 17),
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverToBoxAdapter(
+                              child: StreamBuilder<CreateRequestModel?>(
+                                stream: context
+                                    .read(userRepositoryProvider)
+                                    .getRequestStream(orderModel.requestId),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Column(
+                                      children: [
+                                        orderModel.requireExtension
+                                            ? ActionToPerformOnExtendOrder(
+                                          buyerId: orderModel.buyerId,
+                                          sellerId: orderModel.sellerId,
+                                          extendTimeOfDelivery:
+                                              (dateOfDelivery, isAccepted) async {
+                                            if (isAccepted) {
+                                              final progress =
+                                              ProgressHUD.of(context);
+                                              progress!.showWithText(
+                                                  'Extending Delivery Date');
+                                              await context
+                                                  .read(userModelExtensionController
+                                                  .notifier)
+                                                  .sendOrderModel({
+                                                "requireExtension": false,
+                                                "isExtended": true,
+                                                "orderDeliveryTimeExpires": false,
+                                                "orderDeliveryTime":
+                                                dateOfDelivery
+                                              });
+                                              progress.dismiss();
+                                              await Fluttertoast.showToast(
+                                                  msg:
+                                                  "Delivery date extended successfully",
+                                                  toastLength: Toast.LENGTH_LONG);
+                                            } else {
+                                              final progress =
+                                              ProgressHUD.of(context);
+                                              progress!.showWithText(
+                                                  'Declining Extension Offer');
+                                              await context
+                                                  .read(userModelExtensionController
+                                                  .notifier)
+                                                  .sendOrderModel({
+                                                "requireExtension": false,
+                                                "isExtended": false,
+                                              });
+                                              progress.dismiss();
+                                              await Fluttertoast.showToast(
+                                                  msg:
+                                                  "SuccessFully Decline extension Offer",
+                                                  toastLength: Toast.LENGTH_LONG);
+                                            }
+                                          },
+                                        )
+                                            : Text(""),
+                                        Container(
+                                          width: size.width,
+                                          height: size.height * 0.25,
+                                          margin: EdgeInsets.only(bottom: 20),
+                                          padding: EdgeInsets.symmetric(horizontal: 12),
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xffF8F8F8),
+                                              borderRadius: BorderRadius.circular(4)),
+                                          child: Column(
+                                            crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               Text(
-                                                snapshot.data!.budget,
+                                                snapshot.data!.title,
                                                 style: GoogleFonts.roboto(
                                                     textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff555555),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w700)),
+                                                        color: const Color(0xff555555),
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w700)),
                                               ),
                                               SizedBox(
-                                                height: 3,
+                                                height: 16,
                                               ),
-                                              Text(
-                                                "Budget",
-                                                style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff7C7C7C),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!.budget,
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff555555),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                FontWeight.w700)),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        "Budget",
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff7C7C7C),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                FontWeight.normal)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!.state,
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff555555),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                FontWeight.w700)),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        "State",
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff7C7C7C),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                FontWeight.normal)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        "Created: ${DateFormat.yMMMMd().format(DateFormat("yyyy-MM-dd").parse(snapshot.data!.date))}",
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff555555),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                FontWeight.w700)),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        "date",
+                                                        style: GoogleFonts.roboto(
+                                                            textStyle: TextStyle(
+                                                                color: const Color(
+                                                                    0xff7C7C7C),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                FontWeight.normal)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 21,
+                                              ),
+                                              Consumer(
+                                                builder: (BuildContext context,
+                                                    T Function<T>(
+                                                        ProviderBase<Object?, T>)
+                                                    watch,
+                                                    Widget? child) {
+                                                  var firstHalfState =
+                                                      watch(firstHalfStateProvider)
+                                                          .state;
+                                                  var secondHalfState =
+                                                      watch(secondHalfStateProvider)
+                                                          .state;
+                                                  if (snapshot
+                                                      .data!.description.length >
+                                                      200) {
+                                                    firstHalfState = snapshot
+                                                        .data!.description
+                                                        .substring(0, 200);
+                                                    secondHalfState = snapshot
+                                                        .data!.description
+                                                        .substring(
+                                                        200,
+                                                        snapshot.data!.description
+                                                            .length);
+                                                  } else {
+                                                    firstHalfState =
+                                                        snapshot.data!.description;
+                                                    secondHalfState = "";
+                                                  }
+                                                  return ExpandableTextView(
+                                                      textColor:
+                                                      const Color(0xff7C7C7C),
+                                                      textSize: 14);
+                                                },
                                               ),
                                             ],
                                           ),
-                                          Spacer(),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                snapshot.data!.state,
-                                                style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff555555),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                "State",
-                                                style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff7C7C7C),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Created: ${DateFormat.yMMMMd().format(DateFormat("yyyy-MM-dd").parse(snapshot.data!.date))}",
-                                                style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff555555),
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                              ),
-                                              SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                "date",
-                                                style: GoogleFonts.roboto(
-                                                    textStyle: TextStyle(
-                                                        color: const Color(
-                                                            0xff7C7C7C),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ),
-                                            ],
-                                          ),
-                                          Spacer(),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 21,
-                                      ),
-                                      Consumer(
-                                        builder: (BuildContext context,
-                                            T Function<T>(
-                                                    ProviderBase<Object?, T>)
-                                                watch,
-                                            Widget? child) {
-                                          var firstHalfState =
-                                              watch(firstHalfStateProvider)
-                                                  .state;
-                                          var secondHalfState =
-                                              watch(secondHalfStateProvider)
-                                                  .state;
-                                          if (snapshot
-                                                  .data!.description.length >
-                                              200) {
-                                            firstHalfState = snapshot
-                                                .data!.description
-                                                .substring(0, 200);
-                                            secondHalfState = snapshot
-                                                .data!.description
-                                                .substring(
-                                                    200,
-                                                    snapshot.data!.description
-                                                        .length);
-                                          } else {
-                                            firstHalfState =
-                                                snapshot.data!.description;
-                                            secondHalfState = "";
-                                          }
-                                          return ExpandableTextView(
-                                              textColor:
-                                                  const Color(0xff7C7C7C),
-                                              textSize: 14);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                context
-                                        .read(userModelExtensionController)!
-                                        .userModel
-                                        .isSeller
-                                    ? CountDownTimerPayment(
-                                        endTime:
-                                            orderModel.orderDeliveryTime == null
-                                                ? 0
-                                                : orderModel.orderDeliveryTime!
-                                                    .millisecondsSinceEpoch,
-                                      )
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ((orderModel.orderDeliveryTime ==
-                                                      null) &&
-                                                  (orderModel.releaseFundTime !=
-                                                      null))
-                                              ? Text(
-                                                  "Time before fund is released to seller")
-                                              : SizedBox.shrink(),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          ((orderModel.orderDeliveryTime ==
-                                                      null) &&
-                                                  (orderModel.releaseFundTime !=
-                                                      null))
-                                              ? CountDownTimerPayment(
-                                                  endTime: orderModel
-                                                      .releaseFundTime!
-                                                      .millisecondsSinceEpoch,
-                                                )
-                                              : CountDownTimerPayment(
-                                                  endTime: orderModel
-                                                              .orderDeliveryTime ==
-                                                          null
-                                                      ? 0
-                                                      : orderModel
-                                                          .orderDeliveryTime!
-                                                          .millisecondsSinceEpoch,
-                                                ),
-                                        ],
-                                      ),
-                                const SizedBox(
-                                  height: 35,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "ID: ${orderModel.orderId}",
-                                      style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              fontSize: 12,
-                                              color: const Color(0xff0000FF),
-                                              fontWeight: FontWeight.w700)),
-                                    ),
-                                    Container(
-                                      width: size.width * 0.3,
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xffE3A806),
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Center(
-                                        child: Text(
-                          setStatusType(orderModel.actionType,orderModel.orderStatus),
-                                          style: GoogleFonts.roboto(
-                                              textStyle: TextStyle(
-                                                  fontSize: 12,
-                                                  color:
-                                                      const Color(0xff0000FF),
-                                                  fontWeight:
-                                                      FontWeight.normal)),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            );
-                          }
-                          return Text("");
-                        },
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: const SizedBox(
-                        height: 20,
-                      ),
-                    ),
-                    Upload_Download_ModificationSection(
-                        orderModel: orderModel,
-                        userModel:
-                            context.read(userModelExtensionController)!.userModel,
-                        uploadTask: (String path, FileType fileType,
-                            String uploadNote) async {
-                          final progress = ProgressHUD.of(context);
-                          progress!.showWithText('Uploading Order Files...');
-                          await context
-                              .read(orderRepositoryProvider)
-                              .submitOrderToFirebase(orderModel.requestId, path,
-                                  fileType, uploadNote);
-                          progress.dismiss();
-                          await Fluttertoast.showToast(
-                              msg: "Uploaded Successfully",
-                              toastLength: Toast.LENGTH_LONG);
-                        },
-                        performAction: (actionType) async {
-                          if (actionType == "completed") {
-                            final progress = ProgressHUD.of(context);
-                            progress!
-                                .showWithText('Marking Order As Completed...');
-                            await context
-                                .read(firebaseFirestoreProvider)
-                                .orderDocumentMapRef(orderModel.requestId)
-                                .set({
-                              "actionType": "completed",
-                              "orderStatus": "completed",
-                              "orderDeliveryTime": null,
-                              "isReviewed":false,
-                              "orderDeliveryTimeExpires": false,
-                            }, SetOptions(merge: true));
-                            progress.dismiss();
-                            await Fluttertoast.showToast(
-                                msg: "Successfully marked order as completed",
-                                toastLength: Toast.LENGTH_LONG);
-                          } else if (actionType == "modification") {
-                            context.router.navigate(
-                                ModificationBuyerRoute(orderModel: orderModel));
-                          } else if (actionType == "dispute") {
-                            //Send to dispute page
-                          }
-                        }),
-                    orderModel.actionType == "completed"
-                        ? SliverToBoxAdapter(child: ReviewSellersWork(orderModel: orderModel, onButtonPressed: (RatingModel ratingModel) async{
-                      final progress = ProgressHUD.of(context);
-                      progress!.showWithText('Submitting Review...');
-                      await context.read(userRepositoryProvider).submitBuyersRating(requestId: orderModel.requestId, sellerId: orderModel.sellerId, ratingModel:ratingModel, orderModel: orderModel);
-                      progress.dismiss();
-                      await Fluttertoast.showToast(msg: "Review submitted successfully",toastLength: Toast.LENGTH_SHORT);
-                    },))
-                        : SliverToBoxAdapter(child: SizedBox.shrink())
-                  ],
-                ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        context
+                                            .read(userModelExtensionController)!
+                                            .userModel
+                                            .isSeller
+                                            ? CountDownTimerPayment(
+                                          endTime:
+                                          orderModel.orderDeliveryTime == null
+                                              ? 0
+                                              : orderModel.orderDeliveryTime!
+                                              .millisecondsSinceEpoch,
+                                        )
+                                            : Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            ((orderModel.orderDeliveryTime ==
+                                                null) &&
+                                                (orderModel.releaseFundTime !=
+                                                    null))
+                                                ? Text(
+                                                "Time before fund is released to seller")
+                                                : SizedBox.shrink(),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            ((orderModel.orderDeliveryTime ==
+                                                null) &&
+                                                (orderModel.releaseFundTime !=
+                                                    null))
+                                                ? CountDownTimerPayment(
+                                              endTime: orderModel
+                                                  .releaseFundTime!
+                                                  .millisecondsSinceEpoch,
+                                            )
+                                                : CountDownTimerPayment(
+                                              endTime: orderModel
+                                                  .orderDeliveryTime ==
+                                                  null
+                                                  ? 0
+                                                  : orderModel
+                                                  .orderDeliveryTime!
+                                                  .millisecondsSinceEpoch,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 35,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "ID: ${orderModel.orderId}",
+                                              style: GoogleFonts.roboto(
+                                                  textStyle: TextStyle(
+                                                      fontSize: 12,
+                                                      color: const Color(0xff0000FF),
+                                                      fontWeight: FontWeight.w700)),
+                                            ),
+                                            Container(
+                                              width: size.width * 0.3,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                  color: const Color(0xffE3A806),
+                                                  borderRadius:
+                                                  BorderRadius.circular(10)),
+                                              child: Center(
+                                                child: Text(
+                                                  setStatusType(orderModel.actionType,orderModel.orderStatus),
+                                                  style: GoogleFonts.roboto(
+                                                      textStyle: TextStyle(
+                                                          fontSize: 12,
+                                                          color:
+                                                          const Color(0xff0000FF),
+                                                          fontWeight:
+                                                          FontWeight.normal)),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    );
+                                  }
+                                  return Text("");
+                                },
+                              ),
+                            ),
+                            SliverToBoxAdapter(
+                              child: const SizedBox(
+                                height: 20,
+                              ),
+                            ),
+                            Upload_Download_ModificationSection(
+                                orderModel: orderModel,
+                                userModel:
+                                context.read(userModelExtensionController)!.userModel,
+                                uploadTask: (String path, FileType fileType,
+                                    String uploadNote) async {
+                                  final progress = ProgressHUD.of(context);
+                                  progress!.showWithText('Uploading Order Files...');
+                                  await context
+                                      .read(orderRepositoryProvider)
+                                      .submitOrderToFirebase(orderModel.requestId, path,
+                                      fileType, uploadNote);
+                                  progress.dismiss();
+                                  await Fluttertoast.showToast(
+                                      msg: "Uploaded Successfully",
+                                      toastLength: Toast.LENGTH_LONG);
+                                },
+                                performAction: (actionType) async {
+                                  if (actionType == "completed") {
+                                    final progress = ProgressHUD.of(context);
+                                    progress!
+                                        .showWithText('Marking Order As Completed...');
+                                    await context
+                                        .read(firebaseFirestoreProvider)
+                                        .orderDocumentMapRef(orderModel.requestId)
+                                        .set({
+                                      "actionType": "completed",
+                                      "orderStatus": "completed",
+                                      "orderDeliveryTime": null,
+                                      "isReviewed":false,
+                                      "orderDeliveryTimeExpires": false,
+                                    }, SetOptions(merge: true));
+                                    progress.dismiss();
+                                    await Fluttertoast.showToast(
+                                        msg: "Successfully marked order as completed",
+                                        toastLength: Toast.LENGTH_LONG);
+                                  } else if (actionType == "modification") {
+                                    context.router.navigate(
+                                        ModificationBuyerRoute(orderModel: orderModel));
+                                  } else if (actionType == "dispute") {
+                                    //Send to dispute page
+                                  }
+                                }),
+                            orderModel.actionType == "completed"
+                                ? SliverToBoxAdapter(child: ReviewSellersWork(orderModel: orderModel, onButtonPressed: (RatingModel ratingModel) async{
+                              final progress = ProgressHUD.of(context);
+                              progress!.showWithText('Submitting Review...');
+                              await context.read(userRepositoryProvider).submitBuyersRating(requestId: orderModel.requestId, sellerId: orderModel.sellerId, ratingModel:ratingModel, orderModel: orderModel);
+                              progress.dismiss();
+                              await Fluttertoast.showToast(msg: "Review submitted successfully",toastLength: Toast.LENGTH_SHORT);
+                            },))
+                                : SliverToBoxAdapter(child: SizedBox.shrink())
+                          ],
+                        ),
+                      );
+                    }else{
+                      return SizedBox.shrink();
+                    }
+                  }else{
+                    return SizedBox.shrink();
+                  }
+                },
               );
             },
           ),

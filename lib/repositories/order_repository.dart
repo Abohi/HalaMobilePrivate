@@ -35,6 +35,15 @@ class OrderRepository implements BaseOrderRepository {
   const OrderRepository(this._read);
 
   @override
+  Stream<OrderModel?> getOrder(String requestId) {
+    try{
+      return _read(firebaseFirestoreProvider).orderCollectionRef().doc(requestId).snapshots()
+          .map((event) => event.data());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+  @override
   Stream<List<OrderModel>> orderStream() {
     try{
       return _read(firebaseFirestoreProvider).orderCollectionRef().snapshots().map((event) =>
@@ -145,7 +154,7 @@ class OrderRepository implements BaseOrderRepository {
   Future<void>deleteOfferAndOrder(String sellerId,String requestId,String buyerId)async{
     await _read(firebaseFirestoreProvider).orderCollectionRef().doc(requestId).get().then((value)async{
       if(value.exists){
-        if(value.data()!.orderState=="deactivated" && value.data()!.orderPaymentExpired!){
+        if(value.data()!.orderState=="deactivated" && value.data()!.orderPaymentExpired==true){
           await _read(firebaseFirestoreProvider).offerCollectionRef(buyerId, requestId).doc(sellerId).delete();
           await _read(firebaseFirestoreProvider).orderCollectionRef().doc(requestId).delete();
         }

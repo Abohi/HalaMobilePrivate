@@ -7,6 +7,7 @@ import 'package:halawork/pages/dashboard_pages/pages/dialogs/extend_ordertime_di
 import 'package:halawork/pages/dashboard_pages/widget/message_btn.dart';
 import 'package:halawork/pages/dashboard_pages/widget/offer_btn.dart';
 import 'package:halawork/providers/state_providers/buyerSellerIdsStateProvider.dart';
+import 'package:halawork/providers/state_providers/tabIndexSwitcherProvider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -24,6 +25,7 @@ class ActionToPerformOnExtendOrder extends HookWidget {
     var size = MediaQuery.of(context).size;
     var userModel = useProvider(userModelExtensionController);
     var buyerSellerIdState = useProvider(buyerSellerIdsStateProvider);
+    var tabIndexSwitcherState = useProvider(tabIndexSwitcherProvider);
     return Container(
       width: size.width,
       height: size.height * 0.05,
@@ -32,8 +34,9 @@ class ActionToPerformOnExtendOrder extends HookWidget {
       child: userModel!.userModel.isSeller
           ? MessageBtn(
               onButtonPressed: () {
-                context.router.navigate(InboxDetailRoute());
+                tabIndexSwitcherState.state = 1;
                 buyerSellerIdState.state = [buyerId, sellerId];
+                context.router.navigate(InboxDetailRoute());
               },
             )
           : Column(

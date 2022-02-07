@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
 import 'package:halawork/models/account_info_model/account_info_data_model.dart';
 import 'package:halawork/models/account_info_model/account_info_model.dart';
@@ -106,7 +107,7 @@ class AddAccountDetailPage extends HookWidget {
                                   return GenericResponseDialog(
                                     onBottonPressed: () {
                                       Navigator.pop(context);
-                                     context.popRoute();
+                                      context.router.navigate(PaymentRoute());
                                     },
                                     text1: "Successfully added",
                                     text2: "A bank account", btnText: 'CONTINUE',

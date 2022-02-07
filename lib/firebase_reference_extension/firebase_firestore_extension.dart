@@ -21,6 +21,7 @@ import 'package:halawork/models/seller_setup_models/work_entry_model/work_entry_
 import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/skills_model/skill_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
+import 'package:halawork/models/transfer_model/transfer_response_data_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/models/usermodel_extension/usermodel_extension.dart';
 import 'package:halawork/utils/constants.dart';
@@ -123,12 +124,16 @@ extension AuthFirebaseFirestoreExtentsion on FirebaseFirestore {
       collection(orderCollection).withConverter<OrderModel>(fromFirestore: (snapshots,_)=>OrderModel.fromJson(snapshots.data()!),
           toFirestore: (orderModel,_)=>orderModel.toJson());
 
-  CollectionReference<AccountInfoDataModel> bankAccountCollectionRef()=>
-      collection(bankAccountCollection).withConverter<AccountInfoDataModel>(fromFirestore: (snapshots,_)=>AccountInfoDataModel.fromJson(snapshots.data()!),
+  CollectionReference<AccountInfoDataModel> bankAccountCollectionRef(String userId)=>
+      collection(bankAccountMainCollection).doc(userId).collection(banksCollection).withConverter<AccountInfoDataModel>(fromFirestore: (snapshots,_)=>AccountInfoDataModel.fromJson(snapshots.data()!),
           toFirestore: (bankAccountModel,_)=>bankAccountModel.toJson());
   CollectionReference<ModificationModel> modificationCollectionRef()=>
       collection(modificationCollection).withConverter<ModificationModel>(fromFirestore: (snapshots,_)=>ModificationModel.fromJson(snapshots.data()!), toFirestore: (modificationModel,_)=>modificationModel.toJson());
 
   CollectionReference<DisputeModel> disputeCollectionRef(String userId)=>
       collection(disputeCollection).doc(userId).collection(userDisputeCollection).withConverter<DisputeModel>(fromFirestore: (snapshots,_)=>DisputeModel.fromJson(snapshots.data()!), toFirestore: (disputeModel,_)=>disputeModel.toJson());
+
+  CollectionReference<TransferResponseDataModel> transferHistoryCollectionRef(String userId)=>
+      collection(transferMainCollection).doc(userId).collection(transferCollection).withConverter<TransferResponseDataModel>(fromFirestore: (snapshots,_)=>TransferResponseDataModel.fromJson(snapshots.data()!),
+          toFirestore: (transferModel,_)=>transferModel.toJson());
 }

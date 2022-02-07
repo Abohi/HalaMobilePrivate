@@ -351,37 +351,32 @@ class GridItem extends HookWidget{
   Widget build(BuildContext context) {
     final value = useState<bool>(false);
     var size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: (){
-        value.value = !value.value;
-        isChecked(subService, value);
-      },
-      child: Container(
-        width: size.width,
-        height: size.height * 0.5,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Checkbox(
-                activeColor: const Color(0xff0000FF),
-                value: value.value,
-                onChanged: (val) {
-
-                }),
-            SizedBox(
-              width: size.width * 0.35,
-              child: Text(
-                subService,
-                style: GoogleFonts.roboto(
-                    textStyle:
-                    TextStyle(fontSize: 12, color: const Color(0xff29283C))),
-              ),
-            )
-          ],
-        ),
+    return Container(
+      width: size.width,
+      height: size.height * 0.5,
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Checkbox(
+              activeColor: const Color(0xff0000FF),
+              value: value.value,
+              onChanged: (val) {
+                value.value = !value.value;
+                isChecked(subService, value);
+              }),
+          SizedBox(
+            width: size.width * 0.35,
+            child: Text(
+              subService,
+              style: GoogleFonts.roboto(
+                  textStyle:
+                  TextStyle(fontSize: 12, color: const Color(0xff29283C))),
+            ),
+          )
+        ],
       ),
     );
   }

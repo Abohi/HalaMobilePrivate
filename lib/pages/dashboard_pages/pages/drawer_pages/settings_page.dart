@@ -44,7 +44,7 @@ class SettingsPage extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SettingsItemCard(labelText: "Notification", onButtonPressed: (){
-
+                  context.router.navigate(NotificationSettingsRoute());
               },),
               SettingsItemCard(labelText: "Security", onButtonPressed: (){
                 context.router.navigate(SecurityRoute());

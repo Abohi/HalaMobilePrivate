@@ -4,6 +4,7 @@ import 'package:halawork/app_route/app_route.gr.dart';
 import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/models/requests_model/create_request_model.dart';
 import 'package:halawork/models/requests_model/request_model2.dart';
+import 'package:halawork/pages/dashboard_pages/pages/request_pages/widgets/payment_dialog.dart';
 import 'package:halawork/pages/dashboard_pages/widget/expandable_textview.dart';
 import 'package:halawork/pages/dashboard_pages/widget/viewoffer_btn.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -182,7 +183,7 @@ class SellerRequestCard extends StatelessWidget {
           isRemoveOfferBtn?Text(""):ViewOfferBtn(
             btnLabel: btnLabel,
             isViewBtn: false,
-            onButtonPressed: () {
+            onButtonPressed: () async{
               context.router.navigate(SendOfferRoute(createRequestModel2: createRequestModel));
             },
           ),

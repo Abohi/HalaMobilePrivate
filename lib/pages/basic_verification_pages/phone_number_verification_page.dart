@@ -20,6 +20,7 @@ import 'package:halawork/providers/exception_provider/exception_provider.dart';
 import 'package:halawork/providers/general_providers/phoneVerificationCodeProvider.dart';
 import 'package:halawork/providers/general_providers/user_profile_provider.dart';
 import 'package:halawork/providers/state_providers/enablingTimeStateProvider.dart';
+import 'package:halawork/providers/state_providers/phoneExpirationTimeStateProvider.dart';
 import 'package:halawork/repositories/auth_repository.dart';
 import 'package:halawork/utils/pref_manager.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
@@ -44,23 +45,13 @@ class PhoneVerificationPage extends HookWidget{
   @override
   Widget build(BuildContext context) {
     final userModelState = useProvider(userModelExtensionController);
-
-    final countDownController = useMemoized(() => CountdownTimerController(endTime: endTime, onEnd: ()async{
-     PreferenceManager().savePhoneCode(0);
-    }));
     phoneNo = userModelState!.userModel.phoneNumber;
     phoneNo?.replaceRange(0, 6, "*******");
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
    final _textEditingController = useTextEditingController();
    var phoneEnablingTimeState = useProvider(enablingTimeStateProvider);
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_){
-          if(phoneEnablingTimeState.state==0){
-            phoneEnablingTimeState.state=DateTime.now().millisecondsSinceEpoch + 1000 * 60 *5;
-          }
-    });
-
+    var phoneExpirationTimeState = useProvider(phoneExpirationTimeProvider);
     return WillPopScope(
       onWillPop: () async {
        return false;
@@ -138,9 +129,7 @@ class PhoneVerificationPage extends HookWidget{
                           height: height * 0.06,
                         ),
                         CountdownTimer(
-                          controller: CountdownTimerController(endTime: phoneEnablingTimeState.state, onEnd: ()async{
-
-                          }),
+                          controller: CountdownTimerController(endTime: phoneEnablingTimeState.state, onEnd: ()async{}),
                           widgetBuilder: (BuildContext context, CurrentRemainingTime? time){
                             if(time!=null){
                               return Row(
@@ -237,7 +226,9 @@ class PhoneVerificationPage extends HookWidget{
                         ),
                         Center(
                             child: CountdownTimer(
-                              controller: countDownController,
+                              controller: CountdownTimerController(endTime: phoneExpirationTimeState.state, onEnd: ()async{
+                                PreferenceManager().savePhoneCode(0);
+                              }),
                               widgetBuilder: (BuildContext context, CurrentRemainingTime? time){
                                 if(time!=null){
                                   return Text("${time.min??"0"}:${time.sec??"0"}",style: GoogleFonts.roboto(

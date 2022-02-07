@@ -215,7 +215,7 @@ class CreateRequestPage extends HookWidget{
                                 ],
                               ),
                               SizedBox(height:26,),
-                              context.read(stateModelStateProvider).state==null?SizedBox.shrink():DropdownSearch<String>(
+                              stateModelState.state==null?SizedBox.shrink():DropdownSearch<String>(
                                 mode: Mode.BOTTOM_SHEET,
                                 showSearchBox: true,
                                 items: stateModelState.state!.lgas,
@@ -235,15 +235,16 @@ class CreateRequestPage extends HookWidget{
                                   DropdownSearch<ActiveServiceModel>(
                                     mode: Mode.BOTTOM_SHEET,
                                     showSearchBox: true,
-                                    items: userModelState!.serviceList,
+                                    items: userModelState?.serviceList==null?[]:userModelState?.serviceList,
                                     label: "Select your main service",
                                     hint: "Select your main service",
                                     itemAsString: (ActiveServiceModel service) => service.service.toString(),
                                     onChanged: (value){
+
                                       _selectedService.value=value;
                                       _subServices.value =value?.subservices;
                                     },
-                                    selectedItem: _selectedService.value==null?ActiveServiceModel(service: "Select your main service", isDefault: false, icon: "", subservices: []):userModelState.serviceList?.firstWhere((element) => element.service==_selectedService.value?.service),
+                                    selectedItem: _selectedService.value==null?ActiveServiceModel(service: "Select your main service", isDefault: false, icon: "", subservices: []):userModelState?.serviceList?.firstWhere((element) => element.service==_selectedService.value?.service),
                                   ),
                                   SizedBox(
                                     height: 10,
@@ -450,7 +451,7 @@ class CreateRequestPage extends HookWidget{
 
                             if(_formKey.currentState!.validate()){
                               _formKey.currentState!.save();
-                             if(context.read(userModelExtensionController)!.userModel.isSeller){
+                             if(userModelState!.userModel.isSeller){
                                return Fluttertoast.showToast(msg: "To post a request you need to become a Buyer",toastLength: Toast.LENGTH_LONG);
                              }else{
                                final progress = ProgressHUD.of(context);

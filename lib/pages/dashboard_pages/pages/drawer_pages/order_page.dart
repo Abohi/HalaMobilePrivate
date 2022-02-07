@@ -97,7 +97,7 @@ class OrderPage extends HookWidget {
                   padding: const EdgeInsets.symmetric(horizontal:17.0),
                   child: ListView.builder(itemBuilder: (context,index){
                     return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index],onButtonPressed: (){
-                      context.router.navigate(CompletedOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index]));
+                      context.router.navigate(CompletedOrderDetailRoute(requestId: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")![index].requestId));
                     },);
                   },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("completed")?.length,),
                 ),
@@ -113,7 +113,7 @@ class OrderPage extends HookWidget {
                   padding: const EdgeInsets.symmetric(horizontal:17.0),
                   child: ListView.builder(itemBuilder: (context,index){
                     return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index],onButtonPressed: (){
-                      context.router.navigate(OngoingOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index]));
+                      context.router.navigate(OngoingOrderDetailRoute(requestId: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")![index].requestId));
                     },);
                   },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("ongoing")?.length,),
                 ),
@@ -129,7 +129,7 @@ class OrderPage extends HookWidget {
                   padding: const EdgeInsets.symmetric(horizontal:17.0),
                   child: ListView.builder(itemBuilder: (context,index){
                     return  OrderCard(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index],onButtonPressed: (){
-                      context.router.navigate(PendingOrderDetailRoute(orderModel: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index]));
+                      context.router.navigate(PendingOrderDetailRoute(requestId: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")![index].requestId));
                     },);
                   },itemCount: context.read(orderControllerProvider.notifier).fetchByOrderType("pending")?.length,),
                 ),

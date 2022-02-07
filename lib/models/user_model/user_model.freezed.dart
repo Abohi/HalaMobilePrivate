@@ -55,7 +55,10 @@ class _$UserModelTearOff {
       List<String>? states,
       bool? isActiveService,
       bool? toggleNationWideVisibility,
-      String? transactionPin}) {
+      String? transactionPin,
+      required bool buyerNotification,
+      required bool inboxNotification,
+      required bool orderNotification}) {
     return _UserModel(
       phoneNumber: phoneNumber,
       isPhoneNumberVerified: isPhoneNumberVerified,
@@ -92,6 +95,9 @@ class _$UserModelTearOff {
       isActiveService: isActiveService,
       toggleNationWideVisibility: toggleNationWideVisibility,
       transactionPin: transactionPin,
+      buyerNotification: buyerNotification,
+      inboxNotification: inboxNotification,
+      orderNotification: orderNotification,
     );
   }
 
@@ -141,6 +147,9 @@ mixin _$UserModel {
   bool? get isActiveService => throw _privateConstructorUsedError;
   bool? get toggleNationWideVisibility => throw _privateConstructorUsedError;
   String? get transactionPin => throw _privateConstructorUsedError;
+  bool get buyerNotification => throw _privateConstructorUsedError;
+  bool get inboxNotification => throw _privateConstructorUsedError;
+  bool get orderNotification => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -187,7 +196,10 @@ abstract class $UserModelCopyWith<$Res> {
       List<String>? states,
       bool? isActiveService,
       bool? toggleNationWideVisibility,
-      String? transactionPin});
+      String? transactionPin,
+      bool buyerNotification,
+      bool inboxNotification,
+      bool orderNotification});
 
   $UserRatingModelCopyWith<$Res>? get ratings;
   $WalletModelCopyWith<$Res>? get wallet;
@@ -238,6 +250,9 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? isActiveService = freezed,
     Object? toggleNationWideVisibility = freezed,
     Object? transactionPin = freezed,
+    Object? buyerNotification = freezed,
+    Object? inboxNotification = freezed,
+    Object? orderNotification = freezed,
   }) {
     return _then(_value.copyWith(
       phoneNumber: phoneNumber == freezed
@@ -380,6 +395,18 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
           ? _value.transactionPin
           : transactionPin // ignore: cast_nullable_to_non_nullable
               as String?,
+      buyerNotification: buyerNotification == freezed
+          ? _value.buyerNotification
+          : buyerNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
+      inboxNotification: inboxNotification == freezed
+          ? _value.inboxNotification
+          : inboxNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
+      orderNotification: orderNotification == freezed
+          ? _value.orderNotification
+          : orderNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -447,7 +474,10 @@ abstract class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       List<String>? states,
       bool? isActiveService,
       bool? toggleNationWideVisibility,
-      String? transactionPin});
+      String? transactionPin,
+      bool buyerNotification,
+      bool inboxNotification,
+      bool orderNotification});
 
   @override
   $UserRatingModelCopyWith<$Res>? get ratings;
@@ -501,6 +531,9 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
     Object? isActiveService = freezed,
     Object? toggleNationWideVisibility = freezed,
     Object? transactionPin = freezed,
+    Object? buyerNotification = freezed,
+    Object? inboxNotification = freezed,
+    Object? orderNotification = freezed,
   }) {
     return _then(_UserModel(
       phoneNumber: phoneNumber == freezed
@@ -643,6 +676,18 @@ class __$UserModelCopyWithImpl<$Res> extends _$UserModelCopyWithImpl<$Res>
           ? _value.transactionPin
           : transactionPin // ignore: cast_nullable_to_non_nullable
               as String?,
+      buyerNotification: buyerNotification == freezed
+          ? _value.buyerNotification
+          : buyerNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
+      inboxNotification: inboxNotification == freezed
+          ? _value.inboxNotification
+          : inboxNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
+      orderNotification: orderNotification == freezed
+          ? _value.orderNotification
+          : orderNotification // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -685,7 +730,10 @@ class _$_UserModel implements _UserModel {
       this.states,
       this.isActiveService,
       this.toggleNationWideVisibility,
-      this.transactionPin});
+      this.transactionPin,
+      required this.buyerNotification,
+      required this.inboxNotification,
+      required this.orderNotification});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$_$_UserModelFromJson(json);
@@ -765,10 +813,16 @@ class _$_UserModel implements _UserModel {
   final bool? toggleNationWideVisibility;
   @override
   final String? transactionPin;
+  @override
+  final bool buyerNotification;
+  @override
+  final bool inboxNotification;
+  @override
+  final bool orderNotification;
 
   @override
   String toString() {
-    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet, documentId: $documentId, isDismissCompleteProfile: $isDismissCompleteProfile, states: $states, isActiveService: $isActiveService, toggleNationWideVisibility: $toggleNationWideVisibility, transactionPin: $transactionPin)';
+    return 'UserModel(phoneNumber: $phoneNumber, isPhoneNumberVerified: $isPhoneNumberVerified, isBuyer: $isBuyer, isSeller: $isSeller, firstName: $firstName, lastName: $lastName, optionalNumber: $optionalNumber, dateOfBirth: $dateOfBirth, sellerType: $sellerType, skills: $skills, serviceId: $serviceId, service: $service, serviceIcon: $serviceIcon, isServiceDefault: $isServiceDefault, subServices: $subServices, expertiseLevel: $expertiseLevel, profilePictureUrl: $profilePictureUrl, profileDescriptionTitle: $profileDescriptionTitle, profileDescription: $profileDescription, joined: $joined, completedOrders: $completedOrders, uncompletedOrders: $uncompletedOrders, totalOrders: $totalOrders, available: $available, ratings: $ratings, orgDetailModel: $orgDetailModel, fcmtoken: $fcmtoken, email: $email, wallet: $wallet, documentId: $documentId, isDismissCompleteProfile: $isDismissCompleteProfile, states: $states, isActiveService: $isActiveService, toggleNationWideVisibility: $toggleNationWideVisibility, transactionPin: $transactionPin, buyerNotification: $buyerNotification, inboxNotification: $inboxNotification, orderNotification: $orderNotification)';
   }
 
   @override
@@ -851,7 +905,10 @@ class _$_UserModel implements _UserModel {
             (identical(other.states, states) || const DeepCollectionEquality().equals(other.states, states)) &&
             (identical(other.isActiveService, isActiveService) || const DeepCollectionEquality().equals(other.isActiveService, isActiveService)) &&
             (identical(other.toggleNationWideVisibility, toggleNationWideVisibility) || const DeepCollectionEquality().equals(other.toggleNationWideVisibility, toggleNationWideVisibility)) &&
-            (identical(other.transactionPin, transactionPin) || const DeepCollectionEquality().equals(other.transactionPin, transactionPin)));
+            (identical(other.transactionPin, transactionPin) || const DeepCollectionEquality().equals(other.transactionPin, transactionPin)) &&
+            (identical(other.buyerNotification, buyerNotification) || const DeepCollectionEquality().equals(other.buyerNotification, buyerNotification)) &&
+            (identical(other.inboxNotification, inboxNotification) || const DeepCollectionEquality().equals(other.inboxNotification, inboxNotification)) &&
+            (identical(other.orderNotification, orderNotification) || const DeepCollectionEquality().equals(other.orderNotification, orderNotification)));
   }
 
   @override
@@ -891,7 +948,10 @@ class _$_UserModel implements _UserModel {
       const DeepCollectionEquality().hash(states) ^
       const DeepCollectionEquality().hash(isActiveService) ^
       const DeepCollectionEquality().hash(toggleNationWideVisibility) ^
-      const DeepCollectionEquality().hash(transactionPin);
+      const DeepCollectionEquality().hash(transactionPin) ^
+      const DeepCollectionEquality().hash(buyerNotification) ^
+      const DeepCollectionEquality().hash(inboxNotification) ^
+      const DeepCollectionEquality().hash(orderNotification);
 
   @JsonKey(ignore: true)
   @override
@@ -940,7 +1000,10 @@ abstract class _UserModel implements UserModel {
       List<String>? states,
       bool? isActiveService,
       bool? toggleNationWideVisibility,
-      String? transactionPin}) = _$_UserModel;
+      String? transactionPin,
+      required bool buyerNotification,
+      required bool inboxNotification,
+      required bool orderNotification}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -1016,6 +1079,12 @@ abstract class _UserModel implements UserModel {
   bool? get toggleNationWideVisibility => throw _privateConstructorUsedError;
   @override
   String? get transactionPin => throw _privateConstructorUsedError;
+  @override
+  bool get buyerNotification => throw _privateConstructorUsedError;
+  @override
+  bool get inboxNotification => throw _privateConstructorUsedError;
+  @override
+  bool get orderNotification => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$UserModelCopyWith<_UserModel> get copyWith =>

@@ -34,8 +34,7 @@ Future<void> backgroundHandler(RemoteMessage message) async{
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await dotenv.load(fileName: ".env");
-  await PaystackClient.initialize("pk_test_e1b309e4165f444cebce332c49bc7bab45b00f16");
+  await PaystackClient.initialize("pk_live_9600f81a2bce0132aec3e81029bfe7e16b66330e");
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   runApp(ProviderScope(child: MyApp()));
 }

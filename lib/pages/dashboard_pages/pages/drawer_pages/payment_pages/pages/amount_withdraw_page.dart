@@ -14,8 +14,10 @@ import 'package:halawork/models/transfer_model/transfer_response_model.dart';
 import 'package:halawork/models/transfer_recipient_model/transfer_recipient_model.dart';
 import 'package:halawork/models/transfer_recipient_model/transfer_recipient_request_model.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page/widgets/pin_pad_widget.dart';
+import 'package:halawork/pages/dashboard_pages/widget/generic_response_dialog.dart';
 import 'package:halawork/providers/state_providers/bankAccountProvider.dart';
 import 'package:halawork/repositories/user_repository.dart';
+import 'package:halawork/utils/getUserBalance.dart';
 import 'package:halawork/widgets/CustomButtonSignup.dart';
 import 'package:halawork/widgets/error_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,13 +28,14 @@ class AmountToWithdrawPage extends HookWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var bankDataState= useProvider(bankAccountProvider);
-    var _textEditingController = useTextEditingController();
+    var _amountTextEditingController = useTextEditingController();
     var pinTextEditingController= useTextEditingController();
     var userModelState = useProvider(userModelExtensionController);
     var amountText = useState<String>("");
     var pinText = useState<String>("");
     var isAmountToWithdraw = useState<bool>(true);
     var isPinPad = useState<bool>(false);
+    var isPaymentButton = useState<bool>(false);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -94,7 +97,7 @@ class AmountToWithdrawPage extends HookWidget {
                               )
                           ),) ,
                           SizedBox(height: 10,),
-                          Text("0.00NGN",style: GoogleFonts.roboto(
+                          Text("${returnAccountBalance(userModelState!.userModel.wallet?.creditBalance??0.0, userModelState.userModel.wallet?.creditBalance??0.0)} NGN",style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -126,7 +129,7 @@ class AmountToWithdrawPage extends HookWidget {
                         child: TextField(
                           autofocus: false,
                           keyboardType: TextInputType.number,
-                          controller: _textEditingController,
+                          controller: _amountTextEditingController,
                           style: GoogleFonts.roboto(
                               textStyle: TextStyle(
                                   color: const Color(0xff29283C), fontSize: 14)),
@@ -158,11 +161,17 @@ class AmountToWithdrawPage extends HookWidget {
                       child: KeyPadPage(pinLength: 4,
                         inputLabel: "ENTER PIN",
                         pinController: pinTextEditingController,
-                        onSubmit: (String pin) {
-                          if(userModelState!.userModel.transactionPin==null)
+                        onSubmit: (String pin) async{
+                          if(userModelState.userModel.transactionPin==null)
                             context.router.navigate(CreatePinRoute());
 
-                          pinText.value=pin;
+                          if(userModelState.userModel.transactionPin==pin){
+                            pinText.value=pin;
+                            isPaymentButton.value=true;
+                            isPinPad.value = false;
+                          }else{
+                            await Fluttertoast.showToast(msg: "Pin is not valid",toastLength: Toast.LENGTH_LONG);
+                          }
                         }, onChange: (String val) {
 
                         },
@@ -173,55 +182,85 @@ class AmountToWithdrawPage extends HookWidget {
                     ):SizedBox(
                       height: 20,
                     ),
-                    isAmountToWithdraw.value?CustomButtonSignup(buttonBg: const Color(0xff0000FF),
-                      buttonTitle: "CONTINUE",
-                      buttonFontColor: Colors.white,
-                      onButtonPressed: () async{
-                        isAmountToWithdraw.value = false;
-                        isPinPad.value = true;
-                      }, imageIcon: null,):
-                    CustomButtonSignup(buttonBg: const Color(0xff0000FF),
-                      buttonTitle: "CONTINUE",
-                      buttonFontColor: Colors.white,
-                      onButtonPressed: () async{
-                        final progress = ProgressHUD.of(context);
-                        progress!.showWithText('Creating Transfer Recipient...');
-                        TransferRecipientRequestModel transferRecipient = TransferRecipientRequestModel(currency: 'NGN', type: 'nuban', account_number: bankDataState.state!.account_number, name: bankDataState.state!.account_name, bank_code: bankDataState.state!.bankCode!);
-                        Either<NetworkFailure,TransferRecipientModel> recipientResponse = await context.read(userRepositoryProvider).createTransferRecipient(transferRecipient);
-                        recipientResponse.fold((l){
-                          progress.dismiss();
-                          return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
-                            await context.read(userRepositoryProvider).createTransferRecipient(transferRecipient);
-                          });
-                        }, (r)async{
-                          progress.dismiss();
-                              if(r.status==true){
-                                await Fluttertoast.showToast(msg: "Transfer recipient created successfully",toastLength: Toast.LENGTH_LONG);
-                                final progress = ProgressHUD.of(context);
-                                progress!.showWithText('Making Transfer...');
-                                double amount = double.parse(_textEditingController.text.toString())*10;
-                                TransferModel tranferModel = TransferModel(amount:amount.toString(), recipient: r.data.recipient_code, reason: 'withdrawal', source: 'balance');
-                                Either<NetworkFailure,TransferResponseModel> transferResponse = await context.read(userRepositoryProvider).makeTransfer(tranferModel);
-                                transferResponse.fold((l) {
-                                  progress.dismiss();
-                                  return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
-                                    await context.read(userRepositoryProvider).makeTransfer(tranferModel);
+                    Visibility(
+                      visible: isAmountToWithdraw.value,
+                      child: CustomButtonSignup(buttonBg: const Color(0xff0000FF),
+                        buttonTitle: "CONTINUE",
+                        buttonFontColor: Colors.white,
+                        onButtonPressed: () async{
+                          isAmountToWithdraw.value = false;
+                          isPinPad.value = true;
+                        }, imageIcon: null,),
+                    ),
+                    Visibility(
+                      visible:isPaymentButton.value,
+                      child: CustomButtonSignup(buttonBg: const Color(0xff0000FF),
+                        buttonTitle: "CONTINUE",
+                        buttonFontColor: Colors.white,
+                        onButtonPressed: () async{
+                          if(userModelState.userModel.transactionPin!=pinText.value)
+                            return await Fluttertoast.showToast(msg: "Pin is not valid",toastLength: Toast.LENGTH_LONG);
+                          if(_amountTextEditingController.text.isEmpty)
+                            return await Fluttertoast.showToast(msg: "Please enter an amount",toastLength: Toast.LENGTH_LONG);
+
+                          final progress = ProgressHUD.of(context);
+                          progress!.showWithText('Creating Transfer Recipient...');
+                          TransferRecipientRequestModel transferRecipient = TransferRecipientRequestModel(currency: 'NGN', type: 'nuban', account_number: bankDataState.state!.account_number, name: bankDataState.state!.account_name, bank_code: bankDataState.state!.bankCode!);
+                          Either<NetworkFailure,TransferRecipientModel> recipientResponse = await context.read(userRepositoryProvider).createTransferRecipient(transferRecipient);
+                          recipientResponse.fold((l){
+                            progress.dismiss();
+                            return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
+                              await context.read(userRepositoryProvider).createTransferRecipient(transferRecipient);
+                            });
+                          }, (r)async{
+                            progress.dismiss();
+                                if(r.status==true){
+                                  await Fluttertoast.showToast(msg: "Transfer recipient created successfully",toastLength: Toast.LENGTH_LONG);
+                                  final progress = ProgressHUD.of(context);
+                                  progress!.showWithText('Making Transfer...');
+                                  int amount = int.parse(_amountTextEditingController.text.toString())*10;
+                                  print("User amount: ${amount.toString()}");
+                                  TransferModel tranferModel = TransferModel(amount:amount.toString(), recipient: r.data.recipient_code, reason: 'withdrawal', source: 'balance');
+                                  Either<NetworkFailure,TransferResponseModel> transferResponse = await context.read(userRepositoryProvider).makeTransfer(tranferModel);
+                                  transferResponse.fold((l) {
+                                    progress.dismiss();
+                                    return ErrorWidgetControl(networkFailure: l, retryHandler: ()async{
+                                      await context.read(userRepositoryProvider).makeTransfer(tranferModel);
+                                    });
+                                  }, (r)async{
+                                    await context.read(userRepositoryProvider).addTransfer(r.data);
+                                    progress.dismiss();
+                                    if(r.status==true){
+                                      await showGeneralDialog(
+                                          context: context,
+                                          barrierDismissible: true,
+                                          barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                                          barrierColor: Colors.black45,
+                                          transitionDuration: const Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext buildContext, Animation animation,
+                                              Animation secondaryAnimation) {
+                                            return GenericResponseDialog(
+                                              onBottonPressed: () {
+                                                Navigator.pop(context);
+                                                context.router.navigate(PaymentRoute());
+                                              },
+                                              text1: "Transfer",
+                                              text2: r.message, btnText: 'CONTINUE',
+                                            );
+                                          });
+                                    }else{
+                                      await Fluttertoast.showToast(msg: r.message,toastLength: Toast.LENGTH_LONG);
+                                    }
                                   });
-                                }, (r)async{
-                                  progress.dismiss();
-                                  if(r.status==true){
-                                    await Fluttertoast.showToast(msg: r.message,toastLength: Toast.LENGTH_LONG);
-                                  }else{
-                                    await Fluttertoast.showToast(msg: r.message,toastLength: Toast.LENGTH_LONG);
-                                  }
-                                });
-                              }else{
-                                await Fluttertoast.showToast(msg: "Failed to create transfer recipient",toastLength: Toast.LENGTH_LONG);
-                              }
-                        });
-                        isAmountToWithdraw.value =true;
-                        isPinPad.value = false;
-                      }, imageIcon: null,)
+                                }else{
+                                  await Fluttertoast.showToast(msg: "Failed to create transfer recipient",toastLength: Toast.LENGTH_LONG);
+                                }
+                          });
+                          isAmountToWithdraw.value =true;
+                          isPinPad.value = false;
+                          isPaymentButton.value=false;
+                        }, imageIcon: null,),
+                    )
                   ],
                 ),
               ),
@@ -231,4 +270,5 @@ class AmountToWithdrawPage extends HookWidget {
       )),
     );
   }
+
 }

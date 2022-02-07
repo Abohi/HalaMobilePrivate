@@ -35,6 +35,7 @@ import 'package:halawork/models/seller_setup_models/work_entry_model/work_entry_
 import 'package:halawork/models/services_model/service_model.dart';
 import 'package:halawork/models/subservice_model/subservice_model.dart';
 import 'package:halawork/models/transfer_model/transfer_model.dart';
+import 'package:halawork/models/transfer_model/transfer_response_data_model.dart';
 import 'package:halawork/models/transfer_model/transfer_response_model.dart';
 import 'package:halawork/models/transfer_recipient_model/transfer_recipient_model.dart';
 import 'package:halawork/models/transfer_recipient_model/transfer_recipient_request_model.dart';
@@ -329,7 +330,7 @@ class UserRepository implements BaseUserRepository {
           profileDescriptionTitle: sellerSetupModel.saveProfileDescModel?.title,
           serviceId: sellerSetupModel.serviceId,joined: DateTime.now(),isBuyer: false,
           isSeller:true,orgDetailModel:sellerSetupModel.orgDetailModel==null?null: sellerSetupModel.orgDetailModel?.toJson(),states:sellerSetupModel.locationModel?.map((e) => e.state).toList(),isActiveService:true,isDismissCompleteProfile:true,toggleNationWideVisibility:true,
-          ratings:UserRatingModel(serviceOfWorkRatinig: 0,communicationRating: 0,likelyRecommendRating: 0) );
+          ratings:UserRatingModel(serviceOfWorkRatinig: 0,communicationRating: 0,likelyRecommendRating: 0),buyerNotification: true,inboxNotification: true,orderNotification: true );
     }else{
       userModel = _read(userModelExtensionController)!.userModel.copyWith(
           sellerType: sellerSetupModel.sellerType,service: sellerSetupModel.saveService,
@@ -486,6 +487,15 @@ class UserRepository implements BaseUserRepository {
    }
   }
 
+
+ Future<void>deleteOffer(String buyerId,String sellerId,String requestId)async{
+   try{
+     return await _read(firebaseFirestoreProvider).offerCollectionRef(buyerId, requestId).doc(sellerId).delete();
+   }on FirebaseAuthException catch (e) {
+     throw CustomException(message: e.message);
+   }
+ }
+
   Future<OfferModel?> getOffer(String buyerId,String sellerId,String requestId)async{
     try{
       return (await _read(firebaseFirestoreProvider).offerDocumentRef(sellerId, buyerId, requestId).get()).data();
@@ -497,7 +507,8 @@ class UserRepository implements BaseUserRepository {
   @override
   Stream<List<NotificationModel>> getNotifications(String userId) {
     try{
-      return _read(firebaseFirestoreProvider).notificationCollectionRef(userId).orderBy("createdAt", descending: true).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(notificationId: e.id)).toList());
+      return _read(firebaseFirestoreProvider).notificationCollectionRef(userId).orderBy("createdAt", descending: true).snapshots().map((event) => event.docs.map((e) =>
+          e.data().copyWith(notificationId: e.id)).toList());
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -554,7 +565,7 @@ class UserRepository implements BaseUserRepository {
   }
   Stream<List<AccountInfoDataModel>> getBankAccounts(){
     try{
-      return _read(firebaseFirestoreProvider).bankAccountCollectionRef().snapshots().map((event) => event.docs.map((e) => e.data().copyWith(documentId: e.id)).toList());
+      return _read(firebaseFirestoreProvider).bankAccountCollectionRef(_read(authControllerProvider)!.uid).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(documentId: e.id)).toList());
     }on FirebaseAuthException catch (e) {
       throw CustomException(message: e.message);
     }
@@ -562,7 +573,24 @@ class UserRepository implements BaseUserRepository {
 
   Future<void>addBankAccount(AccountInfoDataModel accountInfoDataModel)async{
     try{
-      await _read(firebaseFirestoreProvider).bankAccountCollectionRef().doc(accountInfoDataModel.account_number).set(accountInfoDataModel,SetOptions(
+      await _read(firebaseFirestoreProvider).bankAccountCollectionRef(_read(authControllerProvider)!.uid).doc(accountInfoDataModel.account_number).set(accountInfoDataModel,SetOptions(
+          merge: true
+      ));
+    }on FirebaseAuthException catch(e){
+      throw CustomException(message: e.message);
+    }
+  }
+  Stream<List<TransferResponseDataModel>> getTransfers(){
+    try{
+      return _read(firebaseFirestoreProvider).transferHistoryCollectionRef(_read(authControllerProvider)!.uid).snapshots().map((event) => event.docs.map((e) => e.data().copyWith(documentId: e.id)).toList());
+    }on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
+
+  Future<void>addTransfer(TransferResponseDataModel transferResponseDataModel)async{
+    try{
+      await _read(firebaseFirestoreProvider).transferHistoryCollectionRef(_read(authControllerProvider)!.uid).doc().set(transferResponseDataModel,SetOptions(
           merge: true
       ));
     }on FirebaseAuthException catch(e){
@@ -670,7 +698,7 @@ class UserRepository implements BaseUserRepository {
     try{
       var headers = {
         'Content-Type': 'application/json',
-        'Authorization':'Bearer sk_test_f9d2bb6e41f970725dc8347d325e39234974d217'
+        'Authorization':'Bearer sk_live_a57388b0459ed32471ec4dbbbb3ec5a43c5b7c2b'
       };
 
       var url ="https://api.paystack.co/transaction/verify/${transactionReference}";
@@ -753,10 +781,10 @@ class UserRepository implements BaseUserRepository {
       var payLoad = json.encode(transferRecipientRequestModel.toJson());
       return http.post(Uri.parse(url), headers: headers,body: payLoad).then((data) {
         var jsonDecode = json.decode(data.body);
-        if (data.statusCode == 200) {
+        if (data.statusCode == 201) {
           return right(TransferRecipientModel.fromJson(jsonDecode));
         }
-        return right(jsonDecode);
+        return right(TransferRecipientModel.fromJson(jsonDecode));
       });
     }on NetworkFailure catch (e) {
       return left(e);
@@ -779,7 +807,7 @@ class UserRepository implements BaseUserRepository {
         if (data.statusCode == 200) {
           return right(TransferResponseModel.fromJson(jsonDecode));
         }
-        return right(jsonDecode);
+        return right(TransferResponseModel.fromJson(jsonDecode));
       });
     }on NetworkFailure catch (e) {
       return left(e);

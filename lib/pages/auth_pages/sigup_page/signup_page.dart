@@ -26,7 +26,7 @@ class SignupPage extends HookWidget {
     var height = size.height;
     return WillPopScope(
       onWillPop: () async {
-
+        context.popRoute();
         return true;
       },
       child: ProgressHUD(

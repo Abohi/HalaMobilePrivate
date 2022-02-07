@@ -364,7 +364,7 @@ class SellerBasicInfoEntryPage extends HookWidget {
                                       isSeller:customUserModelState.userModel.isSeller,isBuyer:customUserModelState.userModel.isBuyer,
                                       isPhoneNumberVerified:customUserModelState.userModel.isPhoneNumberVerified,
                                       firstName: _firstName.value,lastName: _lastName.value,optionalNumber: _optionalNumber.value==null
-                                      ?"":_optionalNumber.value,dateOfBirth: _dateOfBirth.value,sellerType: context.read(sellerSetupStateProvider).state!.sellerType,email: context.read(authControllerProvider)!.email);
+                                      ?"":_optionalNumber.value,dateOfBirth: _dateOfBirth.value,sellerType: context.read(sellerSetupStateProvider).state!.sellerType,email: context.read(authControllerProvider)!.email, inboxNotification: customUserModelState.userModel.inboxNotification, orderNotification: customUserModelState.userModel.orderNotification, buyerNotification: customUserModelState.userModel.buyerNotification,);
                                       await context.read(userModelExtensionController.notifier).saveBasicSellerInfo(userModel);
                                      await context.read(serviceTypeControllerProvider.notifier).retrieveServiceType(isRefreshing:true);
                                       progress.dismiss();

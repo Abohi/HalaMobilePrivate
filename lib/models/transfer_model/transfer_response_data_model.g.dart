@@ -14,6 +14,7 @@ _$_TransferResponseDataModel _$_$_TransferResponseDataModelFromJson(
     reason: json['reason'] as String,
     transfer_code: json['transfer_code'] as String,
     createdAt: json['createdAt'] as String,
+    documentId: json['documentId'] as String?,
   );
 }
 
@@ -25,4 +26,5 @@ Map<String, dynamic> _$_$_TransferResponseDataModelToJson(
       'reason': instance.reason,
       'transfer_code': instance.transfer_code,
       'createdAt': instance.createdAt,
+      'documentId': instance.documentId,
     };

@@ -56,11 +56,11 @@ class HomePage extends HookWidget {
               slivers: [
                 userModelState.userModel.isSeller || userModelState.userModel.isDismissCompleteProfile?SliverToBoxAdapter(child: SizedBox.shrink()):CompleteSellerProfile(onDismissedClicked: ()async{
                   final progress = ProgressHUD.of(context);
-                  progress!.showWithText('Dismissing Notification...');
+                  progress!.showWithText('Dismissing Call-to-action...');
                   UserModel userModel =userModelState.userModel.copyWith(isDismissCompleteProfile:true);
                   await context.read(userRepositoryProvider).saveBasicSellerInfo(userModel);
                   progress.dismiss();
-                  await Fluttertoast.showToast(msg: "Notification dismissed successfully",toastLength: Toast.LENGTH_LONG);
+                  await Fluttertoast.showToast(msg: "Call to action dismissed successfully",toastLength: Toast.LENGTH_LONG);
                 },),
                 SliverToBoxAdapter(
                   child: SizedBox(height: 20,),

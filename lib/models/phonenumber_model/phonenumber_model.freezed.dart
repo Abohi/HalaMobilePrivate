@@ -13,15 +13,15 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 PhoneNumberModel _$PhoneNumberModelFromJson(Map<String, dynamic> json) {
-  return _DisputeModel.fromJson(json);
+  return _PhoneNumberModel.fromJson(json);
 }
 
 /// @nodoc
 class _$PhoneNumberModelTearOff {
   const _$PhoneNumberModelTearOff();
 
-  _DisputeModel call({bool? isPhoneNumberVerified}) {
-    return _DisputeModel(
+  _PhoneNumberModel call({bool? isPhoneNumberVerified}) {
+    return _PhoneNumberModel(
       isPhoneNumberVerified: isPhoneNumberVerified,
     );
   }
@@ -75,31 +75,31 @@ class _$PhoneNumberModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DisputeModelCopyWith<$Res>
+abstract class _$PhoneNumberModelCopyWith<$Res>
     implements $PhoneNumberModelCopyWith<$Res> {
-  factory _$DisputeModelCopyWith(
-          _DisputeModel value, $Res Function(_DisputeModel) then) =
-      __$DisputeModelCopyWithImpl<$Res>;
+  factory _$PhoneNumberModelCopyWith(
+          _PhoneNumberModel value, $Res Function(_PhoneNumberModel) then) =
+      __$PhoneNumberModelCopyWithImpl<$Res>;
   @override
   $Res call({bool? isPhoneNumberVerified});
 }
 
 /// @nodoc
-class __$DisputeModelCopyWithImpl<$Res>
+class __$PhoneNumberModelCopyWithImpl<$Res>
     extends _$PhoneNumberModelCopyWithImpl<$Res>
-    implements _$DisputeModelCopyWith<$Res> {
-  __$DisputeModelCopyWithImpl(
-      _DisputeModel _value, $Res Function(_DisputeModel) _then)
-      : super(_value, (v) => _then(v as _DisputeModel));
+    implements _$PhoneNumberModelCopyWith<$Res> {
+  __$PhoneNumberModelCopyWithImpl(
+      _PhoneNumberModel _value, $Res Function(_PhoneNumberModel) _then)
+      : super(_value, (v) => _then(v as _PhoneNumberModel));
 
   @override
-  _DisputeModel get _value => super._value as _DisputeModel;
+  _PhoneNumberModel get _value => super._value as _PhoneNumberModel;
 
   @override
   $Res call({
     Object? isPhoneNumberVerified = freezed,
   }) {
-    return _then(_DisputeModel(
+    return _then(_PhoneNumberModel(
       isPhoneNumberVerified: isPhoneNumberVerified == freezed
           ? _value.isPhoneNumberVerified
           : isPhoneNumberVerified // ignore: cast_nullable_to_non_nullable
@@ -110,11 +110,11 @@ class __$DisputeModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DisputeModel implements _DisputeModel {
-  const _$_DisputeModel({this.isPhoneNumberVerified});
+class _$_PhoneNumberModel implements _PhoneNumberModel {
+  const _$_PhoneNumberModel({this.isPhoneNumberVerified});
 
-  factory _$_DisputeModel.fromJson(Map<String, dynamic> json) =>
-      _$_$_DisputeModelFromJson(json);
+  factory _$_PhoneNumberModel.fromJson(Map<String, dynamic> json) =>
+      _$_$_PhoneNumberModelFromJson(json);
 
   @override
   final bool? isPhoneNumberVerified;
@@ -127,7 +127,7 @@ class _$_DisputeModel implements _DisputeModel {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _DisputeModel &&
+        (other is _PhoneNumberModel &&
             (identical(other.isPhoneNumberVerified, isPhoneNumberVerified) ||
                 const DeepCollectionEquality().equals(
                     other.isPhoneNumberVerified, isPhoneNumberVerified)));
@@ -140,25 +140,26 @@ class _$_DisputeModel implements _DisputeModel {
 
   @JsonKey(ignore: true)
   @override
-  _$DisputeModelCopyWith<_DisputeModel> get copyWith =>
-      __$DisputeModelCopyWithImpl<_DisputeModel>(this, _$identity);
+  _$PhoneNumberModelCopyWith<_PhoneNumberModel> get copyWith =>
+      __$PhoneNumberModelCopyWithImpl<_PhoneNumberModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_DisputeModelToJson(this);
+    return _$_$_PhoneNumberModelToJson(this);
   }
 }
 
-abstract class _DisputeModel implements PhoneNumberModel {
-  const factory _DisputeModel({bool? isPhoneNumberVerified}) = _$_DisputeModel;
+abstract class _PhoneNumberModel implements PhoneNumberModel {
+  const factory _PhoneNumberModel({bool? isPhoneNumberVerified}) =
+      _$_PhoneNumberModel;
 
-  factory _DisputeModel.fromJson(Map<String, dynamic> json) =
-      _$_DisputeModel.fromJson;
+  factory _PhoneNumberModel.fromJson(Map<String, dynamic> json) =
+      _$_PhoneNumberModel.fromJson;
 
   @override
   bool? get isPhoneNumberVerified => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DisputeModelCopyWith<_DisputeModel> get copyWith =>
+  _$PhoneNumberModelCopyWith<_PhoneNumberModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

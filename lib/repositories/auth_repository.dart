@@ -8,6 +8,8 @@ import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/exception_handlers/custom_exception.dart';
 import 'package:halawork/providers/general_providers/phoneVerificationCodeProvider.dart';
 import 'package:halawork/providers/general_providers/user_profile_provider.dart';
+import 'package:halawork/providers/state_providers/enablingTimeStateProvider.dart';
+import 'package:halawork/providers/state_providers/phoneExpirationTimeStateProvider.dart';
 import 'package:halawork/utils/pref_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:halawork/exception_handlers/network_failure_exception.dart';
@@ -16,7 +18,7 @@ import 'package:halawork/models/user_model/user_model.dart';
 import 'package:halawork/providers/general_providers/general_providers.dart';
 import 'package:halawork/utils/random_number_generator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:intl/intl.dart';
 
 abstract class BaseAuthRepository {
   Stream<User?> get authStateChanges;
@@ -76,7 +78,7 @@ class AuthRepository implements BaseAuthRepository {
       if(userCredential.user!=null){
         await userCredential.user!.sendEmailVerification();
 
-        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]!, isPhoneNumberVerified: false, isSeller: false, isBuyer: false,),SetOptions(
+        await _read.read(firebaseFirestoreProvider).userDocumentRef(userCredential.user!.uid).set(UserModel(phoneNumber: payload["phoneNumber"].toString(),email:payload["email"]!, isPhoneNumberVerified: false, isSeller: false, isBuyer: false, buyerNotification: true, orderNotification: true, inboxNotification: true,),SetOptions(
           merge: true
         ));
       }
@@ -90,7 +92,9 @@ class AuthRepository implements BaseAuthRepository {
     try{
       int phoneCode = RandomDigits.getInteger(5);
       await PreferenceManager().savePhoneCode(phoneCode);
-      String message = "Welcome to HalaWork. Your ID to complete your registration is ${phoneCode}. Thank you.";
+      DateTime time =DateTime.now();
+     DateTime addedTime =  time.add(Duration(minutes: 15));
+      String message = "Welcome to HalaWork. Your ID to complete your registration is ${phoneCode}, Expires: ${DateFormat.yMMMd().format(addedTime)}, ${DateFormat.jms().format(addedTime)} . Thank you.";
       var headers = {
         'Content-Type': 'application/json'
       };
@@ -100,6 +104,8 @@ class AuthRepository implements BaseAuthRepository {
 
       return http.get(Uri.parse(url), headers: headers).then((data) {
         if (data.statusCode == 200) {
+          _read.read(phoneExpirationTimeProvider).state=time.millisecondsSinceEpoch + 1000 * 60 *15;
+          _read.read(enablingTimeStateProvider).state = time.millisecondsSinceEpoch + 1000 * 60 *5;
           return right(true);
         }
         return right(false);

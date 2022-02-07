@@ -6,13 +6,14 @@ part of 'phonenumber_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_DisputeModel _$_$_DisputeModelFromJson(Map<String, dynamic> json) {
-  return _$_DisputeModel(
+_$_PhoneNumberModel _$_$_PhoneNumberModelFromJson(Map<String, dynamic> json) {
+  return _$_PhoneNumberModel(
     isPhoneNumberVerified: json['isPhoneNumberVerified'] as bool?,
   );
 }
 
-Map<String, dynamic> _$_$_DisputeModelToJson(_$_DisputeModel instance) =>
+Map<String, dynamic> _$_$_PhoneNumberModelToJson(
+        _$_PhoneNumberModel instance) =>
     <String, dynamic>{
       'isPhoneNumberVerified': instance.isPhoneNumberVerified,
     };

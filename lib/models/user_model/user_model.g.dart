@@ -56,6 +56,9 @@ _$_UserModel _$_$_UserModelFromJson(Map<String, dynamic> json) {
     isActiveService: json['isActiveService'] as bool?,
     toggleNationWideVisibility: json['toggleNationWideVisibility'] as bool?,
     transactionPin: json['transactionPin'] as String?,
+    buyerNotification: json['buyerNotification'] as bool,
+    inboxNotification: json['inboxNotification'] as bool,
+    orderNotification: json['orderNotification'] as bool,
   );
 }
 
@@ -96,4 +99,7 @@ Map<String, dynamic> _$_$_UserModelToJson(_$_UserModel instance) =>
       'isActiveService': instance.isActiveService,
       'toggleNationWideVisibility': instance.toggleNationWideVisibility,
       'transactionPin': instance.transactionPin,
+      'buyerNotification': instance.buyerNotification,
+      'inboxNotification': instance.inboxNotification,
+      'orderNotification': instance.orderNotification,
     };

@@ -22,10 +22,12 @@ import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/add_account_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/amount_withdraw_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/withdraw_funds_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/pages/withdrawfunds_history_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/payment_pages/payment_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page/change_pin_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page/create_pin_page.dart';
+import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page/notification_settings_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/drawer_pages/settings_page/security_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/filter_page.dart';
 import 'package:halawork/pages/dashboard_pages/pages/home_pages/home_search_pages/home_search_main_page.dart';
@@ -119,6 +121,8 @@ import '../main.dart';
     const AutoRoute(page: ChangePinPage),
     const AutoRoute(page: AmountToWithdrawPage),
     const AutoRoute(page: WithDrawFundsPage),
+    const AutoRoute(page: WithDrawfundHistoryPage),
+    const AutoRoute(page: NotificationSettingsPage),
     //End of drawer pages
 
     //Request pages

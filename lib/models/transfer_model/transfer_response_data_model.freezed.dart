@@ -26,13 +26,15 @@ class _$TransferResponseDataModelTearOff {
       required num amount,
       required String reason,
       required String transfer_code,
-      required String createdAt}) {
+      required String createdAt,
+      String? documentId}) {
     return _TransferResponseDataModel(
       reference: reference,
       amount: amount,
       reason: reason,
       transfer_code: transfer_code,
       createdAt: createdAt,
+      documentId: documentId,
     );
   }
 
@@ -51,6 +53,7 @@ mixin _$TransferResponseDataModel {
   String get reason => throw _privateConstructorUsedError;
   String get transfer_code => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
+  String? get documentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,7 +71,8 @@ abstract class $TransferResponseDataModelCopyWith<$Res> {
       num amount,
       String reason,
       String transfer_code,
-      String createdAt});
+      String createdAt,
+      String? documentId});
 }
 
 /// @nodoc
@@ -87,6 +91,7 @@ class _$TransferResponseDataModelCopyWithImpl<$Res>
     Object? reason = freezed,
     Object? transfer_code = freezed,
     Object? createdAt = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_value.copyWith(
       reference: reference == freezed
@@ -109,6 +114,10 @@ class _$TransferResponseDataModelCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -125,7 +134,8 @@ abstract class _$TransferResponseDataModelCopyWith<$Res>
       num amount,
       String reason,
       String transfer_code,
-      String createdAt});
+      String createdAt,
+      String? documentId});
 }
 
 /// @nodoc
@@ -147,6 +157,7 @@ class __$TransferResponseDataModelCopyWithImpl<$Res>
     Object? reason = freezed,
     Object? transfer_code = freezed,
     Object? createdAt = freezed,
+    Object? documentId = freezed,
   }) {
     return _then(_TransferResponseDataModel(
       reference: reference == freezed
@@ -169,6 +180,10 @@ class __$TransferResponseDataModelCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -181,7 +196,8 @@ class _$_TransferResponseDataModel implements _TransferResponseDataModel {
       required this.amount,
       required this.reason,
       required this.transfer_code,
-      required this.createdAt});
+      required this.createdAt,
+      this.documentId});
 
   factory _$_TransferResponseDataModel.fromJson(Map<String, dynamic> json) =>
       _$_$_TransferResponseDataModelFromJson(json);
@@ -196,10 +212,12 @@ class _$_TransferResponseDataModel implements _TransferResponseDataModel {
   final String transfer_code;
   @override
   final String createdAt;
+  @override
+  final String? documentId;
 
   @override
   String toString() {
-    return 'TransferResponseDataModel(reference: $reference, amount: $amount, reason: $reason, transfer_code: $transfer_code, createdAt: $createdAt)';
+    return 'TransferResponseDataModel(reference: $reference, amount: $amount, reason: $reason, transfer_code: $transfer_code, createdAt: $createdAt, documentId: $documentId)';
   }
 
   @override
@@ -218,7 +236,10 @@ class _$_TransferResponseDataModel implements _TransferResponseDataModel {
                     .equals(other.transfer_code, transfer_code)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)));
+                    .equals(other.createdAt, createdAt)) &&
+            (identical(other.documentId, documentId) ||
+                const DeepCollectionEquality()
+                    .equals(other.documentId, documentId)));
   }
 
   @override
@@ -228,7 +249,8 @@ class _$_TransferResponseDataModel implements _TransferResponseDataModel {
       const DeepCollectionEquality().hash(amount) ^
       const DeepCollectionEquality().hash(reason) ^
       const DeepCollectionEquality().hash(transfer_code) ^
-      const DeepCollectionEquality().hash(createdAt);
+      const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(documentId);
 
   @JsonKey(ignore: true)
   @override
@@ -249,7 +271,8 @@ abstract class _TransferResponseDataModel implements TransferResponseDataModel {
       required num amount,
       required String reason,
       required String transfer_code,
-      required String createdAt}) = _$_TransferResponseDataModel;
+      required String createdAt,
+      String? documentId}) = _$_TransferResponseDataModel;
 
   factory _TransferResponseDataModel.fromJson(Map<String, dynamic> json) =
       _$_TransferResponseDataModel.fromJson;
@@ -264,6 +287,8 @@ abstract class _TransferResponseDataModel implements TransferResponseDataModel {
   String get transfer_code => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
+  @override
+  String? get documentId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$TransferResponseDataModelCopyWith<_TransferResponseDataModel>

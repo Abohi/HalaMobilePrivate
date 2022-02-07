@@ -82,7 +82,7 @@ class BankAccountDetails extends HookWidget {
                           fontWeight: FontWeight.normal)),
                 ),
                 Text(
-                  accountName ?? "",
+                  accountNumber ?? "",
                   style: GoogleFonts.roboto(
                       textStyle: TextStyle(
                           color: const Color(0xff29283C),

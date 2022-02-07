@@ -112,13 +112,13 @@ class CustomDrawer extends HookWidget {
                       context.router.navigate(DisputeRoute());
                     },
                   ),
-                  DrawerItems(
+                  userModelState!.userModel.isSeller?DrawerItems(
                     drawerIcon: Icons.payment,
                     drawerItemTitle: "Payment",
                     onTap: () {
                       context.router.navigate(const PaymentRoute());
                     },
-                  ),
+                  ):SizedBox.shrink(),
                   DrawerItems(
                     drawerIcon: Icons.archive,
                     drawerItemTitle: "Orders",
@@ -126,13 +126,13 @@ class CustomDrawer extends HookWidget {
                       context.router.navigate(const OrderRoute());
                     },
                   ),
-                  DrawerItems(
-                    drawerIcon: Icons.archive,
-                    drawerItemTitle: "Modifications",
-                    onTap: () {
-                      context.router.navigate(const ModificationRoute());
-                    },
-                  ),
+                  // DrawerItems(
+                  //   drawerIcon: Icons.archive,
+                  //   drawerItemTitle: "Modifications",
+                  //   onTap: () {
+                  //     context.router.navigate(const ModificationRoute());
+                  //   },
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(top: 33.5),
                     child: const Divider(

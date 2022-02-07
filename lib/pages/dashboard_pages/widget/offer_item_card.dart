@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:halawork/app_route/app_route.gr.dart';
+import 'package:halawork/controllers/auth_controller.dart';
 import 'package:halawork/controllers/user_model_extension_controller.dart';
 import 'package:halawork/models/offer_model/offer_model.dart';
 import 'package:halawork/models/user_model/user_model.dart';
@@ -13,11 +14,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 class OfferItemCard extends HookWidget {
   final OfferModel offerModel;
-  const OfferItemCard({required this.offerModel});
+  final Function deleteOfferFunction;
+  const OfferItemCard({required this.offerModel,required this.deleteOfferFunction});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     var userModel = useState<UserModel?>(null);
     return Container(
       width: size.width,
@@ -114,10 +117,15 @@ class OfferItemCard extends HookWidget {
                       ],
                     ),
                     Spacer(),
-                    Icon(
-                      Icons.clear,
-                      size: 18,
-                      color: const Color(0xffACACAC),
+              GestureDetector(
+                onTap:()async{
+                  deleteOfferFunction();
+                },
+                      child: Icon(
+                        Icons.clear,
+                        size: 18,
+                        color: const Color(0xffACACAC),
+                      ),
                     )
                   ],
                 );
